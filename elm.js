@@ -747,6 +747,98 @@ Elm.Debug.make = function (_elm) {
                        ,trace: trace};
    return _elm.Debug.values;
 };
+Elm.ElNativo = Elm.ElNativo || {};
+Elm.ElNativo.Nativo = Elm.ElNativo.Nativo || {};
+Elm.ElNativo.Nativo.make = function (_elm) {
+   "use strict";
+   _elm.ElNativo = _elm.ElNativo || {};
+   _elm.ElNativo.Nativo = _elm.ElNativo.Nativo || {};
+   if (_elm.ElNativo.Nativo.values)
+   return _elm.ElNativo.Nativo.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "ElNativo.Nativo",
+   $Basics = Elm.Basics.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var encodeStyle = function (props) {
+      return $Json$Encode.object($List.map(function (_v0) {
+         return function () {
+            switch (_v0.ctor)
+            {case "_Tuple2":
+               return {ctor: "_Tuple2"
+                      ,_0: _v0._0
+                      ,_1: $Json$Encode.string(_v0._1)};}
+            _U.badCase($moduleName,
+            "on line 21, column 36 to 65");
+         }();
+      })(props));
+   };
+   var encode = function (vtree) {
+      return function () {
+         switch (vtree.ctor)
+         {case "VNode":
+            return $Json$Encode.object(_L.fromArray([{ctor: "_Tuple2"
+                                                     ,_0: "tagName"
+                                                     ,_1: $Json$Encode.string(vtree._0)}
+                                                    ,{ctor: "_Tuple2"
+                                                     ,_0: "children"
+                                                     ,_1: $Json$Encode.list(A2($List.map,
+                                                     encode,
+                                                     vtree._1))}]));
+            case "VText":
+            return $Json$Encode.object(_L.fromArray([{ctor: "_Tuple2"
+                                                     ,_0: "tagName"
+                                                     ,_1: $Json$Encode.string("Text")}
+                                                    ,{ctor: "_Tuple2"
+                                                     ,_0: "style"
+                                                     ,_1: encodeStyle(vtree._0)}
+                                                    ,{ctor: "_Tuple2"
+                                                     ,_0: "children"
+                                                     ,_1: $Json$Encode.list(_L.fromArray([$Json$Encode.string(vtree._1)]))}]));}
+         _U.badCase($moduleName,
+         "between lines 42 and 53");
+      }();
+   };
+   var VText = F2(function (a,b) {
+      return {ctor: "VText"
+             ,_0: a
+             ,_1: b};
+   });
+   var text = F2(function (style,
+   textContent) {
+      return A2(VText,
+      style,
+      textContent);
+   });
+   var VNode = F2(function (a,b) {
+      return {ctor: "VNode"
+             ,_0: a
+             ,_1: b};
+   });
+   var node = F2(function (tagName,
+   children) {
+      return A2(VNode,
+      tagName,
+      children);
+   });
+   var view = function (children) {
+      return A2(VNode,
+      "View",
+      children);
+   };
+   _elm.ElNativo.Nativo.values = {_op: _op
+                                 ,node: node
+                                 ,view: view
+                                 ,text: text
+                                 ,encode: encode};
+   return _elm.ElNativo.Nativo.values;
+};
 Elm.Graphics = Elm.Graphics || {};
 Elm.Graphics.Collage = Elm.Graphics.Collage || {};
 Elm.Graphics.Collage.make = function (_elm) {
@@ -7968,89 +8060,48 @@ Elm.PoC.make = function (_elm) {
    _L = _N.List.make(_elm),
    $moduleName = "PoC",
    $Basics = Elm.Basics.make(_elm),
+   $ElNativo$Nativo = Elm.ElNativo.Nativo.make(_elm),
    $Json$Encode = Elm.Json.Encode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm);
-   var serialize = function (vtree) {
-      return function () {
-         switch (vtree.ctor)
-         {case "VNode":
-            return $Json$Encode.object(_L.fromArray([{ctor: "_Tuple2"
-                                                     ,_0: "tagName"
-                                                     ,_1: $Json$Encode.string(vtree._0)}
-                                                    ,{ctor: "_Tuple2"
-                                                     ,_0: "children"
-                                                     ,_1: $Json$Encode.list(A2($List.map,
-                                                     serialize,
-                                                     vtree._1))}]));
-            case "VText":
-            return $Json$Encode.object(_L.fromArray([{ctor: "_Tuple2"
-                                                     ,_0: "tagName"
-                                                     ,_1: $Json$Encode.string("Text")}
-                                                    ,{ctor: "_Tuple2"
-                                                     ,_0: "children"
-                                                     ,_1: $Json$Encode.list(_L.fromArray([$Json$Encode.string(vtree._0)]))}]));}
-         _U.badCase($moduleName,
-         "between lines 55 and 65");
-      }();
-   };
-   var VTreeTemplate = F2(function (a,
-   b) {
-      return {_: {}
-             ,children: b
-             ,tagName: a};
-   });
-   var VText = function (a) {
-      return {ctor: "VText",_0: a};
-   };
-   var text = function (str) {
-      return VText(str);
-   };
-   var VNode = F2(function (a,b) {
-      return {ctor: "VNode"
-             ,_0: a
-             ,_1: b};
-   });
-   var node = F2(function (tagName,
-   children) {
-      return A2(VNode,
-      tagName,
-      children);
-   });
    var render = function (seconds) {
-      return A2(node,
-      "View",
-      _L.fromArray([text(A2($Basics._op["++"],
-                   "Elm says: ",
-                   $Basics.toString(seconds)))
-                   ,text(A2($Basics._op["++"],
-                   "Elm says again: ",
-                   $Basics.toString(seconds)))
-                   ,A2(node,
-                   "View",
-                   _L.fromArray([text(A2($Basics._op["++"],
-                   "Elm says nested: ",
-                   $Basics.toString(seconds)))]))
-                   ,text(A2($Basics._op["++"],
-                   "Elm says 3: ",
-                   $Basics.toString(seconds)))]));
+      return $ElNativo$Nativo.view(_L.fromArray([A2($ElNativo$Nativo.text,
+                                                _L.fromArray([]),
+                                                A2($Basics._op["++"],
+                                                "Elm says: ",
+                                                $Basics.toString(seconds)))
+                                                ,A2($ElNativo$Nativo.text,
+                                                _L.fromArray([{ctor: "_Tuple2"
+                                                              ,_0: "color"
+                                                              ,_1: "red"}]),
+                                                A2($Basics._op["++"],
+                                                "Elm says again: ",
+                                                $Basics.toString(seconds)))
+                                                ,$ElNativo$Nativo.view(_L.fromArray([A2($ElNativo$Nativo.text,
+                                                _L.fromArray([{ctor: "_Tuple2"
+                                                              ,_0: "color"
+                                                              ,_1: "green"}]),
+                                                A2($Basics._op["++"],
+                                                "Elm says nested: ",
+                                                $Basics.toString(seconds)))]))
+                                                ,A2($ElNativo$Nativo.text,
+                                                _L.fromArray([{ctor: "_Tuple2"
+                                                              ,_0: "color"
+                                                              ,_1: "blue"}]),
+                                                A2($Basics._op["++"],
+                                                "Elm says 3: ",
+                                                $Basics.toString(seconds)))]));
    };
    var vtreeOutput = Elm.Native.Port.make(_elm).outboundSignal("vtreeOutput",
    function (v) {
       return v;
    },
-   $Signal.map(serialize)($Signal.map(render)($Signal.map($Time.inSeconds)($Time.every(2 * $Time.second)))));
+   $Signal.map($ElNativo$Nativo.encode)($Signal.map(render)($Signal.map($Time.inSeconds)($Time.every(2 * $Time.second)))));
    _elm.PoC.values = {_op: _op
-                     ,VNode: VNode
-                     ,VText: VText
-                     ,VTreeTemplate: VTreeTemplate
-                     ,node: node
-                     ,text: text
-                     ,render: render
-                     ,serialize: serialize};
+                     ,render: render};
    return _elm.PoC.values;
 };
 Elm.Result = Elm.Result || {};

@@ -13,6 +13,9 @@ function vtreeToReactElement(vtree) {
   if (typeof vtree === 'string') {
     return vtree;
   }
+  if (vtree.tagName === 'Text') {
+    return React.createElement(Text, {style: vtree.style}, vtree.children);
+  }
   return React.createElement(React[vtree.tagName], null,
     vtree.children.map(vtreeToReactElement)
   );
