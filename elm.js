@@ -6356,17 +6356,17 @@ Elm.Native.Utils.make = function(localRuntime) {
 	};
 };
 
-Elm.Ports = Elm.Ports || {};
-Elm.Ports.make = function (_elm) {
+Elm.PoC = Elm.PoC || {};
+Elm.PoC.make = function (_elm) {
    "use strict";
-   _elm.Ports = _elm.Ports || {};
-   if (_elm.Ports.values)
-   return _elm.Ports.values;
+   _elm.PoC = _elm.PoC || {};
+   if (_elm.PoC.values)
+   return _elm.PoC.values;
    var _op = {},
    _N = Elm.Native,
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
-   $moduleName = "Ports",
+   $moduleName = "PoC",
    $Basics = Elm.Basics.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
@@ -6378,8 +6378,8 @@ Elm.Ports.make = function (_elm) {
       return v;
    },
    $Time.every($Time.second));
-   _elm.Ports.values = {_op: _op};
-   return _elm.Ports.values;
+   _elm.PoC.values = {_op: _op};
+   return _elm.PoC.values;
 };
 Elm.Result = Elm.Result || {};
 Elm.Result.make = function (_elm) {
@@ -7224,3 +7224,4 @@ Elm.Transform2D.make = function (_elm) {
                              ,scaleY: scaleY};
    return _elm.Transform2D.values;
 };
+module.exports = Elm;

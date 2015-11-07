@@ -1,8 +1,7 @@
-module Ports where
+module PoC where
 
 import Time
 
 port seconds : Signal Time.Time
 port seconds =
   Time.every Time.second
-

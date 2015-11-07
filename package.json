@@ -3,9 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "precompile": "rm -f elm.js",
+    "compile": "elm-make PoC.elm --output elm.js",
+    "postcompile": "echo 'module.exports = Elm;' >> elm.js",
     "start": "react-native start"
   },
   "dependencies": {
-    "react-native": "^0.14.0"
+    "react-native": "^0.14.0",
+    "elm-loader": "git@github.com:sonnym/node-elm-loader.git"
   }
 }

@@ -3,41 +3,40 @@
  * https://github.com/facebook/react-native
  */
 'use strict';
-
 var React = require('react-native');
-var Elm = require("elm-loader");
+var Elm = require('./elm');
+var {AppRegistry, StyleSheet, Text, View} = React;
 
-var compiledCode = Elm("./Ports.elm", "./");
+var program = Elm.worker(Elm.PoC);
 
-compiledCode.emitter.on("seconds", function(message) {
-  console.log(message)
-});
-
-var {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-} = React;
-
-var ElmNative = React.createClass({
-  render: function() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
-  }
-});
+function componentFactory() {
+  return React.createClass({
+    componentWillMount() {
+      program.ports.seconds.subscribe(s => {
+        this.setState({s: s})
+      })
+    },
+    getInitialState() {
+      return {s: 0}
+    },
+    render() {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+            This is Elm Native
+          </Text>
+          <Text style={styles.instructions}>
+            This comes straight from Elm: {this.state.s}
+          </Text>
+          <Text style={styles.instructions}>
+            Press Cmd+R to reload,{'\n'}
+            Cmd+D or shake for dev menu
+          </Text>
+        </View>
+      )
+    },
+  })
+}
 
 var styles = StyleSheet.create({
   container: {
@@ -58,4 +57,4 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('ElmNative', () => ElmNative);
+AppRegistry.registerComponent('ElmNative', componentFactory)
