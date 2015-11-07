@@ -6373,12 +6373,29 @@ Elm.PoC.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm);
-   var seconds = Elm.Native.Port.make(_elm).outboundSignal("seconds",
+   var render = function (seconds) {
+      return {_: {}
+             ,children: _L.fromArray([A2($Basics._op["++"],
+             "Elm says: ",
+             $Basics.toString(seconds))])
+             ,tagName: "Text"};
+   };
+   var vtree = Elm.Native.Port.make(_elm).outboundSignal("vtree",
    function (v) {
-      return v;
+      return {tagName: v.tagName
+             ,children: Elm.Native.List.make(_elm).toArray(v.children).map(function (v) {
+                return v;
+             })};
    },
-   $Time.every($Time.second));
-   _elm.PoC.values = {_op: _op};
+   $Signal.map(render)($Signal.map($Time.inSeconds)($Time.every(2 * $Time.second))));
+   var VTree = F2(function (a,b) {
+      return {_: {}
+             ,children: b
+             ,tagName: a};
+   });
+   _elm.PoC.values = {_op: _op
+                     ,VTree: VTree
+                     ,render: render};
    return _elm.PoC.values;
 };
 Elm.Result = Elm.Result || {};

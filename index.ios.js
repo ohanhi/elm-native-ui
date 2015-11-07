@@ -9,31 +9,28 @@ var {AppRegistry, StyleSheet, Text, View} = React;
 
 var program = Elm.worker(Elm.PoC);
 
+function vtreeToReactElement(vtree) {
+  return React.createElement(React[vtree.tagName], null,
+    vtree.children.map(child => React.createElement(Text, null, child))
+  );
+}
+
 function componentFactory() {
   return React.createClass({
     componentWillMount() {
-      program.ports.seconds.subscribe(s => {
-        this.setState({s: s})
+      program.ports.vtree.subscribe(vtreeInstance => {
+        this.setState({vtree: vtreeInstance})
       })
     },
     getInitialState() {
-      return {s: 0}
+      return {
+        vtree: {tagName: 'View', children: []},
+      };
     },
     render() {
-      return (
-        <View style={styles.container}>
-          <Text style={styles.welcome}>
-            This is Elm Native
-          </Text>
-          <Text style={styles.instructions}>
-            This comes straight from Elm: {this.state.s}
-          </Text>
-          <Text style={styles.instructions}>
-            Press Cmd+R to reload,{'\n'}
-            Cmd+D or shake for dev menu
-          </Text>
-        </View>
-      )
+      return React.createElement(View, {style: styles.container},
+        vtreeToReactElement(this.state.vtree)
+      );
     },
   })
 }
@@ -43,17 +40,6 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
 
