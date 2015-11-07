@@ -10,16 +10,19 @@ var {AppRegistry, StyleSheet, Text, View} = React;
 var program = Elm.worker(Elm.PoC);
 
 function vtreeToReactElement(vtree) {
+  if (typeof vtree === 'string') {
+    return vtree;
+  }
   return React.createElement(React[vtree.tagName], null,
-    vtree.children.map(child => React.createElement(Text, null, child))
+    vtree.children.map(vtreeToReactElement)
   );
 }
 
 function componentFactory() {
   return React.createClass({
     componentWillMount() {
-      program.ports.vtree.subscribe(vtreeInstance => {
-        this.setState({vtree: vtreeInstance})
+      program.ports.vtreeOutput.subscribe(vtree => {
+        this.setState({vtree})
       })
     },
     getInitialState() {
