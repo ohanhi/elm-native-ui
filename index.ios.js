@@ -7,7 +7,7 @@ var React = require('react-native');
 var Elm = require('./elm');
 var {AppRegistry, StyleSheet, Text, View} = React;
 
-var program = Elm.worker(Elm.PoC);
+var program = Elm.worker(Elm.PoC, { init: [] });
 
 function vtreeToReactElement(vtree) {
   if (typeof vtree === 'string') {
@@ -32,7 +32,8 @@ function componentFactory() {
     componentWillMount() {
       program.ports.vtreeOutput.subscribe(vtree => {
         this.setState({vtree})
-      })
+      });
+      program.ports.init.send([]);
     },
     getInitialState() {
       return {

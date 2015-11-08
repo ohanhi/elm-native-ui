@@ -9658,7 +9658,12 @@ Elm.PoC.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
-   var model = $Signal.constant(0);
+   var init = Elm.Native.Port.make(_elm).inboundSignal("init",
+   "()",
+   function (v) {
+      return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple0"} : _U.badPort("an array",
+      v);
+   });
    var initialModel = 0;
    var update = F2(function (action,
    model) {
@@ -9677,7 +9682,11 @@ Elm.PoC.make = function (_elm) {
    var Increment = {ctor: "Increment"};
    var NoOp = {ctor: "NoOp"};
    var actions = $Signal.mailbox(NoOp);
-   var render = F2(function (address,
+   var model = A3($Signal.foldp,
+   update,
+   initialModel,
+   actions.signal);
+   var view = F2(function (address,
    count) {
       return $ElNativo$ElNativo.view(_L.fromArray([A3($ElNativo$ElNativo.text,
                                                   _L.fromArray([]),
@@ -9700,14 +9709,21 @@ Elm.PoC.make = function (_elm) {
    function (v) {
       return v;
    },
-   $Signal.map($ElNativo$ElNativo.encode)($Signal.map(render(actions.address))(model)));
+   $Signal.map($ElNativo$ElNativo.encode)($Signal.map(view(actions.address))($Signal.map($Basics.fst)(A3($Signal.map2,
+   F2(function (v0,v1) {
+      return {ctor: "_Tuple2"
+             ,_0: v0
+             ,_1: v1};
+   }),
+   model,
+   init)))));
    _elm.PoC.values = {_op: _op
                      ,NoOp: NoOp
                      ,Increment: Increment
                      ,Decrement: Decrement
                      ,update: update
                      ,actions: actions
-                     ,render: render
+                     ,view: view
                      ,initialModel: initialModel
                      ,model: model};
    return _elm.PoC.values;

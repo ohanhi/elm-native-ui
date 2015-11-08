@@ -3,7 +3,7 @@ module PoC where
 import Time
 import Signal
 import Json.Encode
-import ElNativo.ElNativo exposing (..)
+import ElNativo.ElNativo as EN
 
 
 type alias Model = Int
@@ -25,16 +25,16 @@ actions =
   Signal.mailbox NoOp
 
 
-view : Signal.Address Action -> Model -> VTree
+view : Signal.Address Action -> Model -> EN.VTree
 view address count =
-  view
-    [ text
+  EN.view
+    [ EN.text
       []
-      (onPress address NoOp)
+      (EN.onPress address NoOp)
       ("Counter: " ++ toString count)
-    , text
+    , EN.text
       [("color", "blue")]
-      (onPress address Increment)
+      (EN.onPress address Increment)
       "Increment"
     ]
 
@@ -44,13 +44,16 @@ initialModel = 0
 
 
 model : Signal Model
-model = Signal.constant 0
-  --Signal.foldp update initialModel actions.signal
+model =
+  Signal.foldp update initialModel actions.signal
 
 
 port vtreeOutput : Signal Json.Encode.Value
 port vtreeOutput =
-  model
+  Signal.map2 (,) model init
+  |> Signal.map fst
   |> Signal.map (view actions.address)
-  |> Signal.map encode
+  |> Signal.map EN.encode
+
+port init : Signal ()
 
