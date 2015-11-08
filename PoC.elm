@@ -3,24 +3,54 @@ module PoC where
 import Time
 import Signal
 import Json.Encode
-import ElNativo.Nativo exposing (..)
+import ElNativo.ElNativo exposing (..)
 
 
-render : Float -> VTree
-render seconds =
+type alias Model = Int
+
+
+type Action = NoOp | Increment | Decrement
+
+
+update : Action -> Model -> Model
+update action model =
+  case action of
+    Increment -> model + 1
+    Decrement -> model - 1
+    NoOp -> model
+
+
+actions : Signal.Mailbox Action
+actions =
+  Signal.mailbox NoOp
+
+
+view : Signal.Address Action -> Model -> VTree
+view address count =
   view
-    [ text [] ("Elm says: " ++ toString seconds)
-    , text [("color", "red")] ("Elm says again: " ++ toString seconds)
-    , view
-      [ text [("color", "green")] ("Elm says nested: " ++ toString seconds) ]
-    , text [("color", "blue")] ("Elm says 3: " ++ toString seconds)
+    [ text
+      []
+      (onPress address NoOp)
+      ("Counter: " ++ toString count)
+    , text
+      [("color", "blue")]
+      (onPress address Increment)
+      "Increment"
     ]
+
+
+initialModel : Model
+initialModel = 0
+
+
+model : Signal Model
+model = Signal.constant 0
+  --Signal.foldp update initialModel actions.signal
 
 
 port vtreeOutput : Signal Json.Encode.Value
 port vtreeOutput =
-  Time.every (2 * Time.second)
-  |> Signal.map Time.inSeconds
-  |> Signal.map render
+  model
+  |> Signal.map (view actions.address)
   |> Signal.map encode
 

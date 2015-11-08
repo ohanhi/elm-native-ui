@@ -4,9 +4,13 @@
     "repository": "https://github.com/USER/PROJECT.git",
     "license": "BSD3",
     "source-directories": [
-        "."
+        ".",
+        "ElNativo"
     ],
-    "exposed-modules": [],
+    "exposed-modules": [
+        "ElNativo"
+    ],
+    "native-modules": true,
     "dependencies": {
         "elm-lang/core": "2.1.0 <= v < 3.0.0"
     },
