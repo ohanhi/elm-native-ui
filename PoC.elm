@@ -3,7 +3,7 @@ module PoC where
 import Time
 import Signal
 import Json.Encode
-import ElNativo.ElNativo as EN
+import ReactNative.ReactNative as RN
 
 
 type alias Model = Int
@@ -25,17 +25,21 @@ actions =
   Signal.mailbox NoOp
 
 
-view : Signal.Address Action -> Model -> EN.VTree
+view : Signal.Address Action -> Model -> RN.VTree
 view address count =
-  EN.view
-    [ EN.text
+  RN.view
+    [ RN.text
       []
-      (EN.onPress address NoOp)
+      (RN.onPress address NoOp)
       ("Counter: " ++ toString count)
-    , EN.text
+    , RN.text
       [("color", "blue")]
-      (EN.onPress address Increment)
+      (RN.onPress address Increment)
       "Increment"
+    , RN.text
+      [("color", "red")]
+      (RN.onPress address Decrement)
+      "Decrement"
     ]
 
 
@@ -53,7 +57,8 @@ port vtreeOutput =
   Signal.map2 (,) model init
   |> Signal.map fst
   |> Signal.map (view actions.address)
-  |> Signal.map EN.encode
+  |> Signal.map RN.encode
+
 
 port init : Signal ()
 

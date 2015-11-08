@@ -5,10 +5,10 @@
     "license": "BSD3",
     "source-directories": [
         ".",
-        "ElNativo"
+        "ReactNative"
     ],
     "exposed-modules": [
-        "ElNativo"
+        "ReactNative"
     ],
     "native-modules": true,
     "dependencies": {

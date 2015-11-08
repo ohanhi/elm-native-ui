@@ -1,4 +1,4 @@
-module ElNativo.ElNativo
+module ReactNative.ReactNative
     ( VTree
     , node, view, text
     , encode
@@ -8,7 +8,7 @@ module ElNativo.ElNativo
 import Json.Encode
 import Json.Decode
 import Signal
-import Native.ElNativo
+import Native.ReactNative
 
 
 type alias EventHandlerRef = Int
@@ -49,7 +49,7 @@ text style handler textContent =
 
 on : Json.Decode.Decoder a -> (a -> Signal.Message) -> EventHandlerRef
 on decoder toMessage =
-    Native.ElNativo.on decoder toMessage
+    Native.ReactNative.on decoder toMessage
 
 
 onPress : Signal.Address a -> a -> (String, EventHandlerRef)

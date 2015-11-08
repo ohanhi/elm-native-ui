@@ -9703,7 +9703,15 @@ Elm.PoC.make = function (_elm) {
                                                   A2($ElNativo$ElNativo.onPress,
                                                   address,
                                                   Increment),
-                                                  "Increment")]));
+                                                  "Increment")
+                                                  ,A3($ElNativo$ElNativo.text,
+                                                  _L.fromArray([{ctor: "_Tuple2"
+                                                                ,_0: "color"
+                                                                ,_1: "red"}]),
+                                                  A2($ElNativo$ElNativo.onPress,
+                                                  address,
+                                                  Decrement),
+                                                  "Decrement")]));
    });
    var vtreeOutput = Elm.Native.Port.make(_elm).outboundSignal("vtreeOutput",
    function (v) {

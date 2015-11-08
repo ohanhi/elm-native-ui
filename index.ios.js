@@ -17,7 +17,7 @@ function vtreeToReactElement(vtree) {
     return React.createElement(Text, {
       style: vtree.style,
       onPress: vtree.onPress ?
-        program.ports._ElNativoEventHandlers[vtree.onPress] :
+        program.ports._ReactNativeEventHandlers[vtree.onPress] :
         undefined},
       vtree.children
     );
