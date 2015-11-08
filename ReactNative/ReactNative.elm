@@ -9,27 +9,14 @@ import Json.Encode
 import Json.Decode
 import Signal
 import Native.ReactNative
-
+import ReactNative.Style as RnStyle
 
 type alias EventHandlerRef = Int
 
 
 type VTree
   = VNode String (List VTree)
-  | VText Style (String, EventHandlerRef) String
-
-
-type alias Style = List (String, String)
-
-
--- BAD!! UGLY
--- ARGH MY EYES
--- CAN CAUSE RUNTIME ERROR BECAUSE NOT ALL VALUES ARE STRINGS IN REACT NATIVE
-encodeStyle : List (String, String) -> Json.Encode.Value
-encodeStyle props =
-  props
-    |> List.map (\(key, value) -> (key, Json.Encode.string value))
-    |> Json.Encode.object
+  | VText (List RnStyle.Style) (String, EventHandlerRef) String
 
 
 node : String -> List VTree -> VTree
@@ -42,9 +29,9 @@ view children =
   VNode "View" children
 
 
-text : Style -> (String, EventHandlerRef) -> String -> VTree
-text style handler textContent =
-  VText style handler textContent
+text : List RnStyle.Style -> (String, EventHandlerRef) -> String -> VTree
+text styles handler textContent =
+  VText styles handler textContent
 
 
 on : Json.Decode.Decoder a -> (a -> Signal.Message) -> EventHandlerRef
@@ -65,10 +52,10 @@ encode vtree =
         [ ("tagName", Json.Encode.string tagName)
         , ("children", Json.Encode.list (List.map encode children))
         ]
-    VText style (handlerName, handlerRef) textContent ->
+    VText styles (handlerName, handlerRef) textContent ->
       Json.Encode.object
         [ ("tagName", Json.Encode.string "Text")
-        , ("style", encodeStyle style)
+        , ("style", RnStyle.encode styles)
         , (handlerName, Json.Encode.int handlerRef)
         , ("children", Json.Encode.list [Json.Encode.string textContent])
         ]

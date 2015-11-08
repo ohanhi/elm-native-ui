@@ -4,6 +4,7 @@ import Time
 import Signal
 import Json.Encode
 import ReactNative.ReactNative as RN
+import ReactNative.Style as S
 
 
 type alias Model = Int
@@ -33,11 +34,11 @@ view address count =
       (RN.onPress address NoOp)
       ("Counter: " ++ toString count)
     , RN.text
-      [("color", "blue")]
+      [S.color "blue"]
       (RN.onPress address Increment)
       "Increment"
     , RN.text
-      [("color", "red")]
+      [S.color "red"]
       (RN.onPress address Decrement)
       "Decrement"
     ]
