@@ -22,7 +22,9 @@ function vtreeToReactElement(vtree) {
       vtree.children
     );
   }
-  return React.createElement(React[vtree.tagName], null,
+  return React.createElement(
+    React[vtree.tagName],
+    { style: vtree.style },
     vtree.children.map(vtreeToReactElement)
   );
 }

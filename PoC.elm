@@ -4,7 +4,7 @@ import Time
 import Signal
 import Json.Encode
 import ReactNative.ReactNative as RN
-import ReactNative.Style as S
+import ReactNative.Style as Style
 
 
 type alias Model = Int
@@ -26,21 +26,40 @@ actions =
   Signal.mailbox NoOp
 
 
-view : Signal.Address Action -> Model -> RN.VTree
-view address count =
+button : Action -> String -> String -> RN.VTree
+button action color content =
+  RN.text
+    [ Style.color "white"
+    , Style.textAlign "center"
+    , Style.backgroundColor color
+    , Style.paddingTop 5
+    , Style.paddingBottom 5
+    , Style.width 30
+    , Style.fontWeight "bold"
+    ]
+    (RN.onPress actions.address action)
+    content
+
+
+view : Model -> RN.VTree
+view count =
   RN.view
+    [ Style.alignItems "center"
+    ]
     [ RN.text
-      []
-      (RN.onPress address NoOp)
+      [ Style.textAlign "center"
+      , Style.marginBottom 30
+      ]
+      (RN.onPress actions.address NoOp)
       ("Counter: " ++ toString count)
-    , RN.text
-      [S.color "blue"]
-      (RN.onPress address Increment)
-      "Increment"
-    , RN.text
-      [S.color "red"]
-      (RN.onPress address Decrement)
-      "Decrement"
+    , RN.view
+      [ Style.width 80
+      , Style.flexDirection "row"
+      , Style.justifyContent "space-between"
+      ]
+      [ button Decrement "#d33" "-"
+      , button Increment "#3d3" "+"
+      ]
     ]
 
 
@@ -57,7 +76,7 @@ port vtreeOutput : Signal Json.Encode.Value
 port vtreeOutput =
   Signal.map2 (,) model init
   |> Signal.map fst
-  |> Signal.map (view actions.address)
+  |> Signal.map view
   |> Signal.map RN.encode
 
 
