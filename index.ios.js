@@ -7,16 +7,24 @@ var React = require('react-native');
 var Elm = require('./elm');
 var {AppRegistry, StyleSheet, Text, View} = React;
 
-var program = Elm.worker(Elm.PoC);
+var program = Elm.worker(Elm.PoC, { init: [] });
 
 function vtreeToReactElement(vtree) {
   if (typeof vtree === 'string') {
     return vtree;
   }
   if (vtree.tagName === 'Text') {
-    return React.createElement(Text, {style: vtree.style}, vtree.children);
+    return React.createElement(Text, {
+      style: vtree.style,
+      onPress: vtree.onPress ?
+        program.ports._ReactNativeEventHandlers[vtree.onPress] :
+        undefined},
+      vtree.children
+    );
   }
-  return React.createElement(React[vtree.tagName], null,
+  return React.createElement(
+    React[vtree.tagName],
+    { style: vtree.style },
     vtree.children.map(vtreeToReactElement)
   );
 }
@@ -26,7 +34,8 @@ function componentFactory() {
     componentWillMount() {
       program.ports.vtreeOutput.subscribe(vtree => {
         this.setState({vtree})
-      })
+      });
+      program.ports.init.send([]);
     },
     getInitialState() {
       return {
