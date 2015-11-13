@@ -9,7 +9,6 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "react-native": "^0.14.0",
-    "elm-loader": "git@github.com:sonnym/node-elm-loader.git"
+    "react-native": "^0.14.0"
   }
 }
