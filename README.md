@@ -12,6 +12,15 @@ Experimental support for writing [React Native](https://facebook.github.io/react
 Just to make it totally clear: **No.**
 
 
+## How does this work?
+
+* `PoC.elm` is the main "app" file -- where the actual application lives.
+* The `ReactNative` directory contains the Elm module that provides the types and bindings for React Native in Elm
+* `index.ios.js` makes the bridging between the compiled-to-JS Elm code and React Native
+
+Currently there is no Android version, but it should be quite straightforward to do that based on index.ios.js. PRs are welcome!
+
+
 ## To Do
 
 - [x] Basic PoC
