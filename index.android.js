@@ -1,52 +1,57 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
-
 var React = require('react-native');
-var {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-} = React;
+var Elm = require('./elm');
+var {AppRegistry, StyleSheet, Text, View} = React;
 
-var ElmNative = React.createClass({
-  render: function() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+var program = Elm.worker(Elm.PoC, { init: [] });
+
+function vtreeToReactElement(vtree) {
+  if (typeof vtree === 'string') {
+    return vtree;
+  }
+  if (vtree.tagName === 'Text') {
+    return React.createElement(Text, {
+      style: vtree.style,
+      onPress: vtree.onPress ?
+        program.ports._ReactNativeEventHandlers[vtree.onPress] :
+        undefined},
+      vtree.children
     );
   }
-});
+  return React.createElement(
+    React[vtree.tagName],
+    { style: vtree.style },
+    vtree.children.map(vtreeToReactElement)
+  );
+}
+
+function componentFactory() {
+  return React.createClass({
+    componentWillMount() {
+      program.ports.vtreeOutput.subscribe(vtree => {
+        this.setState({vtree})
+      });
+      program.ports.init.send([]);
+    },
+    getInitialState() {
+      return {
+        vtree: {tagName: 'View', children: []},
+      };
+    },
+    render() {
+      return React.createElement(View, {style: styles.container},
+        vtreeToReactElement(this.state.vtree)
+      );
+    },
+  })
+}
 
 var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
 
-AppRegistry.registerComponent('ElmNative', () => ElmNative);
+AppRegistry.registerComponent('ElmNative', componentFactory)
