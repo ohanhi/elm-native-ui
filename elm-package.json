@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "summary": "helpful summary of your project, less than 80 characters",
+    "summary": "Experimental support for writing React Native powered mobile applications",
     "repository": "https://github.com/ohanhi/elm-native.git",
     "license": "BSD3",
     "source-directories": [
