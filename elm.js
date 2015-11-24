@@ -9637,3 +9637,4 @@ Elm.PoC.make = function (_elm) {
                             ,initialModel: initialModel
                             ,model: model};
 };
+module.exports = Elm;
