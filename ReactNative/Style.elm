@@ -14,8 +14,6 @@ toJsonProperty style =
       (name, Json.Encode.string value)
     NumberStyle name value ->
       (name, Json.Encode.float value)
-    _ ->
-      ("", Json.Encode.null)
 
 encode : List Style -> Json.Encode.Value
 encode styles =
@@ -337,4 +335,3 @@ width num = NumberStyle "width" num
 --Transform Styles
 --transform : [{perspective -> Style: number}, {rotate: String}, {rotateX: String}, {rotateY: String}, {rotateZ: String}, {scale: number}, {scaleX: number}, {scaleY: number}, {translateX: number}, {translateY: number}, {skewX: String}, {skewY: String}]
 --transformMatrix : TransformMatrixPropType -> Style
-
