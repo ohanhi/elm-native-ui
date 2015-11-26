@@ -36,6 +36,10 @@ button action color content =
     , Style.paddingBottom 5
     , Style.width 30
     , Style.fontWeight "bold"
+    , Style.shadowColor "#000"
+    , Style.shadowOpacity 0.25
+    , Style.shadowOffset 1 1
+    , Style.shadowRadius 5
     ]
     (RN.onPress actions.address action)
     content
@@ -81,4 +85,3 @@ port vtreeOutput =
 
 
 port init : Signal ()
-
