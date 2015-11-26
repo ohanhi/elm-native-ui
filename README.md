@@ -19,10 +19,12 @@ Just to make it totally clear: **No.**
 * `index.ios.js` makes the bridging between the compiled-to-JS Elm code and React Native
 
 
-![](img/screenshot-ios.png)
+## Screenshots
 
-![](img/screenshot-android.png)
-
+iOS | Android
+----|--------
+![](img/screenshot-ios.png) | ![](img/screenshot-android.png)
+----|--------
 
 ## To Do
 
