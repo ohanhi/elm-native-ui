@@ -9168,8 +9168,7 @@ Elm.ReactNative.Style.make = function (_elm) {
    "use strict";
    _elm.ReactNative = _elm.ReactNative || {};
    _elm.ReactNative.Style = _elm.ReactNative.Style || {};
-   if (_elm.ReactNative.Style.values)
-   return _elm.ReactNative.Style.values;
+   if (_elm.ReactNative.Style.values) return _elm.ReactNative.Style.values;
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
@@ -9179,224 +9178,116 @@ Elm.ReactNative.Style.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
+   var encodeValue = function (value) {
+      var _p0 = value;
+      switch (_p0.ctor)
+      {case "NumberValue": return $Json$Encode.$float(_p0._0);
+         case "StringValue": return $Json$Encode.string(_p0._0);
+         default: return $Json$Encode.object(A2($List.map,encodeDeclaration,_p0._0));}
+   };
+   var encodeDeclaration = function (_p1) {    var _p2 = _p1;return {ctor: "_Tuple2",_0: _p2._0,_1: encodeValue(_p2._1)};};
    var toJsonProperty = function (style) {
-      var _p0 = style;
-      if (_p0.ctor === "StringStyle") {
-            return {ctor: "_Tuple2"
-                   ,_0: _p0._0
-                   ,_1: $Json$Encode.string(_p0._1)};
-         } else {
-            return {ctor: "_Tuple2"
-                   ,_0: _p0._0
-                   ,_1: $Json$Encode.$float(_p0._1)};
-         }
+      var _p3 = style;
+      switch (_p3.ctor)
+      {case "StringStyle": return {ctor: "_Tuple2",_0: _p3._0._0,_1: encodeValue(_p3._0._1)};
+         case "NumberStyle": return {ctor: "_Tuple2",_0: _p3._0._0,_1: encodeValue(_p3._0._1)};
+         default: return {ctor: "_Tuple2",_0: _p3._0._0,_1: encodeValue(_p3._0._1)};}
    };
-   var encode = function (styles) {
-      return $Json$Encode.object(A2($List.map,
-      toJsonProperty,
-      styles));
-   };
-   var NumberStyle = F2(function (a,b) {
-      return {ctor: "NumberStyle",_0: a,_1: b};
+   var encode = function (styles) {    return $Json$Encode.object(A2($List.map,toJsonProperty,styles));};
+   var ListStyle = function (a) {    return {ctor: "ListStyle",_0: a};};
+   var NumberStyle = function (a) {    return {ctor: "NumberStyle",_0: a};};
+   var StringStyle = function (a) {    return {ctor: "StringStyle",_0: a};};
+   var ListValue = function (a) {    return {ctor: "ListValue",_0: a};};
+   var listDeclaration = F2(function (name,value) {    return {ctor: "_Tuple2",_0: name,_1: ListValue(value)};});
+   var listStyle = F2(function (name,list) {    return ListStyle(A2(listDeclaration,name,list));});
+   var NumberValue = function (a) {    return {ctor: "NumberValue",_0: a};};
+   var numberDeclaration = F2(function (name,value) {    return {ctor: "_Tuple2",_0: name,_1: NumberValue(value)};});
+   var numberStyle = F2(function (name,value) {    return NumberStyle(A2(numberDeclaration,name,value));});
+   var fontSize = numberStyle("fontSize");
+   var letterSpacing = numberStyle("letterSpacing");
+   var lineHeight = numberStyle("lineHeight");
+   var borderRadius = numberStyle("borderRadius");
+   var borderTopLeftRadius = numberStyle("borderTopLeftRadius");
+   var borderTopRightRadius = numberStyle("borderTopRightRadius");
+   var borderBottomLeftRadius = numberStyle("borderBottomLeftRadius");
+   var borderBottomRightRadius = numberStyle("borderBottomRightRadius");
+   var borderWidth = numberStyle("borderWidth");
+   var borderTopWidth = numberStyle("borderTopWidth");
+   var borderRightWidth = numberStyle("borderRightWidth");
+   var borderBottomWidth = numberStyle("borderBottomWidth");
+   var borderLeftWidth = numberStyle("borderLeftWidth");
+   var opacity = numberStyle("opacity");
+   var shadowOpacity = numberStyle("shadowOpacity");
+   var shadowRadius = numberStyle("shadowRadius");
+   var bottom = numberStyle("bottom");
+   var flex = numberStyle("flex");
+   var height = numberStyle("height");
+   var left = numberStyle("left");
+   var margin = numberStyle("margin");
+   var marginBottom = numberStyle("marginBottom");
+   var marginHorizontal = numberStyle("marginHorizontal");
+   var marginLeft = numberStyle("marginLeft");
+   var marginRight = numberStyle("marginRight");
+   var marginTop = numberStyle("marginTop");
+   var marginVertical = numberStyle("marginVertical");
+   var padding = numberStyle("padding");
+   var paddingBottom = numberStyle("paddingBottom");
+   var paddingHorizontal = numberStyle("paddingHorizontal");
+   var paddingLeft = numberStyle("paddingLeft");
+   var paddingRight = numberStyle("paddingRight");
+   var paddingTop = numberStyle("paddingTop");
+   var paddingVertical = numberStyle("paddingVertical");
+   var right = numberStyle("right");
+   var top = numberStyle("top");
+   var width = numberStyle("width");
+   var shadowOffset = F2(function (width,height) {
+      return A2(listStyle,"shadowOffset",_U.list([A2(numberDeclaration,"width",width),A2(numberDeclaration,"height",height)]));
    });
-   var fontSize = function (num) {
-      return A2(NumberStyle,"fontSize",num);
-   };
-   var letterSpacing = function (num) {
-      return A2(NumberStyle,"letterSpacing",num);
-   };
-   var lineHeight = function (num) {
-      return A2(NumberStyle,"lineHeight",num);
-   };
-   var borderRadius = function (num) {
-      return A2(NumberStyle,"borderRadius",num);
-   };
-   var borderTopLeftRadius = function (num) {
-      return A2(NumberStyle,"borderTopLeftRadius",num);
-   };
-   var borderTopRightRadius = function (num) {
-      return A2(NumberStyle,"borderTopRightRadius",num);
-   };
-   var borderBottomLeftRadius = function (num) {
-      return A2(NumberStyle,"borderBottomLeftRadius",num);
-   };
-   var borderBottomRightRadius = function (num) {
-      return A2(NumberStyle,"borderBottomRightRadius",num);
-   };
-   var borderWidth = function (num) {
-      return A2(NumberStyle,"borderWidth",num);
-   };
-   var borderTopWidth = function (num) {
-      return A2(NumberStyle,"borderTopWidth",num);
-   };
-   var borderRightWidth = function (num) {
-      return A2(NumberStyle,"borderRightWidth",num);
-   };
-   var borderBottomWidth = function (num) {
-      return A2(NumberStyle,"borderBottomWidth",num);
-   };
-   var borderLeftWidth = function (num) {
-      return A2(NumberStyle,"borderLeftWidth",num);
-   };
-   var opacity = function (num) {
-      return A2(NumberStyle,"opacity",num);
-   };
-   var shadowOpacity = function (num) {
-      return A2(NumberStyle,"shadowOpacity",num);
-   };
-   var shadowRadius = function (num) {
-      return A2(NumberStyle,"shadowRadius",num);
-   };
-   var bottom = function (num) {
-      return A2(NumberStyle,"bottom",num);
-   };
-   var flex = function (num) {
-      return A2(NumberStyle,"flex",num);
-   };
-   var height = function (num) {
-      return A2(NumberStyle,"height",num);
-   };
-   var left = function (num) {
-      return A2(NumberStyle,"left",num);
-   };
-   var margin = function (num) {
-      return A2(NumberStyle,"margin",num);
-   };
-   var marginBottom = function (num) {
-      return A2(NumberStyle,"marginBottom",num);
-   };
-   var marginHorizontal = function (num) {
-      return A2(NumberStyle,"marginHorizontal",num);
-   };
-   var marginLeft = function (num) {
-      return A2(NumberStyle,"marginLeft",num);
-   };
-   var marginRight = function (num) {
-      return A2(NumberStyle,"marginRight",num);
-   };
-   var marginTop = function (num) {
-      return A2(NumberStyle,"marginTop",num);
-   };
-   var marginVertical = function (num) {
-      return A2(NumberStyle,"marginVertical",num);
-   };
-   var padding = function (num) {
-      return A2(NumberStyle,"padding",num);
-   };
-   var paddingBottom = function (num) {
-      return A2(NumberStyle,"paddingBottom",num);
-   };
-   var paddingHorizontal = function (num) {
-      return A2(NumberStyle,"paddingHorizontal",num);
-   };
-   var paddingLeft = function (num) {
-      return A2(NumberStyle,"paddingLeft",num);
-   };
-   var paddingRight = function (num) {
-      return A2(NumberStyle,"paddingRight",num);
-   };
-   var paddingTop = function (num) {
-      return A2(NumberStyle,"paddingTop",num);
-   };
-   var paddingVertical = function (num) {
-      return A2(NumberStyle,"paddingVertical",num);
-   };
-   var right = function (num) {
-      return A2(NumberStyle,"right",num);
-   };
-   var top = function (num) {
-      return A2(NumberStyle,"top",num);
-   };
-   var width = function (num) {
-      return A2(NumberStyle,"width",num);
-   };
-   var StringStyle = F2(function (a,b) {
-      return {ctor: "StringStyle",_0: a,_1: b};
-   });
-   var color = function (str) {
-      return A2(StringStyle,"color",str);
-   };
-   var fontFamily = function (str) {
-      return A2(StringStyle,"fontFamily",str);
-   };
-   var fontStyle = function (str) {
-      return A2(StringStyle,"fontStyle",str);
-   };
-   var fontWeight = function (str) {
-      return A2(StringStyle,"fontWeight",str);
-   };
-   var textAlign = function (str) {
-      return A2(StringStyle,"textAlign",str);
-   };
-   var textDecorationLine = function (str) {
-      return A2(StringStyle,"textDecorationLine",str);
-   };
-   var textDecorationStyle = function (str) {
-      return A2(StringStyle,"textDecorationStyle",str);
-   };
-   var textDecorationColor = function (str) {
-      return A2(StringStyle,"textDecorationColor",str);
-   };
-   var writingDirection = function (str) {
-      return A2(StringStyle,"writingDirection",str);
-   };
-   var backfaceVisibility = function (str) {
-      return A2(StringStyle,"backfaceVisibility",str);
-   };
-   var backgroundColor = function (str) {
-      return A2(StringStyle,"backgroundColor",str);
-   };
-   var borderColor = function (str) {
-      return A2(StringStyle,"borderColor",str);
-   };
-   var borderTopColor = function (str) {
-      return A2(StringStyle,"borderTopColor",str);
-   };
-   var borderRightColor = function (str) {
-      return A2(StringStyle,"borderRightColor",str);
-   };
-   var borderBottomColor = function (str) {
-      return A2(StringStyle,"borderBottomColor",str);
-   };
-   var borderLeftColor = function (str) {
-      return A2(StringStyle,"borderLeftColor",str);
-   };
-   var borderStyle = function (str) {
-      return A2(StringStyle,"borderStyle",str);
-   };
-   var overflow = function (str) {
-      return A2(StringStyle,"overflow",str);
-   };
-   var shadowColor = function (str) {
-      return A2(StringStyle,"shadowColor",str);
-   };
-   var resizeMode = function (str) {
-      return A2(StringStyle,"resizeMode",str);
-   };
-   var tintColor = function (str) {
-      return A2(StringStyle,"tintColor",str);
-   };
-   var alignItems = function (str) {
-      return A2(StringStyle,"alignItems",str);
-   };
-   var alignSelf = function (str) {
-      return A2(StringStyle,"alignSelf",str);
-   };
-   var flexDirection = function (str) {
-      return A2(StringStyle,"flexDirection",str);
-   };
-   var flexWrap = function (str) {
-      return A2(StringStyle,"flexWrap",str);
-   };
-   var justifyContent = function (str) {
-      return A2(StringStyle,"justifyContent",str);
-   };
-   var position = function (str) {
-      return A2(StringStyle,"position",str);
-   };
+   var StringValue = function (a) {    return {ctor: "StringValue",_0: a};};
+   var stringDeclaration = F2(function (name,value) {    return {ctor: "_Tuple2",_0: name,_1: StringValue(value)};});
+   var stringStyle = F2(function (name,value) {    return StringStyle(A2(stringDeclaration,name,value));});
+   var color = stringStyle("color");
+   var fontFamily = stringStyle("fontFamily");
+   var fontStyle = stringStyle("fontStyle");
+   var fontWeight = stringStyle("fontWeight");
+   var textAlign = stringStyle("textAlign");
+   var textDecorationLine = stringStyle("textDecorationLine");
+   var textDecorationStyle = stringStyle("textDecorationStyle");
+   var textDecorationColor = stringStyle("textDecorationColor");
+   var writingDirection = stringStyle("writingDirection");
+   var backfaceVisibility = stringStyle("backfaceVisibility");
+   var backgroundColor = stringStyle("backgroundColor");
+   var borderColor = stringStyle("borderColor");
+   var borderTopColor = stringStyle("borderTopColor");
+   var borderRightColor = stringStyle("borderRightColor");
+   var borderBottomColor = stringStyle("borderBottomColor");
+   var borderLeftColor = stringStyle("borderLeftColor");
+   var borderStyle = stringStyle("borderStyle");
+   var overflow = stringStyle("overflow");
+   var shadowColor = stringStyle("shadowColor");
+   var resizeMode = stringStyle("resizeMode");
+   var tintColor = stringStyle("tintColor");
+   var alignItems = stringStyle("alignItems");
+   var alignSelf = stringStyle("alignSelf");
+   var flexDirection = stringStyle("flexDirection");
+   var flexWrap = stringStyle("flexWrap");
+   var justifyContent = stringStyle("justifyContent");
+   var position = stringStyle("position");
    return _elm.ReactNative.Style.values = {_op: _op
+                                          ,StringValue: StringValue
+                                          ,NumberValue: NumberValue
+                                          ,ListValue: ListValue
+                                          ,stringDeclaration: stringDeclaration
+                                          ,numberDeclaration: numberDeclaration
+                                          ,listDeclaration: listDeclaration
+                                          ,stringStyle: stringStyle
+                                          ,numberStyle: numberStyle
+                                          ,listStyle: listStyle
                                           ,StringStyle: StringStyle
                                           ,NumberStyle: NumberStyle
+                                          ,ListStyle: ListStyle
+                                          ,encodeValue: encodeValue
+                                          ,encodeDeclaration: encodeDeclaration
                                           ,toJsonProperty: toJsonProperty
                                           ,encode: encode
                                           ,color: color
@@ -9432,6 +9323,7 @@ Elm.ReactNative.Style.make = function (_elm) {
                                           ,opacity: opacity
                                           ,overflow: overflow
                                           ,shadowColor: shadowColor
+                                          ,shadowOffset: shadowOffset
                                           ,shadowOpacity: shadowOpacity
                                           ,shadowRadius: shadowRadius
                                           ,resizeMode: resizeMode
@@ -9470,8 +9362,7 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
    "use strict";
    _elm.ReactNative = _elm.ReactNative || {};
    _elm.ReactNative.ReactNative = _elm.ReactNative.ReactNative || {};
-   if (_elm.ReactNative.ReactNative.values)
-   return _elm.ReactNative.ReactNative.values;
+   if (_elm.ReactNative.ReactNative.values) return _elm.ReactNative.ReactNative.values;
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
@@ -9487,63 +9378,26 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
    var encode = function (vtree) {
       var _p0 = vtree;
       if (_p0.ctor === "VNode") {
-            return $Json$Encode.object(_U.list([{ctor: "_Tuple2"
-                                                ,_0: "tagName"
-                                                ,_1: $Json$Encode.string(_p0._0)}
-                                               ,{ctor: "_Tuple2"
-                                                ,_0: "style"
-                                                ,_1: $ReactNative$Style.encode(_p0._1)}
-                                               ,{ctor: "_Tuple2"
-                                                ,_0: "children"
-                                                ,_1: $Json$Encode.list(A2($List.map,encode,_p0._2))}]));
+            return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string(_p0._0)}
+                                               ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p0._1)}
+                                               ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(A2($List.map,encode,_p0._2))}]));
          } else {
-            return $Json$Encode.object(_U.list([{ctor: "_Tuple2"
-                                                ,_0: "tagName"
-                                                ,_1: $Json$Encode.string("Text")}
-                                               ,{ctor: "_Tuple2"
-                                                ,_0: "style"
-                                                ,_1: $ReactNative$Style.encode(_p0._0)}
-                                               ,{ctor: "_Tuple2"
-                                                ,_0: _p0._1._0
-                                                ,_1: $Json$Encode.$int(_p0._1._1)}
-                                               ,{ctor: "_Tuple2"
-                                                ,_0: "children"
-                                                ,_1: $Json$Encode.list(_U.list([$Json$Encode.string(_p0._2)]))}]));
+            return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string("Text")}
+                                               ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p0._0)}
+                                               ,{ctor: "_Tuple2",_0: _p0._1._0,_1: $Json$Encode.$int(_p0._1._1)}
+                                               ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(_U.list([$Json$Encode.string(_p0._2)]))}]));
          }
    };
-   var on = F2(function (decoder,toMessage) {
-      return A2($Native$ReactNative.on,decoder,toMessage);
-   });
+   var on = F2(function (decoder,toMessage) {    return A2($Native$ReactNative.on,decoder,toMessage);});
    var onPress = F2(function (address,msg) {
-      return {ctor: "_Tuple2"
-             ,_0: "onPress"
-             ,_1: A2(on,
-             $Json$Decode.value,
-             function (_p1) {
-                return A2($Signal.message,address,msg);
-             })};
+      return {ctor: "_Tuple2",_0: "onPress",_1: A2(on,$Json$Decode.value,function (_p1) {    return A2($Signal.message,address,msg);})};
    });
-   var VText = F3(function (a,b,c) {
-      return {ctor: "VText",_0: a,_1: b,_2: c};
-   });
-   var text = F3(function (styles,handler,textContent) {
-      return A3(VText,styles,handler,textContent);
-   });
-   var VNode = F3(function (a,b,c) {
-      return {ctor: "VNode",_0: a,_1: b,_2: c};
-   });
-   var node = F3(function (tagName,styles,children) {
-      return A3(VNode,tagName,styles,children);
-   });
-   var view = F2(function (styles,children) {
-      return A3(VNode,"View",styles,children);
-   });
-   return _elm.ReactNative.ReactNative.values = {_op: _op
-                                                ,node: node
-                                                ,view: view
-                                                ,text: text
-                                                ,encode: encode
-                                                ,onPress: onPress};
+   var VText = F3(function (a,b,c) {    return {ctor: "VText",_0: a,_1: b,_2: c};});
+   var text = F3(function (styles,handler,textContent) {    return A3(VText,styles,handler,textContent);});
+   var VNode = F3(function (a,b,c) {    return {ctor: "VNode",_0: a,_1: b,_2: c};});
+   var node = F3(function (tagName,styles,children) {    return A3(VNode,tagName,styles,children);});
+   var view = F2(function (styles,children) {    return A3(VNode,"View",styles,children);});
+   return _elm.ReactNative.ReactNative.values = {_op: _op,node: node,view: view,text: text,encode: encode,onPress: onPress};
 };
 Elm.PoC = Elm.PoC || {};
 Elm.PoC.make = function (_elm) {
@@ -9564,8 +9418,7 @@ Elm.PoC.make = function (_elm) {
    var init = Elm.Native.Port.make(_elm).inboundSignal("init",
    "()",
    function (v) {
-      return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple0"} : _U.badPort("an array",
-      v);
+      return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple0"} : _U.badPort("an array",v);
    });
    var initialModel = 0;
    var update = F2(function (action,model) {
@@ -9587,28 +9440,25 @@ Elm.PoC.make = function (_elm) {
               ,$ReactNative$Style.paddingTop(5)
               ,$ReactNative$Style.paddingBottom(5)
               ,$ReactNative$Style.width(30)
-              ,$ReactNative$Style.fontWeight("bold")]),
+              ,$ReactNative$Style.fontWeight("bold")
+              ,$ReactNative$Style.shadowColor("#000")
+              ,$ReactNative$Style.shadowOpacity(0.25)
+              ,A2($ReactNative$Style.shadowOffset,1,1)
+              ,$ReactNative$Style.shadowRadius(5)]),
       A2($ReactNative$ReactNative.onPress,actions.address,action),
       content);
    });
-   var model = A3($Signal.foldp,
-   update,
-   initialModel,
-   actions.signal);
+   var model = A3($Signal.foldp,update,initialModel,actions.signal);
    var view = function (count) {
       return A2($ReactNative$ReactNative.view,
       _U.list([$ReactNative$Style.alignItems("center")]),
       _U.list([A3($ReactNative$ReactNative.text,
-              _U.list([$ReactNative$Style.textAlign("center")
-                      ,$ReactNative$Style.marginBottom(30)]),
+              _U.list([$ReactNative$Style.textAlign("center"),$ReactNative$Style.marginBottom(30)]),
               A2($ReactNative$ReactNative.onPress,actions.address,NoOp),
               A2($Basics._op["++"],"Counter: ",$Basics.toString(count)))
               ,A2($ReactNative$ReactNative.view,
-              _U.list([$ReactNative$Style.width(80)
-                      ,$ReactNative$Style.flexDirection("row")
-                      ,$ReactNative$Style.justifyContent("space-between")]),
-              _U.list([A3(button,Decrement,"#d33","-")
-                      ,A3(button,Increment,"#3d3","+")]))]));
+              _U.list([$ReactNative$Style.width(80),$ReactNative$Style.flexDirection("row"),$ReactNative$Style.justifyContent("space-between")]),
+              _U.list([A3(button,Decrement,"#d33","-"),A3(button,Increment,"#3d3","+")]))]));
    };
    var vtreeOutput = Elm.Native.Port.make(_elm).outboundSignal("vtreeOutput",
    function (v) {
@@ -9616,16 +9466,7 @@ Elm.PoC.make = function (_elm) {
    },
    A2($Signal.map,
    $ReactNative$ReactNative.encode,
-   A2($Signal.map,
-   view,
-   A2($Signal.map,
-   $Basics.fst,
-   A3($Signal.map2,
-   F2(function (v0,v1) {
-      return {ctor: "_Tuple2",_0: v0,_1: v1};
-   }),
-   model,
-   init)))));
+   A2($Signal.map,view,A2($Signal.map,$Basics.fst,A3($Signal.map2,F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};}),model,init)))));
    return _elm.PoC.values = {_op: _op
                             ,NoOp: NoOp
                             ,Increment: Increment

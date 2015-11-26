@@ -1,19 +1,68 @@
 module ReactNative.Style where
 
+import List exposing ( map )
 import Json.Encode
 
-type Style
-  = StringStyle String String
-  | NumberStyle String Float
 
+type Value
+  = StringValue String
+  | NumberValue Float
+  | ListValue (List Declaration)
+
+stringDeclaration : String -> String -> Declaration
+stringDeclaration name value =
+  (name, StringValue value)
+
+numberDeclaration : String -> Float -> Declaration
+numberDeclaration name value =
+  (name, NumberValue value)
+
+listDeclaration : String -> List Declaration -> Declaration
+listDeclaration name value =
+  (name, ListValue value)
+
+stringStyle : String -> String -> Style
+stringStyle name value =
+  StringStyle (stringDeclaration name value)
+
+numberStyle : String -> Float -> Style
+numberStyle name value =
+  NumberStyle (numberDeclaration name value)
+
+listStyle : String -> List Declaration -> Style
+listStyle name list =
+  ListStyle (listDeclaration name list)
+
+type alias Declaration = (String, Value)
+
+type Style
+  = StringStyle Declaration
+  | NumberStyle Declaration
+  | ListStyle Declaration
+
+encodeValue : Value -> Json.Encode.Value
+encodeValue value =
+  case value of
+    NumberValue float ->
+      Json.Encode.float float
+    StringValue string ->
+      Json.Encode.string string
+    ListValue list ->
+      Json.Encode.object (map encodeDeclaration list)
+
+encodeDeclaration : (String, Value) -> (String, Json.Encode.Value)
+encodeDeclaration (name, value) =
+  (name, encodeValue value)
 
 toJsonProperty : Style -> (String, Json.Encode.Value)
 toJsonProperty style =
   case style of
-    StringStyle name value ->
-      (name, Json.Encode.string value)
-    NumberStyle name value ->
-      (name, Json.Encode.float value)
+    StringStyle (name, value) ->
+      (name, encodeValue value)
+    NumberStyle (name, value) ->
+      (name, encodeValue value)
+    ListStyle (name, value) ->
+      (name, encodeValue value)
 
 encode : List Style -> Json.Encode.Value
 encode styles =
@@ -23,311 +72,313 @@ encode styles =
 
 -- Text Styles
 color : String -> Style
-color str = StringStyle "color" str
+color = stringStyle "color"
 
 
 fontFamily : String -> Style
-fontFamily str = StringStyle "fontFamily" str
+fontFamily = stringStyle "fontFamily"
 
 
 fontSize : Float -> Style
-fontSize num = NumberStyle "fontSize" num
+fontSize = numberStyle "fontSize"
 
 
 fontStyle : String -> Style --enum('normal', 'italic')
-fontStyle str = StringStyle "fontStyle" str
+fontStyle = stringStyle "fontStyle"
 
 
 fontWeight : String -> Style --enum("normal", 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900')
-fontWeight str = StringStyle "fontWeight" str
+fontWeight = stringStyle "fontWeight"
 
 
 letterSpacing : Float -> Style
-letterSpacing num = NumberStyle "letterSpacing" num
+letterSpacing = numberStyle "letterSpacing"
 
 
 lineHeight : Float -> Style
-lineHeight num = NumberStyle "lineHeight" num
+lineHeight = numberStyle "lineHeight"
 
 
 textAlign : String -> Style --enum("auto", 'left', 'right', 'center', 'justify')
-textAlign str = StringStyle "textAlign" str
+textAlign = stringStyle "textAlign"
 
 
 textDecorationLine : String -> Style --enum("none", 'underline', 'line-through', 'underline line-through')
-textDecorationLine str = StringStyle "textDecorationLine" str
+textDecorationLine = stringStyle "textDecorationLine"
 
 
 textDecorationStyle : String -> Style --enum("solid", 'double', 'dotted', 'dashed')
-textDecorationStyle str = StringStyle "textDecorationStyle" str
+textDecorationStyle = stringStyle "textDecorationStyle"
 
 
 textDecorationColor : String -> Style
-textDecorationColor str = StringStyle "textDecorationColor" str
+textDecorationColor = stringStyle "textDecorationColor"
 
 
 writingDirection : String -> Style --enum("auto", 'ltr', 'rtl')
-writingDirection str = StringStyle "writingDirection" str
+writingDirection = stringStyle "writingDirection"
 
 
 --View Styles
 backfaceVisibility : String -> Style --enum('visible', 'hidden')
-backfaceVisibility str = StringStyle "backfaceVisibility" str
+backfaceVisibility = stringStyle "backfaceVisibility"
 
 
 backgroundColor : String -> Style
-backgroundColor str = StringStyle "backgroundColor" str
+backgroundColor = stringStyle "backgroundColor"
 
 
 borderColor : String -> Style
-borderColor str = StringStyle "borderColor" str
+borderColor = stringStyle "borderColor"
 
 
 borderTopColor : String -> Style
-borderTopColor str = StringStyle "borderTopColor" str
+borderTopColor = stringStyle "borderTopColor"
 
 
 borderRightColor : String -> Style
-borderRightColor str = StringStyle "borderRightColor" str
+borderRightColor = stringStyle "borderRightColor"
 
 
 borderBottomColor : String -> Style
-borderBottomColor str = StringStyle "borderBottomColor" str
+borderBottomColor = stringStyle "borderBottomColor"
 
 
 borderLeftColor : String -> Style
-borderLeftColor str = StringStyle "borderLeftColor" str
+borderLeftColor = stringStyle "borderLeftColor"
 
 
 borderRadius : Float -> Style
-borderRadius num = NumberStyle "borderRadius" num
+borderRadius = numberStyle "borderRadius"
 
 
 borderTopLeftRadius : Float -> Style
-borderTopLeftRadius num = NumberStyle "borderTopLeftRadius" num
+borderTopLeftRadius = numberStyle "borderTopLeftRadius"
 
 
 borderTopRightRadius : Float -> Style
-borderTopRightRadius num = NumberStyle "borderTopRightRadius" num
+borderTopRightRadius = numberStyle "borderTopRightRadius"
 
 
 borderBottomLeftRadius : Float -> Style
-borderBottomLeftRadius num = NumberStyle "borderBottomLeftRadius" num
+borderBottomLeftRadius = numberStyle "borderBottomLeftRadius"
 
 
 borderBottomRightRadius : Float -> Style
-borderBottomRightRadius num = NumberStyle "borderBottomRightRadius" num
+borderBottomRightRadius = numberStyle "borderBottomRightRadius"
 
 
 borderStyle : String -> Style --enum('solid', 'dotted', 'dashed')
-borderStyle str = StringStyle "borderStyle" str
+borderStyle = stringStyle "borderStyle"
 
 
 borderWidth : Float -> Style
-borderWidth num = NumberStyle "borderWidth" num
+borderWidth = numberStyle "borderWidth"
 
 
 borderTopWidth : Float -> Style
-borderTopWidth num = NumberStyle "borderTopWidth" num
+borderTopWidth = numberStyle "borderTopWidth"
 
 
 borderRightWidth : Float -> Style
-borderRightWidth num = NumberStyle "borderRightWidth" num
+borderRightWidth = numberStyle "borderRightWidth"
 
 
 borderBottomWidth : Float -> Style
-borderBottomWidth num = NumberStyle "borderBottomWidth" num
+borderBottomWidth = numberStyle "borderBottomWidth"
 
 
 borderLeftWidth : Float -> Style
-borderLeftWidth num = NumberStyle "borderLeftWidth" num
+borderLeftWidth = numberStyle "borderLeftWidth"
 
 
 opacity : Float -> Style
-opacity num = NumberStyle "opacity" num
+opacity = numberStyle "opacity"
 
 
 overflow : String -> Style --enum('visible', 'hidden')
-overflow str = StringStyle "overflow" str
+overflow = stringStyle "overflow"
 
 
 shadowColor : String -> Style
-shadowColor str = StringStyle "shadowColor" str
+shadowColor = stringStyle "shadowColor"
 
 
--- TODO
---shadowOffset : {width: number, height: number}
+shadowOffset : Float -> Float -> Style
+shadowOffset width height = listStyle "shadowOffset" [ numberDeclaration "width" width
+                                                     , numberDeclaration "height" height
+                                                     ]
 
 shadowOpacity : Float -> Style
-shadowOpacity num = NumberStyle "shadowOpacity" num
+shadowOpacity = numberStyle "shadowOpacity"
 
 
 shadowRadius : Float -> Style
-shadowRadius num = NumberStyle "shadowRadius" num
+shadowRadius = numberStyle "shadowRadius"
 
 
 --Image Styles
 resizeMode : String -> Style --enum('cover', 'contain', 'stretch')
-resizeMode str = StringStyle "resizeMode" str
+resizeMode = stringStyle "resizeMode"
 
 
 --backgroundColor : String -> Style
---backgroundColor str = StringStyle "backgroundColor" str
+-- str = stringStyle "backgroundColor"
 
 
 --borderColor : String -> Style
---borderColor str = StringStyle "borderColor" str
+--borderColor = stringStyle "borderColor"
 
 
 --borderWidth : Float -> Style
---borderWidth num = NumberStyle "borderWidth" num
+--borderWidth = numberStyle "borderWidth"
 
 
 --borderRadius : Float -> Style
---borderRadius num = NumberStyle "borderRadius" num
+--borderRadius = numberStyle "borderRadius"
 
 
 --overflow : String -> Style --enum('visible', 'hidden')
---overflow str = StringStyle "overflow" str
+--overflow = stringStyle "overflow"
 
 
 tintColor : String -> Style
-tintColor str = StringStyle "tintColor" str
+tintColor = stringStyle "tintColor"
 
 
 --opacity : Float -> Style
---opacity num = NumberStyle "opacity" num
+--opacity = numberStyle "opacity"
 
 
 
 
 --Flex Styles
 alignItems : String -> Style --enum('flex-start', 'flex-end', 'center', 'stretch')
-alignItems str = StringStyle "alignItems" str
+alignItems = stringStyle "alignItems"
 
 
 alignSelf : String -> Style --enum('auto', 'flex-start', 'flex-end', 'center', 'stretch')
-alignSelf str = StringStyle "alignSelf" str
+alignSelf = stringStyle "alignSelf"
 
 
 --borderBottomWidth : Float -> Style
---borderBottomWidth num = NumberStyle "borderBottomWidth" num
+--borderBottomWidth = numberStyle "borderBottomWidth"
 
 
 --borderLeftWidth : Float -> Style
---borderLeftWidth num = NumberStyle "borderLeftWidth" num
+--borderLeftWidth = numberStyle "borderLeftWidth"
 
 
 --borderRightWidth : Float -> Style
---borderRightWidth num = NumberStyle "borderRightWidth" num
+--borderRightWidth = numberStyle "borderRightWidth"
 
 
 --borderTopWidth : Float -> Style
---borderTopWidth num = NumberStyle "borderTopWidth" num
+--borderTopWidth = numberStyle "borderTopWidth"
 
 
 --borderWidth : Float -> Style
---borderWidth num = NumberStyle "borderWidth" num
+--borderWidth = numberStyle "borderWidth"
 
 
 bottom : Float -> Style
-bottom num = NumberStyle "bottom" num
+bottom = numberStyle "bottom"
 
 
 flex : Float -> Style
-flex num = NumberStyle "flex" num
+flex = numberStyle "flex"
 
 
 flexDirection : String -> Style --enum('row', 'column')
-flexDirection str = StringStyle "flexDirection" str
+flexDirection = stringStyle "flexDirection"
 
 
 flexWrap : String -> Style --enum('wrap', 'nowrap')
-flexWrap str = StringStyle "flexWrap" str
+flexWrap = stringStyle "flexWrap"
 
 
 height : Float -> Style
-height num = NumberStyle "height" num
+height = numberStyle "height"
 
 
 justifyContent : String -> Style --enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around')
-justifyContent str = StringStyle "justifyContent" str
+justifyContent = stringStyle "justifyContent"
 
 
 left : Float -> Style
-left num = NumberStyle "left" num
+left = numberStyle "left"
 
 
 margin : Float -> Style
-margin num = NumberStyle "margin" num
+margin = numberStyle "margin"
 
 
 marginBottom : Float -> Style
-marginBottom num = NumberStyle "marginBottom" num
+marginBottom = numberStyle "marginBottom"
 
 
 marginHorizontal : Float -> Style
-marginHorizontal num = NumberStyle "marginHorizontal" num
+marginHorizontal = numberStyle "marginHorizontal"
 
 
 marginLeft : Float -> Style
-marginLeft num = NumberStyle "marginLeft" num
+marginLeft = numberStyle "marginLeft"
 
 
 marginRight : Float -> Style
-marginRight num = NumberStyle "marginRight" num
+marginRight = numberStyle "marginRight"
 
 
 marginTop : Float -> Style
-marginTop num = NumberStyle "marginTop" num
+marginTop = numberStyle "marginTop"
 
 
 marginVertical : Float -> Style
-marginVertical num = NumberStyle "marginVertical" num
+marginVertical = numberStyle "marginVertical"
 
 
 padding : Float -> Style
-padding num = NumberStyle "padding" num
+padding = numberStyle "padding"
 
 
 paddingBottom : Float -> Style
-paddingBottom num = NumberStyle "paddingBottom" num
+paddingBottom = numberStyle "paddingBottom"
 
 
 paddingHorizontal : Float -> Style
-paddingHorizontal num = NumberStyle "paddingHorizontal" num
+paddingHorizontal = numberStyle "paddingHorizontal"
 
 
 paddingLeft : Float -> Style
-paddingLeft num = NumberStyle "paddingLeft" num
+paddingLeft = numberStyle "paddingLeft"
 
 
 paddingRight : Float -> Style
-paddingRight num = NumberStyle "paddingRight" num
+paddingRight = numberStyle "paddingRight"
 
 
 paddingTop : Float -> Style
-paddingTop num = NumberStyle "paddingTop" num
+paddingTop = numberStyle "paddingTop"
 
 
 paddingVertical : Float -> Style
-paddingVertical num = NumberStyle "paddingVertical" num
+paddingVertical = numberStyle "paddingVertical"
 
 
 position : String -> Style --enum('absolute', 'relative')
-position str = StringStyle "position" str
+position = stringStyle "position"
 
 
 right : Float -> Style
-right num = NumberStyle "right" num
+right = numberStyle "right"
 
 
 top : Float -> Style
-top num = NumberStyle "top" num
+top = numberStyle "top"
 
 
 width : Float -> Style
-width num = NumberStyle "width" num
+width = numberStyle "width"
 
 
 --TODO
