@@ -24,7 +24,6 @@ Just to make it totally clear: **No.**
 iOS | Android
 ----|--------
 ![](img/screenshot-ios.png) | ![](img/screenshot-android.png)
-----|--------
 
 ## To Do
 
