@@ -4,7 +4,7 @@ import Time
 import Signal
 import Json.Encode
 import ReactNative.ReactNative as RN
-import ReactNative.Style as Style
+import ReactNative.Style as Style exposing ( defaultTransform )
 
 
 type alias Model = Int
@@ -40,6 +40,7 @@ button action color content =
     , Style.shadowOpacity 0.25
     , Style.shadowOffset 1 1
     , Style.shadowRadius 5
+    , Style.transform { defaultTransform | scaleX = Just 2 }
     ]
     (RN.onPress actions.address action)
     content
