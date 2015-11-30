@@ -1,6 +1,6 @@
 # Elm Native
 
-![](img/elmnative-160.png)
+![](img/elm-native-160.png)
 
 Experimental support for writing [React Native](https://facebook.github.io/react-native/) powered mobile applications in the [Elm language](http://elm-lang.org/).
 
