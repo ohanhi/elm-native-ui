@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.2 (15857) - http://www.bohemiancoding.com/sketch -->
+    <title>elm-native</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="elm-native" sketch:type="MSArtboardGroup">
+            <path d="M257.72491,394.468082 L308.491605,343.700661 L206.957489,343.700661 L257.72491,394.468082 Z" id="triangle" fill="#60B5CC" sketch:type="MSShapeGroup"></path>
+            <path d="M257.72491,167.756441 L308.491605,116.98902 L206.957489,116.98902 L257.72491,167.756441 Z" id="triangle" fill="#F0AD00" sketch:type="MSShapeGroup" transform="translate(257.724547, 142.372731) scale(1, -1) translate(-257.724547, -142.372731) "></path>
+            <path d="M156.460182,255.735618 L207.226875,167.805126 L137.87747,186.386976 L156.460182,255.735618 Z" id="triangle" fill="#F0AD00" sketch:type="MSShapeGroup"></path>
+            <path d="M137.87747,186.386976 L156.460182,255.735618 L207.226875,167.805126 L137.87747,186.386976 L137.87747,186.386976 Z" id="triangle" fill="#5A6378" sketch:type="MSShapeGroup"></path>
+            <path d="M137.878016,325.126823 L207.22724,343.70836 L156.460182,255.777236 L137.878016,325.126823 L137.878016,325.126823 Z" id="triangle" fill="#5A6378" sketch:type="MSShapeGroup"></path>
+            <path d="M378.036476,186.386976 L359.453764,255.735618 L308.687071,167.805126 L378.036476,186.386976 L378.036476,186.386976 Z" id="triangle" fill="#7FD13B" sketch:type="MSShapeGroup"></path>
+            <path d="M378.036295,325.126823 L308.687071,343.70836 L359.454129,255.777236 L378.036295,325.126823 L378.036295,325.126823 Z" id="triangle" fill="#7FD13B" sketch:type="MSShapeGroup"></path>
+            <path d="M258.309493,200.552605 L313.634181,255.877294 L258.057213,311.454262 L202.732525,256.129573 L258.309493,200.552605 L258.309493,200.552605 Z" id="square" fill="#F0AD00" sketch:type="MSShapeGroup"></path>
+            <path d="M26.8221703,255.510016 L54.4411741,303.374123 L136.451541,325.360588 L108.832001,277.496337 L26.8221703,255.510016 L26.8221703,255.510016 Z" id="parallelogram" fill="#5A6378" sketch:type="MSShapeGroup"></path>
+            <path d="M26.8221703,255.51181 L54.4411741,207.647702 L136.451541,185.661237 L108.832001,233.525488 L26.8221703,255.51181 L26.8221703,255.51181 Z" id="parallelogram" fill="#5A6378" sketch:type="MSShapeGroup"></path>
+            <path d="M378.264355,255.50832 L405.883359,303.372427 L487.893725,325.358892 L460.274186,277.494641 L378.264355,255.50832 L378.264355,255.50832 Z" id="parallelogram" fill="#7FD13B" sketch:type="MSShapeGroup" transform="translate(433.079040, 290.433606) scale(-1, 1) translate(-433.079040, -290.433606) "></path>
+            <path d="M378.264355,255.510114 L405.883359,207.646006 L487.893725,185.659541 L460.274186,233.523792 L378.264355,255.510114 L378.264355,255.510114 Z" id="parallelogram" fill="#7FD13B" sketch:type="MSShapeGroup" transform="translate(433.079040, 220.584828) scale(-1, 1) translate(-433.079040, -220.584828) "></path>
+            <path d="M320.653716,85.7829801 L348.272719,133.647087 L430.283086,155.633552 L402.663546,107.769301 L320.653716,85.7829801 L320.653716,85.7829801 Z" id="parallelogram" fill="#60B5CC" sketch:type="MSShapeGroup" transform="translate(375.468401, 120.708266) scale(-1, 1) rotate(-300.000000) translate(-375.468401, -120.708266) "></path>
+            <path d="M260.162899,120.709163 L287.781903,72.8450557 L369.792269,50.8585908 L342.172729,98.7228419 L260.162899,120.709163 L260.162899,120.709163 Z" id="parallelogram" fill="#60B5CC" sketch:type="MSShapeGroup" transform="translate(314.977584, 85.783877) scale(-1, 1) rotate(-300.000000) translate(-314.977584, -85.783877) "></path>
+            <path d="M84.4430269,85.7829801 L112.062031,133.647087 L194.072397,155.633552 L166.452857,107.769301 L84.4430269,85.7829801 L84.4430269,85.7829801 Z" id="parallelogram" fill="#7FD13B" sketch:type="MSShapeGroup" transform="translate(139.257712, 120.708266) rotate(-300.000000) translate(-139.257712, -120.708266) "></path>
+            <path d="M144.933844,120.709163 L172.552847,72.8450557 L254.563214,50.8585908 L226.943674,98.7228419 L144.933844,120.709163 L144.933844,120.709163 Z" id="parallelogram" fill="#7FD13B" sketch:type="MSShapeGroup" transform="translate(199.748529, 85.783877) rotate(-300.000000) translate(-199.748529, -85.783877) "></path>
+            <path d="M320.653716,355.377506 L348.272719,403.241613 L430.283086,425.228078 L402.663546,377.363827 L320.653716,355.377506 L320.653716,355.377506 Z" id="parallelogram" fill="#F0AD00" sketch:type="MSShapeGroup" transform="translate(375.468401, 390.302792) scale(-1, -1) rotate(-300.000000) translate(-375.468401, -390.302792) "></path>
+            <path d="M260.162899,460.152467 L287.781903,412.28836 L369.792269,390.301895 L342.172729,438.166146 L260.162899,460.152467 L260.162899,460.152467 Z" id="parallelogram" fill="#60B5CC" sketch:type="MSShapeGroup" transform="translate(314.977584, 425.227181) scale(-1, -1) rotate(-300.000000) translate(-314.977584, -425.227181) "></path>
+            <path d="M84.4374754,355.377506 L112.056479,403.241613 L194.066846,425.228078 L166.447306,377.363827 L84.4374754,355.377506 L84.4374754,355.377506 Z" id="parallelogram" fill="#60B5CC" sketch:type="MSShapeGroup" transform="translate(139.252161, 390.302792) scale(1, -1) rotate(-300.000000) translate(-139.252161, -390.302792) "></path>
+            <path d="M144.928292,460.152467 L172.547296,412.28836 L254.557662,390.301895 L226.938122,438.166146 L144.928292,460.152467 L144.928292,460.152467 Z" id="parallelogram" fill="#60B5CC" sketch:type="MSShapeGroup" transform="translate(199.742977, 425.227181) scale(1, -1) rotate(-300.000000) translate(-199.742977, -425.227181) "></path>
+        </g>
+    </g>
+</svg>
