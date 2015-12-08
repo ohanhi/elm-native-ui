@@ -1,15 +1,14 @@
-# Elm Native
+# Elm Native UI
 
 ![](img/elm-native-160.png)
 
-Experimental support for writing [React Native](https://facebook.github.io/react-native/) powered mobile applications in the [Elm language](http://elm-lang.org/).
+Experimental support for writing native iOS and Android applications in the beautiful functional [Elm language](http://elm-lang.org/).
+This project builds on Facebook's [React Native](https://facebook.github.io/react-native/), using it as the JavaScript environment for Elm.
 
 
 ## Is This Production Ready?
 
-![](img/nothing_to_see_here_naked_gun.gif)
-
-Just to make it totally clear: **No.**
+**No.**
 
 
 ## How does this work?
