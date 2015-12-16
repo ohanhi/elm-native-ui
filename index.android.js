@@ -29,7 +29,8 @@ function componentFactory() {
   return React.createClass({
     componentWillMount() {
       program.ports.vtreeOutput.subscribe(vtree => {
-        this.setState({vtree})
+        this.setState({vtree});
+        Elm.Native.ReactNative.prepareResetHandlers();
       });
       program.ports.init.send([]);
     },

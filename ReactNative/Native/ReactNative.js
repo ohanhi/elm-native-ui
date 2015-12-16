@@ -1,6 +1,5 @@
 Elm.Native.ReactNative = {};
 Elm.Native.ReactNative.make = function(localRuntime) {
-
     localRuntime.Native = localRuntime.Native || {};
     localRuntime.Native.ReactNative = localRuntime.Native.ReactNative || {};
     if (localRuntime.Native.ReactNative.values) {
@@ -10,10 +9,16 @@ Elm.Native.ReactNative.make = function(localRuntime) {
     var Json = Elm.Native.Json.make(localRuntime);
     var Signal = Elm.Native.Signal.make(localRuntime);
 
+    var prepareReset = true;
     var eventHandlerCount = 0;
     localRuntime.ports._ReactNativeEventHandlers = {};
 
     function on(decoder, createMessage) {
+        if(prepareReset){
+            eventHandlerCount = 0;
+            localRuntime.ports._ReactNativeEventHandlers = {};
+        }
+
         function eventHandler(event) {
             var value = A2(Json.runDecoderValue, decoder, event);
             if (value.ctor === 'Ok') {
@@ -21,7 +26,12 @@ Elm.Native.ReactNative.make = function(localRuntime) {
             }
         }
         localRuntime.ports._ReactNativeEventHandlers[++eventHandlerCount] = eventHandler;
+        prepareReset = false;
         return eventHandlerCount;
+    }
+
+    Elm.Native.ReactNative.prepareResetHandlers = function () {
+        var prepareReset = true;
     }
 
     localRuntime.Native.ReactNative.values = {
