@@ -31,7 +31,7 @@ Elm.Native.ReactNative.make = function(localRuntime) {
     }
 
     Elm.Native.ReactNative.prepareResetHandlers = function () {
-        var prepareReset = true;
+        prepareReset = true;
     }
 
     localRuntime.Native.ReactNative.values = {
