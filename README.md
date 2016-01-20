@@ -18,6 +18,13 @@ This project builds on Facebook's [React Native](https://facebook.github.io/reac
 * `index.ios.js` makes the bridging between the compiled-to-JS Elm code and React Native
 
 
+## Major blockers?
+
+The [Navigator](https://facebook.github.io/react-native/docs/navigator.html#content) in React Native is tricky. It manages state, and expects callback functions for several different things. It also has methods that [mutate the state](https://facebook.github.io/react-native/docs/navigator.html#navigator-methods).
+
+For Elm Native UI to really be useable for bigger apps, we need to solve how to interface with the Navigator. As of now, I (ohanhi) am learning React Native with React and Redux in order to gain better understanding of the whole architecture.
+
+
 ## Screenshots
 
 iOS | Android
