@@ -35,7 +35,7 @@ iOS | Android
   - [ ] Make `main` support our VTree ([see this suggestion](https://github.com/ohanhi/elm-native/commit/0a35edeb0c21985394b6f3b296140da431aa936c#commitcomment-14303291))
 - [ ] Styles
   - [x] Basic types for styles
-  - [ ] Support object type styles - _transform styles and `shadowOffset`_
+  - [x] Support object type styles - _transform styles and `shadowOffset`_
   - [ ] Make enum type styles safer - _currently all Strings_
   - [ ] Allow the `StyleSheet.create` method for styles
 - [ ] Props

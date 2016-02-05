@@ -40,7 +40,7 @@ button action color content =
     , Style.shadowOpacity 0.25
     , Style.shadowOffset 1 1
     , Style.shadowRadius 5
-    , Style.transform { defaultTransform | scaleX = Just 2 }
+    , Style.transform { defaultTransform | rotate = Just "10deg" }
     ]
     (RN.onPress actions.address action)
     content
