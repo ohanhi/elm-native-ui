@@ -8385,7 +8385,7 @@ Elm.ReactNative.Style.make = function (_elm) {
       switch (_p0.ctor)
       {case "NumberValue": return $Json$Encode.$float(_p0._0);
          case "StringValue": return $Json$Encode.string(_p0._0);
-         case "ObjectValue": return $Json$Encode.object(A2($List.map,encodeDeclaration,A2($List.filterMap,$Basics.identity,_p0._0)));
+         case "ObjectValue": return $Json$Encode.object(A2($List.map,encodeDeclaration,_p0._0));
          default: return $Json$Encode.list(A2($List.map,encodeObject,A2($List.filterMap,$Basics.identity,_p0._0)));}
    };
    var encodeDeclaration = function (_p1) {    var _p2 = _p1;return {ctor: "_Tuple2",_0: _p2._0,_1: encodeValue(_p2._1)};};
@@ -8450,7 +8450,7 @@ Elm.ReactNative.Style.make = function (_elm) {
    var top = numberStyle("top");
    var width = numberStyle("width");
    var shadowOffset = F2(function (width,height) {
-      return A2(objectStyle,"shadowOffset",_U.list([$Maybe.Just(A2(numberDeclaration,"width",width)),$Maybe.Just(A2(numberDeclaration,"height",height))]));
+      return A2(objectStyle,"shadowOffset",_U.list([A2(numberDeclaration,"width",width),A2(numberDeclaration,"height",height)]));
    });
    var StringValue = function (a) {    return {ctor: "StringValue",_0: a};};
    var stringDeclaration = F2(function (name,value) {    return {ctor: "_Tuple2",_0: name,_1: StringValue(value)};});

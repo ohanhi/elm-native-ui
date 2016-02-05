@@ -6,7 +6,7 @@ import Json.Encode
 type Value
   = StringValue String
   | NumberValue Float
-  | ObjectValue (List (Maybe Declaration))
+  | ObjectValue (List Declaration)
   | ListValue (List (Maybe Declaration))
 
 stringDeclaration : String -> String -> Declaration
@@ -17,7 +17,7 @@ numberDeclaration : String -> Float -> Declaration
 numberDeclaration name value =
   (name, NumberValue value)
 
-objectDeclaration : String -> List (Maybe Declaration) -> Declaration
+objectDeclaration : String -> List Declaration -> Declaration
 objectDeclaration name value =
   (name, ObjectValue value)
 
@@ -33,7 +33,7 @@ numberStyle : String -> Float -> Style
 numberStyle name value =
   NumberStyle (numberDeclaration name value)
 
-objectStyle : String -> List (Maybe Declaration) -> Style
+objectStyle : String -> List Declaration -> Style
 objectStyle name list =
   ObjectStyle (objectDeclaration name list)
 
@@ -58,7 +58,7 @@ encodeValue value =
     StringValue string ->
       Json.Encode.string string
     ObjectValue list ->
-      Json.Encode.object (List.map encodeDeclaration (List.filterMap identity list))
+      Json.Encode.object (List.map encodeDeclaration list)
     ListValue list ->
       Json.Encode.list (List.map encodeObject (List.filterMap identity list))
 
@@ -224,8 +224,8 @@ shadowColor = stringStyle "shadowColor"
 
 shadowOffset : Float -> Float -> Style
 shadowOffset width height = objectStyle "shadowOffset"
-  [ Just (numberDeclaration "width" width)
-  , Just (numberDeclaration "height" height)
+  [ numberDeclaration "width" width
+  , numberDeclaration "height" height
   ]
 
 shadowOpacity : Float -> Style
