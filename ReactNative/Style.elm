@@ -1,13 +1,13 @@
 module ReactNative.Style where
 
-import List exposing ( map )
 import Json.Encode
 
 
 type Value
   = StringValue String
   | NumberValue Float
-  | ListValue (List Declaration)
+  | ObjectValue (List Declaration)
+  | ListValue (List (Maybe Declaration))
 
 stringDeclaration : String -> String -> Declaration
 stringDeclaration name value =
@@ -17,7 +17,11 @@ numberDeclaration : String -> Float -> Declaration
 numberDeclaration name value =
   (name, NumberValue value)
 
-listDeclaration : String -> List Declaration -> Declaration
+objectDeclaration : String -> List Declaration -> Declaration
+objectDeclaration name value =
+  (name, ObjectValue value)
+
+listDeclaration : String -> List (Maybe Declaration) -> Declaration
 listDeclaration name value =
   (name, ListValue value)
 
@@ -29,15 +33,21 @@ numberStyle : String -> Float -> Style
 numberStyle name value =
   NumberStyle (numberDeclaration name value)
 
-listStyle : String -> List Declaration -> Style
+objectStyle : String -> List Declaration -> Style
+objectStyle name list =
+  ObjectStyle (objectDeclaration name list)
+
+listStyle : String -> List (Maybe Declaration) -> Style
 listStyle name list =
   ListStyle (listDeclaration name list)
+
 
 type alias Declaration = (String, Value)
 
 type Style
   = StringStyle Declaration
   | NumberStyle Declaration
+  | ObjectStyle Declaration
   | ListStyle Declaration
 
 encodeValue : Value -> Json.Encode.Value
@@ -47,12 +57,18 @@ encodeValue value =
       Json.Encode.float float
     StringValue string ->
       Json.Encode.string string
+    ObjectValue list ->
+      Json.Encode.object (List.map encodeDeclaration list)
     ListValue list ->
-      Json.Encode.object (map encodeDeclaration list)
+      Json.Encode.list (List.map encodeObject (List.filterMap identity list))
 
 encodeDeclaration : (String, Value) -> (String, Json.Encode.Value)
 encodeDeclaration (name, value) =
   (name, encodeValue value)
+
+encodeObject : (String, Value) ->  Json.Encode.Value
+encodeObject (name, value) =
+  Json.Encode.object [(name, (encodeValue value))]
 
 toJsonProperty : Style -> (String, Json.Encode.Value)
 toJsonProperty style =
@@ -60,6 +76,8 @@ toJsonProperty style =
     StringStyle (name, value) ->
       (name, encodeValue value)
     NumberStyle (name, value) ->
+      (name, encodeValue value)
+    ObjectStyle (name, value) ->
       (name, encodeValue value)
     ListStyle (name, value) ->
       (name, encodeValue value)
@@ -205,9 +223,10 @@ shadowColor = stringStyle "shadowColor"
 
 
 shadowOffset : Float -> Float -> Style
-shadowOffset width height = listStyle "shadowOffset" [ numberDeclaration "width" width
-                                                     , numberDeclaration "height" height
-                                                     ]
+shadowOffset width height = objectStyle "shadowOffset"
+  [ numberDeclaration "width" width
+  , numberDeclaration "height" height
+  ]
 
 shadowOpacity : Float -> Style
 shadowOpacity = numberStyle "shadowOpacity"
@@ -381,8 +400,54 @@ width : Float -> Style
 width = numberStyle "width"
 
 
---TODO
-
 --Transform Styles
---transform : [{perspective -> Style: number}, {rotate: String}, {rotateX: String}, {rotateY: String}, {rotateZ: String}, {scale: number}, {scaleX: number}, {scaleY: number}, {translateX: number}, {translateY: number}, {skewX: String}, {skewY: String}]
+
+type alias Transform =
+  { perspective : Maybe Float
+  , rotate : Maybe String
+  , rotateX : Maybe String
+  , rotateY : Maybe String
+  , rotateZ : Maybe String
+  , scale : Maybe Float
+  , scaleX : Maybe Float
+  , scaleY : Maybe Float
+  , translateX : Maybe Float
+  , translateY : Maybe Float
+  , skewX : Maybe String
+  , skewY : Maybe String
+  }
+
+defaultTransform : Transform
+defaultTransform =
+  { perspective = Nothing
+  , rotate = Nothing
+  , rotateX = Nothing
+  , rotateY = Nothing
+  , rotateZ = Nothing
+  , scale = Nothing
+  , scaleX = Nothing
+  , scaleY = Nothing
+  , translateX = Nothing
+  , translateY = Nothing
+  , skewX = Nothing
+  , skewY = Nothing
+  }
+
+transform : Transform -> Style
+transform options = listStyle "transform"
+  [ Maybe.map (numberDeclaration "perspective") options.perspective
+  , Maybe.map (stringDeclaration "rotate") options.rotate
+  , Maybe.map (stringDeclaration "rotateX") options.rotateX
+  , Maybe.map (stringDeclaration "rotateY") options.rotateY
+  , Maybe.map (stringDeclaration "rotateZ") options.rotateZ
+  , Maybe.map (numberDeclaration "scale") options.scale
+  , Maybe.map (numberDeclaration "scaleX") options.scaleX
+  , Maybe.map (numberDeclaration "scaleY") options.scaleY
+  , Maybe.map (numberDeclaration "translateX") options.translateX
+  , Maybe.map (numberDeclaration "translateY") options.translateY
+  , Maybe.map (stringDeclaration "skewX") options.skewX
+  , Maybe.map (stringDeclaration "skewY") options.skewY
+  ]
+
+--TODO
 --transformMatrix : TransformMatrixPropType -> Style
