@@ -8,7 +8,6 @@ Elm.Native.ReactNative.make = function(localRuntime) {
 
     var Json = Elm.Native.Json.make(localRuntime);
     var Signal = Elm.Native.Signal.make(localRuntime);
-    var Functions = Elm.Native.ElmFunctions.make(localRuntime);
 
     var prepareReset = true;
     var eventHandlerCount = 0;
@@ -36,7 +35,7 @@ Elm.Native.ReactNative.make = function(localRuntime) {
     }
 
     localRuntime.Native.ReactNative.values = {
-        on: Functions.F2(on),
+        on: F2(on),
     };
     return localRuntime.Native.ReactNative.values;
 };
