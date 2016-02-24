@@ -8,8 +8,11 @@ module ReactNative.ReactNative
 import Json.Encode
 import Json.Decode
 import Signal
-import Native.ReactNative
 import ReactNative.Style as RnStyle
+
+import Native.ElmFunctions
+import Native.ReactNative
+
 
 type alias EventHandlerRef = Int
 
