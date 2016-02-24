@@ -32,7 +32,7 @@ function vtreeToReactElement(vtree) {
 function componentFactory() {
   return React.createClass({
     componentWillMount() {
-      program.ports.vtreeOutput.subscribe(vtree => {
+      program.ports.viewTree.subscribe(vtree => {
         this.setState({vtree});
         Elm.Native.ReactNative.prepareResetHandlers();
       });

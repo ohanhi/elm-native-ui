@@ -8752,22 +8752,31 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var encode = function (vtree) {
-      var _p0 = vtree;
-      if (_p0.ctor === "VNode") {
-            return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string(_p0._0)}
-                                               ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p0._1)}
-                                               ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(A2($List.map,encode,_p0._2))}]));
+   var maybeEncodeHandler = function (handler) {
+      var _p0 = handler;
+      if (_p0.ctor === "Just") {
+            return A2($List._op["::"],{ctor: "_Tuple2",_0: _p0._0._0,_1: $Json$Encode.$int(_p0._0._1)},_U.list([]));
          } else {
-            return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string("Text")}
-                                               ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p0._0)}
-                                               ,{ctor: "_Tuple2",_0: _p0._1._0,_1: $Json$Encode.$int(_p0._1._1)}
-                                               ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(_U.list([$Json$Encode.string(_p0._2)]))}]));
+            return _U.list([]);
+         }
+   };
+   var encode = function (vtree) {
+      var _p1 = vtree;
+      if (_p1.ctor === "VNode") {
+            return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string(_p1._0)}
+                                               ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._1)}
+                                               ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(A2($List.map,encode,_p1._2))}]));
+         } else {
+            return $Json$Encode.object(A2($Basics._op["++"],
+            maybeEncodeHandler(_p1._1),
+            _U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string("Text")}
+                    ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._0)}
+                    ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(_U.list([$Json$Encode.string(_p1._2)]))}])));
          }
    };
    var on = F2(function (decoder,toMessage) {    return A2($Native$ReactNative.on,decoder,toMessage);});
    var onPress = F2(function (address,msg) {
-      return {ctor: "_Tuple2",_0: "onPress",_1: A2(on,$Json$Decode.value,function (_p1) {    return A2($Signal.message,address,msg);})};
+      return {ctor: "_Tuple2",_0: "onPress",_1: A2(on,$Json$Decode.value,function (_p2) {    return A2($Signal.message,address,msg);})};
    });
    var VText = F3(function (a,b,c) {    return {ctor: "VText",_0: a,_1: b,_2: c};});
    var text = F3(function (styles,handler,textContent) {    return A3(VText,styles,handler,textContent);});
@@ -8775,6 +8784,50 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
    var node = F3(function (tagName,styles,children) {    return A3(VNode,tagName,styles,children);});
    var view = F2(function (styles,children) {    return A3(VNode,"View",styles,children);});
    return _elm.ReactNative.ReactNative.values = {_op: _op,node: node,view: view,text: text,encode: encode,onPress: onPress};
+};
+Elm.ReactNative = Elm.ReactNative || {};
+Elm.ReactNative.NativeApp = Elm.ReactNative.NativeApp || {};
+Elm.ReactNative.NativeApp.make = function (_elm) {
+   "use strict";
+   _elm.ReactNative = _elm.ReactNative || {};
+   _elm.ReactNative.NativeApp = _elm.ReactNative.NativeApp || {};
+   if (_elm.ReactNative.NativeApp.values) return _elm.ReactNative.NativeApp.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var Config = F4(function (a,b,c,d) {    return {model: a,view: b,update: c,init: d};});
+   var ConfigAction = function (a) {    return {ctor: "ConfigAction",_0: a};};
+   var Init = {ctor: "Init"};
+   var start = function (config) {
+      var normalUpdate = F2(function (maybeAction,model) {
+         var _p0 = maybeAction;
+         if (_p0.ctor === "Just") {
+               return A2(config.update,_p0._0,model);
+            } else {
+               return _U.crashCase("ReactNative.NativeApp",{start: {line: 57,column: 7},end: {line: 62,column: 52}},_p0)("This should never happen.");
+            }
+      });
+      var update = F2(function (action,model) {
+         var _p2 = action;
+         if (_p2.ctor === "ConfigAction") {
+               return A2(normalUpdate,_p2._0,model);
+            } else {
+               return model;
+            }
+      });
+      var actions = $Signal.mailbox($Maybe.Nothing);
+      var merged = $Signal.mergeMany(_U.list([A2($Signal.map,ConfigAction,actions.signal),A2($Signal.map,$Basics.always(Init),config.init)]));
+      var model = A3($Signal.foldp,update,config.model,merged);
+      var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
+      return A2($Signal.map,config.view(address),model);
+   };
+   return _elm.ReactNative.NativeApp.values = {_op: _op,start: start};
 };
 Elm.PoC = Elm.PoC || {};
 Elm.PoC.make = function (_elm) {
@@ -8787,6 +8840,7 @@ Elm.PoC.make = function (_elm) {
    $Json$Encode = Elm.Json.Encode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
+   $ReactNative$NativeApp = Elm.ReactNative.NativeApp.make(_elm),
    $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
    $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -8797,19 +8851,7 @@ Elm.PoC.make = function (_elm) {
    function (v) {
       return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple0"} : _U.badPort("an array",v);
    });
-   var initialModel = 0;
-   var update = F2(function (action,model) {
-      var _p0 = action;
-      switch (_p0.ctor)
-      {case "Increment": return model + 1;
-         case "Decrement": return model - 1;
-         default: return model;}
-   });
-   var Decrement = {ctor: "Decrement"};
-   var Increment = {ctor: "Increment"};
-   var NoOp = {ctor: "NoOp"};
-   var actions = $Signal.mailbox(NoOp);
-   var button = F3(function (action,color,content) {
+   var button = F4(function (address,action,color,content) {
       return A3($ReactNative$ReactNative.text,
       _U.list([$ReactNative$Style.color("white")
               ,$ReactNative$Style.textAlign("center")
@@ -8823,37 +8865,29 @@ Elm.PoC.make = function (_elm) {
               ,A2($ReactNative$Style.shadowOffset,1,1)
               ,$ReactNative$Style.shadowRadius(5)
               ,$ReactNative$Style.transform(_U.update($ReactNative$Style.defaultTransform,{rotate: $Maybe.Just("10deg")}))]),
-      A2($ReactNative$ReactNative.onPress,actions.address,action),
+      $Maybe.Just(A2($ReactNative$ReactNative.onPress,address,action)),
       content);
    });
-   var model = A3($Signal.foldp,update,initialModel,actions.signal);
-   var view = function (count) {
+   var update = F2(function (action,model) {    var _p0 = action;if (_p0.ctor === "Increment") {    return model + 1;} else {    return model - 1;}});
+   var Decrement = {ctor: "Decrement"};
+   var Increment = {ctor: "Increment"};
+   var view = F2(function (address,count) {
       return A2($ReactNative$ReactNative.view,
       _U.list([$ReactNative$Style.alignItems("center")]),
       _U.list([A3($ReactNative$ReactNative.text,
               _U.list([$ReactNative$Style.textAlign("center"),$ReactNative$Style.marginBottom(30)]),
-              A2($ReactNative$ReactNative.onPress,actions.address,NoOp),
+              $Maybe.Nothing,
               A2($Basics._op["++"],"Counter: ",$Basics.toString(count)))
               ,A2($ReactNative$ReactNative.view,
               _U.list([$ReactNative$Style.width(80),$ReactNative$Style.flexDirection("row"),$ReactNative$Style.justifyContent("space-between")]),
-              _U.list([A3(button,Decrement,"#d33","-"),A3(button,Increment,"#3d3","+")]))]));
-   };
-   var vtreeOutput = Elm.Native.Port.make(_elm).outboundSignal("vtreeOutput",
+              _U.list([A4(button,address,Decrement,"#d33","-"),A4(button,address,Increment,"#3d3","+")]))]));
+   });
+   var model = 0;
+   var viewTree = Elm.Native.Port.make(_elm).outboundSignal("viewTree",
    function (v) {
       return v;
    },
-   A2($Signal.map,
-   $ReactNative$ReactNative.encode,
-   A2($Signal.map,view,A2($Signal.map,$Basics.fst,A3($Signal.map2,F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};}),model,init)))));
-   return _elm.PoC.values = {_op: _op
-                            ,NoOp: NoOp
-                            ,Increment: Increment
-                            ,Decrement: Decrement
-                            ,update: update
-                            ,actions: actions
-                            ,button: button
-                            ,view: view
-                            ,initialModel: initialModel
-                            ,model: model};
+   A2($Signal.map,$ReactNative$ReactNative.encode,$ReactNative$NativeApp.start({model: model,view: view,update: update,init: init})));
+   return _elm.PoC.values = {_op: _op,model: model,view: view,Increment: Increment,Decrement: Decrement,update: update,button: button};
 };
 module.exports = Elm;
