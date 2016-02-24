@@ -1,5 +1,6 @@
 module ReactNative.NativeApp (start) where
 
+import Json.Encode
 import ReactNative.ReactNative as RN
 
 type Action a = Init | ConfigAction a
@@ -13,7 +14,7 @@ type alias Config model action =
   }
 
 
-start : Config model action -> Signal RN.VTree
+start : Config model action -> Signal Json.Encode.Value
 start config =
   let
     actions =
@@ -47,4 +48,6 @@ start config =
     model =
       Signal.foldp update config.model merged
   in
-    Signal.map (config.view address) model
+    model
+    |> Signal.map (config.view address)
+    |> Signal.map RN.encode

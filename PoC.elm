@@ -12,7 +12,6 @@ import ReactNative.Style as Style exposing ( defaultTransform )
 port viewTree : Signal Json.Encode.Value
 port viewTree =
   NativeApp.start { model = model, view = view, update = update, init = init }
-  |> Signal.map RN.encode
 
 
 type alias Model = Int

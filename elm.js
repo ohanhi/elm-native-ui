@@ -8795,6 +8795,7 @@ Elm.ReactNative.NativeApp.make = function (_elm) {
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
@@ -8810,7 +8811,7 @@ Elm.ReactNative.NativeApp.make = function (_elm) {
          if (_p0.ctor === "Just") {
                return A2(config.update,_p0._0,model);
             } else {
-               return _U.crashCase("ReactNative.NativeApp",{start: {line: 57,column: 7},end: {line: 62,column: 52}},_p0)("This should never happen.");
+               return _U.crashCase("ReactNative.NativeApp",{start: {line: 41,column: 7},end: {line: 46,column: 52}},_p0)("This should never happen.");
             }
       });
       var update = F2(function (action,model) {
@@ -8825,7 +8826,7 @@ Elm.ReactNative.NativeApp.make = function (_elm) {
       var merged = $Signal.mergeMany(_U.list([A2($Signal.map,ConfigAction,actions.signal),A2($Signal.map,$Basics.always(Init),config.init)]));
       var model = A3($Signal.foldp,update,config.model,merged);
       var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
-      return A2($Signal.map,config.view(address),model);
+      return A2($Signal.map,$ReactNative$ReactNative.encode,A2($Signal.map,config.view(address),model));
    };
    return _elm.ReactNative.NativeApp.values = {_op: _op,start: start};
 };
@@ -8887,7 +8888,7 @@ Elm.PoC.make = function (_elm) {
    function (v) {
       return v;
    },
-   A2($Signal.map,$ReactNative$ReactNative.encode,$ReactNative$NativeApp.start({model: model,view: view,update: update,init: init})));
+   $ReactNative$NativeApp.start({model: model,view: view,update: update,init: init}));
    return _elm.PoC.values = {_op: _op,model: model,view: view,Increment: Increment,Decrement: Decrement,update: update,button: button};
 };
 module.exports = Elm;
