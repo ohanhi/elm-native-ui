@@ -4,13 +4,46 @@ import Time
 import Signal
 import Json.Encode
 import ReactNative.ReactNative as RN
+import ReactNative.NativeApp as NativeApp
 import ReactNative.Style as Style exposing ( defaultTransform )
+
+
+-- "main"
+port viewTree : Signal Json.Encode.Value
+port viewTree =
+  NativeApp.start { model = model, view = view, update = update, init = init }
 
 
 type alias Model = Int
 
 
-type Action = NoOp | Increment | Decrement
+model : Model
+model = 0
+
+
+view : Signal.Address Action -> Model -> RN.VTree
+view address count =
+  RN.view
+    [ Style.alignItems "center"
+    ]
+    [ RN.text
+      [ Style.textAlign "center"
+      , Style.marginBottom 30
+      ]
+      Nothing
+      ("Counter: " ++ toString count)
+    , RN.view
+      [ Style.width 80
+      , Style.flexDirection "row"
+      , Style.justifyContent "space-between"
+      ]
+      [ button address Decrement "#d33" "-"
+      , button address Increment "#3d3" "+"
+      ]
+    ]
+
+
+type Action = Increment | Decrement
 
 
 update : Action -> Model -> Model
@@ -18,16 +51,10 @@ update action model =
   case action of
     Increment -> model + 1
     Decrement -> model - 1
-    NoOp -> model
 
 
-actions : Signal.Mailbox Action
-actions =
-  Signal.mailbox NoOp
-
-
-button : Action -> String -> String -> RN.VTree
-button action color content =
+button : Signal.Address Action -> Action -> String -> String -> RN.VTree
+button address action color content =
   RN.text
     [ Style.color "white"
     , Style.textAlign "center"
@@ -42,47 +69,9 @@ button action color content =
     , Style.shadowRadius 5
     , Style.transform { defaultTransform | rotate = Just "10deg" }
     ]
-    (RN.onPress actions.address action)
+    (Just <| RN.onPress address action)
     content
 
 
-view : Model -> RN.VTree
-view count =
-  RN.view
-    [ Style.alignItems "center"
-    ]
-    [ RN.text
-      [ Style.textAlign "center"
-      , Style.marginBottom 30
-      ]
-      (RN.onPress actions.address NoOp)
-      ("Counter: " ++ toString count)
-    , RN.view
-      [ Style.width 80
-      , Style.flexDirection "row"
-      , Style.justifyContent "space-between"
-      ]
-      [ button Decrement "#d33" "-"
-      , button Increment "#3d3" "+"
-      ]
-    ]
-
-
-initialModel : Model
-initialModel = 0
-
-
-model : Signal Model
-model =
-  Signal.foldp update initialModel actions.signal
-
-
-port vtreeOutput : Signal Json.Encode.Value
-port vtreeOutput =
-  Signal.map2 (,) model init
-  |> Signal.map fst
-  |> Signal.map view
-  |> Signal.map RN.encode
-
-
+-- for the first vtree
 port init : Signal ()

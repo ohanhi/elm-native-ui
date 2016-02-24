@@ -19,7 +19,7 @@ type alias EventHandlerRef = Int
 
 type VTree
   = VNode String (List RnStyle.Style) (List VTree)
-  | VText (List RnStyle.Style) (String, EventHandlerRef) String
+  | VText (List RnStyle.Style) (Maybe (String, EventHandlerRef)) String
 
 
 node : String -> List RnStyle.Style -> List VTree -> VTree
@@ -32,19 +32,19 @@ view styles children =
   VNode "View" styles children
 
 
-text : List RnStyle.Style -> (String, EventHandlerRef) -> String -> VTree
+text : List RnStyle.Style -> Maybe (String, EventHandlerRef) -> String -> VTree
 text styles handler textContent =
   VText styles handler textContent
 
 
 on : Json.Decode.Decoder a -> (a -> Signal.Message) -> EventHandlerRef
 on decoder toMessage =
-    Native.ReactNative.on decoder toMessage
+  Native.ReactNative.on decoder toMessage
 
 
 onPress : Signal.Address a -> a -> (String, EventHandlerRef)
 onPress address msg =
-    ("onPress", on Json.Decode.value (\_ -> Signal.message address msg))
+  ("onPress", on Json.Decode.value (\_ -> Signal.message address msg))
 
 
 encode : VTree -> Json.Encode.Value
@@ -56,11 +56,19 @@ encode vtree =
         , ("style", RnStyle.encode styles)
         , ("children", Json.Encode.list (List.map encode children))
         ]
-    VText styles (handlerName, handlerRef) textContent ->
-      Json.Encode.object
+    VText styles handler textContent ->
+      Json.Encode.object <|
+        (maybeEncodeHandler handler) ++
         [ ("tagName", Json.Encode.string "Text")
         , ("style", RnStyle.encode styles)
-        , (handlerName, Json.Encode.int handlerRef)
         , ("children", Json.Encode.list [Json.Encode.string textContent])
         ]
 
+
+maybeEncodeHandler : Maybe (String, EventHandlerRef) -> List (String, Json.Encode.Value)
+maybeEncodeHandler handler =
+  case handler of
+    Just (handlerName, handlerRef) ->
+      (handlerName, Json.Encode.int handlerRef) :: []
+    Nothing ->
+      []
