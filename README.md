@@ -17,12 +17,14 @@ This project builds on Facebook's [React Native](https://facebook.github.io/reac
 * The `ReactNative` directory contains the Elm module that provides the types and bindings for React Native in Elm
 * `index.ios.js` makes the bridging between the compiled-to-JS Elm code and React Native
 
+For more insight, read this blog post: [Elm Native UI: Writing a React Native app in Elm](http://ohanhi.github.io/elm-native-ui.html)
+
 
 ## Major blockers?
 
-The [Navigator](https://facebook.github.io/react-native/docs/navigator.html#content) in React Native is tricky. It manages state, and expects callback functions for several different things. It also has methods that [mutate the state](https://facebook.github.io/react-native/docs/navigator.html#navigator-methods).
+The "traditional" [Navigator](https://facebook.github.io/react-native/docs/navigator.html#content) in React Native is tricky. It manages state, and expects callback functions for several different things. It also has methods that [mutate the state](https://facebook.github.io/react-native/docs/navigator.html#navigator-methods).
 
-For Elm Native UI to really be useable for bigger apps, we need to solve how to interface with the Navigator. As of now, I (ohanhi) am learning React Native with React and Redux in order to gain better understanding of the whole architecture.
+Elm Native UI was just updated to use React Native 0.21.0, which brings a more functional navigation model: [NavigationExperimental](https://github.com/facebook/react-native/commit/a3085464f6ea36fc6b53cd0c711c048ffb1516f9). We'll see how that works for us.
 
 
 ## Screenshots
