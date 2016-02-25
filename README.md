@@ -8,7 +8,7 @@ This project builds on Facebook's [React Native](https://facebook.github.io/reac
 
 ## Is This Production Ready?
 
-**No.**
+No.
 
 
 ## Get it running
@@ -37,16 +37,16 @@ $ npm start
 ```
 
 
-## How does this work?
+## How it works
 
-* `PoC.elm` is the main "app" file -- where the actual application lives.
+* `Main.elm` is the main "app" file -- where the actual application lives.
 * The `ReactNative` directory contains the Elm module that provides the types and bindings for React Native in Elm
 * `index.ios.js` makes the bridging between the compiled-to-JS Elm code and React Native
 
 For more insight, read this blog post: [Elm Native UI: Writing a React Native app in Elm](http://ohanhi.github.io/elm-native-ui.html)
 
 
-## Major blockers?
+## Major blockers
 
 The "traditional" [Navigator](https://facebook.github.io/react-native/docs/navigator.html#content) in React Native is tricky. It manages state, and expects callback functions for several different things. It also has methods that [mutate the state](https://facebook.github.io/react-native/docs/navigator.html#navigator-methods).
 
