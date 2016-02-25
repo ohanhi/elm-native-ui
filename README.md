@@ -30,6 +30,12 @@ $ react-native run-android
 
 When you make changes to the code, you only need to recompile Elm and press Cmd-R on the Simulator (iOS) or emulator (Android).
 
+If you wish, you can also start a file watcher for \*.elm files, which will recompile whenever you make a change:
+
+```bash
+$ npm start
+```
+
 
 ## How does this work?
 
