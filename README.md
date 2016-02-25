@@ -11,6 +11,32 @@ This project builds on Facebook's [React Native](https://facebook.github.io/reac
 **No.**
 
 
+## Get it running
+
+Install React Native following [their guide](https://facebook.github.io/react-native/docs/getting-started.html#content). Check that you can create a new project with `react-native init AwesomeProject` and try running it on a real or virtual device.
+
+Once that's out of the way, clone this repository and in the directory:
+
+```bash
+# install dependencies
+$ npm install
+# compile Elm with
+$ npm run compile
+# run app on iOS
+$ react-native run-ios
+# or run on Android
+$ react-native run-android
+```
+
+When you make changes to the code, you only need to recompile Elm and press Cmd-R on the Simulator (iOS) or emulator (Android).
+
+If you wish, you can also start a file watcher for \*.elm files, which will recompile whenever you make a change:
+
+```bash
+$ npm start
+```
+
+
 ## How does this work?
 
 * `PoC.elm` is the main "app" file -- where the actual application lives.
