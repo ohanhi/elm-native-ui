@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "precompile": "rm -f elm.js",
-    "compile": "elm-make PoC.elm --output elm.js",
+    "compile": "elm-make Main.elm --output elm.js",
     "postcompile": "echo 'module.exports = Elm;' >> elm.js",
-    "start": "react-native start"
+    "start": "chokidar '**/*.elm' -c 'npm run compile'"
   },
   "dependencies": {
+    "chokidar-cli": "^1.2.0",
     "react-native": "0.21.0-rc"
   }
 }

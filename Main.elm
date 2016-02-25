@@ -1,4 +1,4 @@
-module PoC where
+module Main where
 
 import Time
 import Signal
@@ -18,7 +18,7 @@ type alias Model = Int
 
 
 model : Model
-model = 0
+model = 9000
 
 
 view : Signal.Address Action -> Model -> RN.VTree

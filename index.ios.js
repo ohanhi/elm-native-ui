@@ -7,7 +7,7 @@ var React = require('react-native');
 var Elm = require('./elm');
 var {AppRegistry, StyleSheet, Text, View} = React;
 
-var program = Elm.worker(Elm.PoC, { init: [] });
+var program = Elm.worker(Elm.Main, { init: [] });
 
 function vtreeToReactElement(vtree) {
   if (typeof vtree === 'string') {
