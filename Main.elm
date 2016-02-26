@@ -26,7 +26,13 @@ view address count =
   RN.view
     [ Style.alignItems "center"
     ]
-    [ RN.text
+    [ RN.image
+      [ Style.height 64
+      , Style.width 64
+      , Style.marginBottom 30
+      ]
+      "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png"
+    , RN.text
       [ Style.textAlign "center"
       , Style.marginBottom 30
       ]

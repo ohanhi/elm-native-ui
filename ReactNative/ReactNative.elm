@@ -1,6 +1,6 @@
 module ReactNative.ReactNative
     ( VTree
-    , node, view, text
+    , node, view, text, image
     , encode
     , onPress
     ) where
@@ -20,6 +20,7 @@ type alias EventHandlerRef = Int
 type VTree
   = VNode String (List RnStyle.Style) (List VTree)
   | VText (List RnStyle.Style) (Maybe (String, EventHandlerRef)) String
+  | VImage (List RnStyle.Style) String
 
 
 node : String -> List RnStyle.Style -> List VTree -> VTree
@@ -35,6 +36,11 @@ view styles children =
 text : List RnStyle.Style -> Maybe (String, EventHandlerRef) -> String -> VTree
 text styles handler textContent =
   VText styles handler textContent
+
+
+image : List RnStyle.Style -> String -> VTree
+image styles source =
+  VImage styles source
 
 
 on : Json.Decode.Decoder a -> (a -> Signal.Message) -> EventHandlerRef
@@ -62,6 +68,12 @@ encode vtree =
         [ ("tagName", Json.Encode.string "Text")
         , ("style", RnStyle.encode styles)
         , ("children", Json.Encode.list [Json.Encode.string textContent])
+        ]
+    VImage styles source ->
+      Json.Encode.object
+        [ ("tagName", Json.Encode.string "Image")
+        , ("style", RnStyle.encode styles)
+        , ("source", Json.Encode.string source)
         ]
 
 

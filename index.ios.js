@@ -5,7 +5,13 @@
 'use strict';
 var React = require('react-native');
 var Elm = require('./elm');
-var {AppRegistry, StyleSheet, Text, View} = React;
+var {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+} = React;
 
 var program = Elm.worker(Elm.Main, { init: [] });
 
@@ -21,6 +27,11 @@ function vtreeToReactElement(vtree) {
         undefined},
       vtree.children
     );
+  } else if (vtree.tagName === 'Image') {
+    return React.createElement(Image, {
+      style: vtree.style,
+      source: {uri: vtree.source},
+    });
   }
   return React.createElement(
     React[vtree.tagName],

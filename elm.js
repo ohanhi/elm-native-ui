@@ -8762,28 +8762,31 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
    };
    var encode = function (vtree) {
       var _p1 = vtree;
-      if (_p1.ctor === "VNode") {
-            return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string(_p1._0)}
-                                               ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._1)}
-                                               ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(A2($List.map,encode,_p1._2))}]));
-         } else {
-            return $Json$Encode.object(A2($Basics._op["++"],
-            maybeEncodeHandler(_p1._1),
-            _U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string("Text")}
-                    ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._0)}
-                    ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(_U.list([$Json$Encode.string(_p1._2)]))}])));
-         }
+      switch (_p1.ctor)
+      {case "VNode": return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string(_p1._0)}
+                                                        ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._1)}
+                                                        ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(A2($List.map,encode,_p1._2))}]));
+         case "VText": return $Json$Encode.object(A2($Basics._op["++"],
+           maybeEncodeHandler(_p1._1),
+           _U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string("Text")}
+                   ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._0)}
+                   ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(_U.list([$Json$Encode.string(_p1._2)]))}])));
+         default: return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string("Image")}
+                                                     ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._0)}
+                                                     ,{ctor: "_Tuple2",_0: "source",_1: $Json$Encode.string(_p1._1)}]));}
    };
    var on = F2(function (decoder,toMessage) {    return A2($Native$ReactNative.on,decoder,toMessage);});
    var onPress = F2(function (address,msg) {
       return {ctor: "_Tuple2",_0: "onPress",_1: A2(on,$Json$Decode.value,function (_p2) {    return A2($Signal.message,address,msg);})};
    });
+   var VImage = F2(function (a,b) {    return {ctor: "VImage",_0: a,_1: b};});
+   var image = F2(function (styles,source) {    return A2(VImage,styles,source);});
    var VText = F3(function (a,b,c) {    return {ctor: "VText",_0: a,_1: b,_2: c};});
    var text = F3(function (styles,handler,textContent) {    return A3(VText,styles,handler,textContent);});
    var VNode = F3(function (a,b,c) {    return {ctor: "VNode",_0: a,_1: b,_2: c};});
    var node = F3(function (tagName,styles,children) {    return A3(VNode,tagName,styles,children);});
    var view = F2(function (styles,children) {    return A3(VNode,"View",styles,children);});
-   return _elm.ReactNative.ReactNative.values = {_op: _op,node: node,view: view,text: text,encode: encode,onPress: onPress};
+   return _elm.ReactNative.ReactNative.values = {_op: _op,node: node,view: view,text: text,image: image,encode: encode,onPress: onPress};
 };
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.NativeApp = Elm.ReactNative.NativeApp || {};
@@ -8875,7 +8878,10 @@ Elm.Main.make = function (_elm) {
    var view = F2(function (address,count) {
       return A2($ReactNative$ReactNative.view,
       _U.list([$ReactNative$Style.alignItems("center")]),
-      _U.list([A3($ReactNative$ReactNative.text,
+      _U.list([A2($ReactNative$ReactNative.image,
+              _U.list([$ReactNative$Style.height(64),$ReactNative$Style.width(64),$ReactNative$Style.marginBottom(30)]),
+              "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png")
+              ,A3($ReactNative$ReactNative.text,
               _U.list([$ReactNative$Style.textAlign("center"),$ReactNative$Style.marginBottom(30)]),
               $Maybe.Nothing,
               A2($Basics._op["++"],"Counter: ",$Basics.toString(count)))
