@@ -21,7 +21,7 @@ function vtreeToReactElement(vtree) {
   return React.createElement(
     React[vtree.tagName],
     { style: vtree.style },
-    vtree.children.map(vtreeToReactElement)
+    vtree.children ? vtree.children.map(vtreeToReactElement) : []
   );
 }
 
