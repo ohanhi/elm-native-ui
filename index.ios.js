@@ -4,7 +4,6 @@
  */
 'use strict';
 var React = require('react-native');
-var Elm = require('./elm');
 var {
   AppRegistry,
   StyleSheet,
@@ -13,53 +12,79 @@ var {
   Image,
 } = React;
 
-var program = Elm.worker(Elm.Main, { init: [] });
+var Elm = require('./elm');
 
-function vtreeToReactElement(vtree) {
-  if (typeof vtree === 'string') {
-    return vtree;
-  }
-  if (vtree.tagName === 'Text') {
-    return React.createElement(Text, {
-      style: vtree.style,
-      onPress: vtree.onPress ?
-        program.ports._ReactNativeEventHandlers[vtree.onPress] :
-        undefined},
-      vtree.children
-    );
-  } else if (vtree.tagName === 'Image') {
-    return React.createElement(Image, {
-      style: vtree.style,
-      source: {uri: vtree.source},
-    });
-  }
-  return React.createElement(
-    React[vtree.tagName],
-    { style: vtree.style },
-    vtree.children ? vtree.children.map(vtreeToReactElement) : []
-  );
+// Provide minimal 'document' for Elm.fullscreen to hook into
+var dummyNode = {
+  appendChild: function() {}
 }
 
-function componentFactory() {
-  return React.createClass({
-    componentWillMount() {
-      program.ports.viewTree.subscribe(vtree => {
-        this.setState({vtree});
-        Elm.Native.ReactNative.prepareResetHandlers();
-      });
-      program.ports.init.send([]);
-    },
-    getInitialState() {
-      return {
-        vtree: {tagName: 'View', children: []},
-      };
-    },
-    render() {
-      return React.createElement(View, {style: styles.container},
-        vtreeToReactElement(this.state.vtree)
-      );
-    },
-  })
+global.document = {
+  body: dummyNode,
+
+  createElement: function() {
+    return dummyNode;
+  },
+  createTextNode(text) {
+    console.log("createTextNode: ", text);
+  }
+ };
+
+
+// Patch VirtualDom render functions
+Elm.Native.VirtualDom = Elm.Native.VirtualDom || {};
+var VDomMake = Elm.Native.VirtualDom.make || function() { return {}; };
+Elm.Native.VirtualDom.make = function(localRuntime) {
+  var VirtualDom = VDomMake(localRuntime);
+
+  localRuntime.Native = localRuntime.Native || {};
+  localRuntime.Native.VirtualDom = localRuntime.Native.VirtualDom || {};
+  var values = localRuntime.Native.VirtualDom.values || {};
+  if (values && values.patchedForReactNative) {
+    return values;
+  }
+
+  function render(model) {
+    console.log('foo! render called with model: ', model);
+    AppRegistry.registerComponent('ElmNative', componentFactory(model));
+  }
+
+  function updateAndReplace(a, b) {
+    console.log('updateAndReplace called: ', a, b);
+  }
+
+  localRuntime.Native.VirtualDom.values = Object.assign({}, values, {
+    render: render,
+    updateAndReplace: updateAndReplace,
+    patchedForReactNative: true,
+  });
+
+  return localRuntime.Native.VirtualDom.values;
+}
+
+var program = Elm.fullscreen(Elm.Main, { init: [] });
+
+function vDomToReactElement(vdomNode) {
+  if (typeof(vdomNode.text) === 'string') {
+    return vdomNode.text;
+  }
+
+  var {tagName, properties, key, children} = vdomNode;
+  properties = {...properties, key};
+  children = children.map(vDomToReactElement);
+  return React.createElement(React[tagName], properties, ...children);
+}
+
+function componentFactory(model) {
+  return () => {
+    return React.createClass({
+      render() {
+        return React.createElement(View, {style: styles.container},
+          vDomToReactElement(model)
+        );
+      },
+    });
+  }
 }
 
 var styles = StyleSheet.create({
@@ -69,5 +94,3 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-AppRegistry.registerComponent('ElmNative', componentFactory)

@@ -5,7 +5,7 @@
   "scripts": {
     "precompile": "rm -f elm.js",
     "compile": "elm-make Main.elm --output elm.js",
-    "postcompile": "echo 'module.exports = Elm;' >> elm.js",
+    "postcompile": "echo 'module.exports = Elm;' >> elm.js && perl -p -i -e 's/\\brequire\\b/_browserify_require/g' elm.js",
     "start": "chokidar '**/*.elm' -c 'npm run compile'"
   },
   "dependencies": {
