@@ -95,8 +95,9 @@ function vDomToReactElement(vdomNode) {
     return vdomNode.text;
   }
 
-  var {tagName, properties, key, children} = vdomNode;
+  var {tagName, properties, key} = vdomNode;
   properties = {...properties, key};
+  var children = vdomNode.children || [];
   children = children.map(vDomToReactElement);
   return React.createElement(React[tagName], properties, ...children);
 }
