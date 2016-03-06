@@ -6,7 +6,6 @@ import Json.Encode
 import ReactNative.ReactNative as RN
 import ReactNative.NativeApp as NativeApp
 import ReactNative.Style as Style exposing ( defaultTransform )
-import VirtualDom
 
 main =
   NativeApp.start { model = model, view = view, update = update, init = init }
