@@ -10,7 +10,6 @@ import Json.Decode as Json
 import Signal
 
 import VirtualDom
-import ReactNative.Style as RnStyle
 
 import Native.ElmFunctions
 import Native.ReactNative

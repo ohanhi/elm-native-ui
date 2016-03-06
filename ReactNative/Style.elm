@@ -1,7 +1,7 @@
 module ReactNative.Style where
 
 import Json.Encode
-
+import ReactNative.ReactNative as RN
 
 type Value
   = StringValue String
@@ -87,6 +87,12 @@ encode styles =
   styles
     |> List.map toJsonProperty
     |> Json.Encode.object
+
+style : List Style -> RN.Property
+style styles =
+  styles
+  |> encode
+  |> RN.property "style"
 
 -- Text Styles
 color : String -> Style
