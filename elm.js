@@ -10114,6 +10114,7 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $Json$Decode = Elm.Json.Decode.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -10123,11 +10124,21 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
    var on = $VirtualDom.on;
    var onPress = F2(function (address,msg) {    return A3(on,"Press",$Json$Decode.value,function (_p0) {    return A2($Signal.message,address,msg);});});
    var property = $VirtualDom.property;
+   var imageSource = function (uri) {
+      return A2(property,"source",$Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "uri",_1: $Json$Encode.string(uri)}])));
+   };
    var node = $VirtualDom.node;
    var view = node("View");
    var text = F2(function (props,str) {    return A3(node,"Text",props,_U.list([$VirtualDom.text(str)]));});
    var image = node("Image");
-   return _elm.ReactNative.ReactNative.values = {_op: _op,node: node,view: view,text: text,image: image,property: property,onPress: onPress};
+   return _elm.ReactNative.ReactNative.values = {_op: _op
+                                                ,node: node
+                                                ,view: view
+                                                ,text: text
+                                                ,image: image
+                                                ,property: property
+                                                ,imageSource: imageSource
+                                                ,onPress: onPress};
 };
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.NativeApp = Elm.ReactNative.NativeApp || {};
@@ -10492,10 +10503,19 @@ Elm.Main.make = function (_elm) {
    var Increment = {ctor: "Increment"};
    var view = F2(function (address,count) {
       return A2($ReactNative$ReactNative.view,
-      _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.backgroundColor("pink")]))]),
-      _U.list([A2($ReactNative$ReactNative.text,_U.list([]),A2($Basics._op["++"],"Hello: ",$Basics.toString(count)))
-              ,A4(button,address,Decrement,"red","-")
-              ,A4(button,address,Increment,"green","+")]));
+      _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.alignItems("center")]))]),
+      _U.list([A2($ReactNative$ReactNative.image,
+              _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.height(64),$ReactNative$Style.width(64),$ReactNative$Style.marginBottom(30)]))
+                      ,$ReactNative$ReactNative.imageSource("https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png")]),
+              _U.list([]))
+              ,A2($ReactNative$ReactNative.text,
+              _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.textAlign("center"),$ReactNative$Style.marginBottom(30)]))]),
+              A2($Basics._op["++"],"Counter: ",$Basics.toString(count)))
+              ,A2($ReactNative$ReactNative.view,
+              _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.width(80)
+                                                        ,$ReactNative$Style.flexDirection("row")
+                                                        ,$ReactNative$Style.justifyContent("space-between")]))]),
+              _U.list([A4(button,address,Decrement,"#d33","-"),A4(button,address,Increment,"#3d3","+")]))]));
    });
    var model = 9000;
    var main = $ReactNative$NativeApp.start({model: model,view: view,update: update,init: init});

@@ -3,10 +3,12 @@ module ReactNative.ReactNative
     , Property
     , node, view, text, image
     , property
+    , imageSource
     , onPress
     ) where
 
-import Json.Decode as Json
+import Json.Encode
+import Json.Decode
 import Signal
 
 import VirtualDom
@@ -24,7 +26,7 @@ node =
   VirtualDom.node
 
 
-property : String -> Json.Value -> Property
+property : String -> Json.Decode.Value -> Property
 property =
   VirtualDom.property
 
@@ -44,11 +46,17 @@ image =
   node "Image"
 
 
-on : String -> Json.Decoder a -> (a -> Signal.Message) -> Property
+imageSource : String -> Property
+imageSource uri =
+  Json.Encode.object [("uri", Json.Encode.string uri)]
+    |> property "source"
+
+
+on : String -> Json.Decode.Decoder a -> (a -> Signal.Message) -> Property
 on =
   VirtualDom.on
 
 
 onPress : Signal.Address a -> a -> Property
 onPress address msg =
-  on "Press" Json.value (\_ -> Signal.message address msg)
+  on "Press" Json.Decode.value (\_ -> Signal.message address msg)

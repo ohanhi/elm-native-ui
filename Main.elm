@@ -22,12 +22,44 @@ model = 9000
 view : Signal.Address Action -> Model -> RN.Node
 view address count =
   RN.view
-    [ ]
-    [ RN.text [ ] ("Hello: " ++ toString count)
-    , button address Decrement "red" "-"
-    , button address Increment "green" "+"
+    [ Style.style [Style.alignItems "center"]
+    ]
+    [ RN.image
+      [ Style.style
+        [ Style.height 64
+        , Style.width 64
+        , Style.marginBottom 30
+        ]
+      , RN.imageSource "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png"
+      ]
+      [ ]
+    , RN.text
+      [ Style.style
+        [ Style.textAlign "center"
+        , Style.marginBottom 30
+        ]
+      ]
+      ("Counter: " ++ toString count)
+    , RN.view
+      [ Style.style
+        [Style.width 80
+        , Style.flexDirection "row"
+        , Style.justifyContent "space-between"
+        ]
+      ]
+      [ button address Decrement "#d33" "-"
+      , button address Increment "#3d3" "+"
+      ]
     ]
 
+-- view address count =
+--   RN.view
+--     [ ]
+--     [ RN.text [ ] ("Hello: " ++ toString count)
+--     , button address Decrement "red" "-"
+--     , button address Increment "green" "+"
+--     ]
+--
 
 type Action = Increment | Decrement
 
