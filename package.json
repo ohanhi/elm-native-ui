@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "precompile": "rm -f elm.js",
+    "precompile": "rm -f elm.js && bash ./scripts/patch-vdom.sh",
     "compile": "elm-make Main.elm --output elm.js",
-    "postcompile": "echo 'module.exports = Elm;' >> elm.js && perl -p -i -e 's/\\brequire\\b/_browserify_require/g' elm.js",
+    "postcompile": "echo 'module.exports = Elm;' >> elm.js",
     "start": "chokidar '**/*.elm' -c 'npm run compile'"
   },
   "dependencies": {
