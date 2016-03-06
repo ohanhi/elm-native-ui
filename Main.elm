@@ -5,7 +5,7 @@ import Signal
 import Json.Encode
 import ReactNative.ReactNative as RN
 import ReactNative.NativeApp as NativeApp
-import ReactNative.Style as Style
+import ReactNative.Style as Style exposing ( defaultTransform )
 import VirtualDom
 
 main =
@@ -22,18 +22,11 @@ model = 9000
 view : Signal.Address Action -> Model -> RN.Node
 view address count =
   RN.view
-  [
-    Style.style [
-      Style.backgroundColor "pink"
+    [ ]
+    [ RN.text [ ] ("Hello: " ++ toString count)
+    , button address Decrement "red" "-"
+    , button address Increment "green" "+"
     ]
-  ]
-  [
-    RN.text
-    [
-      RN.onPress address Increment
-    ]
-    ("Hello: " ++ toString count)
-  ]
 
 
 type Action = Increment | Decrement
@@ -45,6 +38,26 @@ update action model =
     Increment -> model + 1
     Decrement -> model - 1
 
+button : Signal.Address Action -> Action -> String -> String -> RN.Node
+button address action color content =
+  RN.text
+    [ Style.style
+      [ Style.color "white"
+      , Style.textAlign "center"
+      , Style.backgroundColor color
+      , Style.paddingTop 5
+      , Style.paddingBottom 5
+      , Style.width 30
+      , Style.fontWeight "bold"
+      , Style.shadowColor "#000"
+      , Style.shadowOpacity 0.25
+      , Style.shadowOffset 1 1
+      , Style.shadowRadius 5
+      , Style.transform { defaultTransform | rotate = Just "10deg" }
+      ]
+    , RN.onPress address action
+    ]
+    content
 
 -- for the first vtree
 port init : Signal ()

@@ -10470,18 +10470,35 @@ Elm.Main.make = function (_elm) {
    function (v) {
       return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple0"} : _U.badPort("an array",v);
    });
+   var button = F4(function (address,action,color,content) {
+      return A2($ReactNative$ReactNative.text,
+      _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.color("white")
+                                                ,$ReactNative$Style.textAlign("center")
+                                                ,$ReactNative$Style.backgroundColor(color)
+                                                ,$ReactNative$Style.paddingTop(5)
+                                                ,$ReactNative$Style.paddingBottom(5)
+                                                ,$ReactNative$Style.width(30)
+                                                ,$ReactNative$Style.fontWeight("bold")
+                                                ,$ReactNative$Style.shadowColor("#000")
+                                                ,$ReactNative$Style.shadowOpacity(0.25)
+                                                ,A2($ReactNative$Style.shadowOffset,1,1)
+                                                ,$ReactNative$Style.shadowRadius(5)
+                                                ,$ReactNative$Style.transform(_U.update($ReactNative$Style.defaultTransform,{rotate: $Maybe.Just("10deg")}))]))
+              ,A2($ReactNative$ReactNative.onPress,address,action)]),
+      content);
+   });
    var update = F2(function (action,model) {    var _p0 = action;if (_p0.ctor === "Increment") {    return model + 1;} else {    return model - 1;}});
    var Decrement = {ctor: "Decrement"};
    var Increment = {ctor: "Increment"};
    var view = F2(function (address,count) {
       return A2($ReactNative$ReactNative.view,
       _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.backgroundColor("pink")]))]),
-      _U.list([A2($ReactNative$ReactNative.text,
-      _U.list([A2($ReactNative$ReactNative.onPress,address,Increment)]),
-      A2($Basics._op["++"],"Hello: ",$Basics.toString(count)))]));
+      _U.list([A2($ReactNative$ReactNative.text,_U.list([]),A2($Basics._op["++"],"Hello: ",$Basics.toString(count)))
+              ,A4(button,address,Decrement,"red","-")
+              ,A4(button,address,Increment,"green","+")]));
    });
    var model = 9000;
    var main = $ReactNative$NativeApp.start({model: model,view: view,update: update,init: init});
-   return _elm.Main.values = {_op: _op,main: main,model: model,view: view,Increment: Increment,Decrement: Decrement,update: update};
+   return _elm.Main.values = {_op: _op,main: main,model: model,view: view,Increment: Increment,Decrement: Decrement,update: update,button: button};
 };
 module.exports = Elm;
