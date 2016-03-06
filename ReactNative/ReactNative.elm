@@ -3,6 +3,7 @@ module ReactNative.ReactNative
     , Property
     , node, view, text, image
     , property
+    , style
     , imageSource
     , onPress
     ) where
@@ -12,23 +13,18 @@ import Json.Decode
 import Signal
 
 import VirtualDom
-
 import Native.ElmFunctions
 import Native.ReactNative
+import ReactNative.Style as Style
 
 type alias Node = VirtualDom.Node
 type alias Property = VirtualDom.Property
-type alias EventHandlerRef = Int
 
+-- Nodes
 
 node : String -> List Property -> List Node -> Node
 node =
   VirtualDom.node
-
-
-property : String -> Json.Decode.Value -> Property
-property =
-  VirtualDom.property
 
 
 view : List Property -> List Node -> Node
@@ -45,12 +41,26 @@ image : List Property -> List Node -> Node
 image =
   node "Image"
 
+-- Properties
+
+property : String -> Json.Decode.Value -> Property
+property =
+  VirtualDom.property
+
+
+style : List Style.Style -> Property
+style styles =
+  styles
+  |> Style.encode
+  |> property "style"
+
 
 imageSource : String -> Property
 imageSource uri =
   Json.Encode.object [("uri", Json.Encode.string uri)]
     |> property "source"
 
+-- Events
 
 on : String -> Json.Decode.Decoder a -> (a -> Signal.Message) -> Property
 on =

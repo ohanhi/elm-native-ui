@@ -22,10 +22,10 @@ model = 9000
 view : Signal.Address Action -> Model -> RN.Node
 view address count =
   RN.view
-    [ Style.style [Style.alignItems "center"]
+    [ RN.style [Style.alignItems "center"]
     ]
     [ RN.image
-      [ Style.style
+      [ RN.style
         [ Style.height 64
         , Style.width 64
         , Style.marginBottom 30
@@ -34,14 +34,14 @@ view address count =
       ]
       [ ]
     , RN.text
-      [ Style.style
+      [ RN.style
         [ Style.textAlign "center"
         , Style.marginBottom 30
         ]
       ]
       ("Counter: " ++ toString count)
     , RN.view
-      [ Style.style
+      [ RN.style
         [Style.width 80
         , Style.flexDirection "row"
         , Style.justifyContent "space-between"
@@ -51,15 +51,6 @@ view address count =
       , button address Increment "#3d3" "+"
       ]
     ]
-
--- view address count =
---   RN.view
---     [ ]
---     [ RN.text [ ] ("Hello: " ++ toString count)
---     , button address Decrement "red" "-"
---     , button address Increment "green" "+"
---     ]
---
 
 type Action = Increment | Decrement
 
@@ -73,7 +64,7 @@ update action model =
 button : Signal.Address Action -> Action -> String -> String -> RN.Node
 button address action color content =
   RN.text
-    [ Style.style
+    [ RN.style
       [ Style.color "white"
       , Style.textAlign "center"
       , Style.backgroundColor color

@@ -10104,87 +10104,6 @@ Elm.Native.ReactNative.make = function(localRuntime) {
 };
 
 Elm.ReactNative = Elm.ReactNative || {};
-Elm.ReactNative.ReactNative = Elm.ReactNative.ReactNative || {};
-Elm.ReactNative.ReactNative.make = function (_elm) {
-   "use strict";
-   _elm.ReactNative = _elm.ReactNative || {};
-   _elm.ReactNative.ReactNative = _elm.ReactNative.ReactNative || {};
-   if (_elm.ReactNative.ReactNative.values) return _elm.ReactNative.ReactNative.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Json$Decode = Elm.Json.Decode.make(_elm),
-   $Json$Encode = Elm.Json.Encode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $VirtualDom = Elm.VirtualDom.make(_elm);
-   var _op = {};
-   var on = $VirtualDom.on;
-   var onPress = F2(function (address,msg) {    return A3(on,"Press",$Json$Decode.value,function (_p0) {    return A2($Signal.message,address,msg);});});
-   var property = $VirtualDom.property;
-   var imageSource = function (uri) {
-      return A2(property,"source",$Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "uri",_1: $Json$Encode.string(uri)}])));
-   };
-   var node = $VirtualDom.node;
-   var view = node("View");
-   var text = F2(function (props,str) {    return A3(node,"Text",props,_U.list([$VirtualDom.text(str)]));});
-   var image = node("Image");
-   return _elm.ReactNative.ReactNative.values = {_op: _op
-                                                ,node: node
-                                                ,view: view
-                                                ,text: text
-                                                ,image: image
-                                                ,property: property
-                                                ,imageSource: imageSource
-                                                ,onPress: onPress};
-};
-Elm.ReactNative = Elm.ReactNative || {};
-Elm.ReactNative.NativeApp = Elm.ReactNative.NativeApp || {};
-Elm.ReactNative.NativeApp.make = function (_elm) {
-   "use strict";
-   _elm.ReactNative = _elm.ReactNative || {};
-   _elm.ReactNative.NativeApp = _elm.ReactNative.NativeApp || {};
-   if (_elm.ReactNative.NativeApp.values) return _elm.ReactNative.NativeApp.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var Config = F4(function (a,b,c,d) {    return {model: a,view: b,update: c,init: d};});
-   var ConfigAction = function (a) {    return {ctor: "ConfigAction",_0: a};};
-   var Init = {ctor: "Init"};
-   var start = function (config) {
-      var normalUpdate = F2(function (maybeAction,model) {
-         var _p0 = maybeAction;
-         if (_p0.ctor === "Just") {
-               return A2(config.update,_p0._0,model);
-            } else {
-               return _U.crashCase("ReactNative.NativeApp",{start: {line: 41,column: 7},end: {line: 46,column: 52}},_p0)("This should never happen.");
-            }
-      });
-      var update = F2(function (action,model) {
-         var _p2 = action;
-         if (_p2.ctor === "ConfigAction") {
-               return A2(normalUpdate,_p2._0,model);
-            } else {
-               return model;
-            }
-      });
-      var actions = $Signal.mailbox($Maybe.Nothing);
-      var merged = $Signal.mergeMany(_U.list([A2($Signal.map,ConfigAction,actions.signal),A2($Signal.map,$Basics.always(Init),config.init)]));
-      var model = A3($Signal.foldp,update,config.model,merged);
-      var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
-      return A2($Signal.map,config.view(address),model);
-   };
-   return _elm.ReactNative.NativeApp.values = {_op: _op,start: start};
-};
-Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.Style = Elm.ReactNative.Style || {};
 Elm.ReactNative.Style.make = function (_elm) {
    "use strict";
@@ -10197,7 +10116,6 @@ Elm.ReactNative.Style.make = function (_elm) {
    $Json$Encode = Elm.Json.Encode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
-   $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
@@ -10268,7 +10186,6 @@ Elm.ReactNative.Style.make = function (_elm) {
          default: return {ctor: "_Tuple2",_0: _p5._0._0,_1: encodeValue(_p5._0._1)};}
    };
    var encode = function (styles) {    return $Json$Encode.object(A2($List.map,toJsonProperty,styles));};
-   var style = function (styles) {    return A2($ReactNative$ReactNative.property,"style",encode(styles));};
    var ListStyle = function (a) {    return {ctor: "ListStyle",_0: a};};
    var ObjectStyle = function (a) {    return {ctor: "ObjectStyle",_0: a};};
    var NumberStyle = function (a) {    return {ctor: "NumberStyle",_0: a};};
@@ -10390,7 +10307,6 @@ Elm.ReactNative.Style.make = function (_elm) {
                                           ,encodeObject: encodeObject
                                           ,toJsonProperty: toJsonProperty
                                           ,encode: encode
-                                          ,style: style
                                           ,color: color
                                           ,fontFamily: fontFamily
                                           ,fontSize: fontSize
@@ -10460,6 +10376,90 @@ Elm.ReactNative.Style.make = function (_elm) {
                                           ,defaultTransform: defaultTransform
                                           ,transform: transform};
 };
+Elm.ReactNative = Elm.ReactNative || {};
+Elm.ReactNative.ReactNative = Elm.ReactNative.ReactNative || {};
+Elm.ReactNative.ReactNative.make = function (_elm) {
+   "use strict";
+   _elm.ReactNative = _elm.ReactNative || {};
+   _elm.ReactNative.ReactNative = _elm.ReactNative.ReactNative || {};
+   if (_elm.ReactNative.ReactNative.values) return _elm.ReactNative.ReactNative.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var _op = {};
+   var on = $VirtualDom.on;
+   var onPress = F2(function (address,msg) {    return A3(on,"Press",$Json$Decode.value,function (_p0) {    return A2($Signal.message,address,msg);});});
+   var property = $VirtualDom.property;
+   var style = function (styles) {    return A2(property,"style",$ReactNative$Style.encode(styles));};
+   var imageSource = function (uri) {
+      return A2(property,"source",$Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "uri",_1: $Json$Encode.string(uri)}])));
+   };
+   var node = $VirtualDom.node;
+   var view = node("View");
+   var text = F2(function (props,str) {    return A3(node,"Text",props,_U.list([$VirtualDom.text(str)]));});
+   var image = node("Image");
+   return _elm.ReactNative.ReactNative.values = {_op: _op
+                                                ,node: node
+                                                ,view: view
+                                                ,text: text
+                                                ,image: image
+                                                ,property: property
+                                                ,style: style
+                                                ,imageSource: imageSource
+                                                ,onPress: onPress};
+};
+Elm.ReactNative = Elm.ReactNative || {};
+Elm.ReactNative.NativeApp = Elm.ReactNative.NativeApp || {};
+Elm.ReactNative.NativeApp.make = function (_elm) {
+   "use strict";
+   _elm.ReactNative = _elm.ReactNative || {};
+   _elm.ReactNative.NativeApp = _elm.ReactNative.NativeApp || {};
+   if (_elm.ReactNative.NativeApp.values) return _elm.ReactNative.NativeApp.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var Config = F4(function (a,b,c,d) {    return {model: a,view: b,update: c,init: d};});
+   var ConfigAction = function (a) {    return {ctor: "ConfigAction",_0: a};};
+   var Init = {ctor: "Init"};
+   var start = function (config) {
+      var normalUpdate = F2(function (maybeAction,model) {
+         var _p0 = maybeAction;
+         if (_p0.ctor === "Just") {
+               return A2(config.update,_p0._0,model);
+            } else {
+               return _U.crashCase("ReactNative.NativeApp",{start: {line: 41,column: 7},end: {line: 46,column: 52}},_p0)("This should never happen.");
+            }
+      });
+      var update = F2(function (action,model) {
+         var _p2 = action;
+         if (_p2.ctor === "ConfigAction") {
+               return A2(normalUpdate,_p2._0,model);
+            } else {
+               return model;
+            }
+      });
+      var actions = $Signal.mailbox($Maybe.Nothing);
+      var merged = $Signal.mergeMany(_U.list([A2($Signal.map,ConfigAction,actions.signal),A2($Signal.map,$Basics.always(Init),config.init)]));
+      var model = A3($Signal.foldp,update,config.model,merged);
+      var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
+      return A2($Signal.map,config.view(address),model);
+   };
+   return _elm.ReactNative.NativeApp.values = {_op: _op,start: start};
+};
 Elm.Main = Elm.Main || {};
 Elm.Main.make = function (_elm) {
    "use strict";
@@ -10483,18 +10483,19 @@ Elm.Main.make = function (_elm) {
    });
    var button = F4(function (address,action,color,content) {
       return A2($ReactNative$ReactNative.text,
-      _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.color("white")
-                                                ,$ReactNative$Style.textAlign("center")
-                                                ,$ReactNative$Style.backgroundColor(color)
-                                                ,$ReactNative$Style.paddingTop(5)
-                                                ,$ReactNative$Style.paddingBottom(5)
-                                                ,$ReactNative$Style.width(30)
-                                                ,$ReactNative$Style.fontWeight("bold")
-                                                ,$ReactNative$Style.shadowColor("#000")
-                                                ,$ReactNative$Style.shadowOpacity(0.25)
-                                                ,A2($ReactNative$Style.shadowOffset,1,1)
-                                                ,$ReactNative$Style.shadowRadius(5)
-                                                ,$ReactNative$Style.transform(_U.update($ReactNative$Style.defaultTransform,{rotate: $Maybe.Just("10deg")}))]))
+      _U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.color("white")
+                                                      ,$ReactNative$Style.textAlign("center")
+                                                      ,$ReactNative$Style.backgroundColor(color)
+                                                      ,$ReactNative$Style.paddingTop(5)
+                                                      ,$ReactNative$Style.paddingBottom(5)
+                                                      ,$ReactNative$Style.width(30)
+                                                      ,$ReactNative$Style.fontWeight("bold")
+                                                      ,$ReactNative$Style.shadowColor("#000")
+                                                      ,$ReactNative$Style.shadowOpacity(0.25)
+                                                      ,A2($ReactNative$Style.shadowOffset,1,1)
+                                                      ,$ReactNative$Style.shadowRadius(5)
+                                                      ,$ReactNative$Style.transform(_U.update($ReactNative$Style.defaultTransform,
+                                                      {rotate: $Maybe.Just("10deg")}))]))
               ,A2($ReactNative$ReactNative.onPress,address,action)]),
       content);
    });
@@ -10503,18 +10504,18 @@ Elm.Main.make = function (_elm) {
    var Increment = {ctor: "Increment"};
    var view = F2(function (address,count) {
       return A2($ReactNative$ReactNative.view,
-      _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.alignItems("center")]))]),
+      _U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.alignItems("center")]))]),
       _U.list([A2($ReactNative$ReactNative.image,
-              _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.height(64),$ReactNative$Style.width(64),$ReactNative$Style.marginBottom(30)]))
+              _U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.height(64),$ReactNative$Style.width(64),$ReactNative$Style.marginBottom(30)]))
                       ,$ReactNative$ReactNative.imageSource("https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png")]),
               _U.list([]))
               ,A2($ReactNative$ReactNative.text,
-              _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.textAlign("center"),$ReactNative$Style.marginBottom(30)]))]),
+              _U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.textAlign("center"),$ReactNative$Style.marginBottom(30)]))]),
               A2($Basics._op["++"],"Counter: ",$Basics.toString(count)))
               ,A2($ReactNative$ReactNative.view,
-              _U.list([$ReactNative$Style.style(_U.list([$ReactNative$Style.width(80)
-                                                        ,$ReactNative$Style.flexDirection("row")
-                                                        ,$ReactNative$Style.justifyContent("space-between")]))]),
+              _U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.width(80)
+                                                              ,$ReactNative$Style.flexDirection("row")
+                                                              ,$ReactNative$Style.justifyContent("space-between")]))]),
               _U.list([A4(button,address,Decrement,"#d33","-"),A4(button,address,Increment,"#3d3","+")]))]));
    });
    var model = 9000;
