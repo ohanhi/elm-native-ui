@@ -64,7 +64,7 @@ function patchElmVDom(reactAppComponent) {
 const AppWrapper = React.createClass({
   componentWillMount() {
     patchElmVDom(this);
-    Elm.fullscreen(Elm.Main, {init: []})
+    Elm.fullscreen(Elm.Main);
   },
 
   getInitialState() {

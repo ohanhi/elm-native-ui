@@ -14,7 +14,6 @@ import Signal
 
 import VirtualDom
 import Native.ElmFunctions
-import Native.ReactNative
 import ReactNative.Style as Style
 
 type alias Node = VirtualDom.Node

@@ -4,11 +4,11 @@ import Time
 import Signal
 import Json.Encode
 import ReactNative.ReactNative as RN
-import ReactNative.NativeApp as NativeApp
 import ReactNative.Style as Style exposing ( defaultTransform )
+import StartApp.Simple as StartApp
 
 main =
-  NativeApp.start { model = model, view = view, update = update, init = init }
+  StartApp.start { model = model, view = view, update = update }
 
 
 type alias Model = Int
@@ -80,6 +80,3 @@ button address action color content =
     , RN.onPress address action
     ]
     content
-
--- for the first vtree
-port init : Signal ()

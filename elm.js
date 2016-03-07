@@ -9928,6 +9928,262 @@ Elm.VirtualDom.make = function (_elm) {
                                    ,lazy3: lazy3
                                    ,Options: Options};
 };
+Elm.Html = Elm.Html || {};
+Elm.Html.make = function (_elm) {
+   "use strict";
+   _elm.Html = _elm.Html || {};
+   if (_elm.Html.values) return _elm.Html.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $VirtualDom = Elm.VirtualDom.make(_elm);
+   var _op = {};
+   var fromElement = $VirtualDom.fromElement;
+   var toElement = $VirtualDom.toElement;
+   var text = $VirtualDom.text;
+   var node = $VirtualDom.node;
+   var body = node("body");
+   var section = node("section");
+   var nav = node("nav");
+   var article = node("article");
+   var aside = node("aside");
+   var h1 = node("h1");
+   var h2 = node("h2");
+   var h3 = node("h3");
+   var h4 = node("h4");
+   var h5 = node("h5");
+   var h6 = node("h6");
+   var header = node("header");
+   var footer = node("footer");
+   var address = node("address");
+   var main$ = node("main");
+   var p = node("p");
+   var hr = node("hr");
+   var pre = node("pre");
+   var blockquote = node("blockquote");
+   var ol = node("ol");
+   var ul = node("ul");
+   var li = node("li");
+   var dl = node("dl");
+   var dt = node("dt");
+   var dd = node("dd");
+   var figure = node("figure");
+   var figcaption = node("figcaption");
+   var div = node("div");
+   var a = node("a");
+   var em = node("em");
+   var strong = node("strong");
+   var small = node("small");
+   var s = node("s");
+   var cite = node("cite");
+   var q = node("q");
+   var dfn = node("dfn");
+   var abbr = node("abbr");
+   var time = node("time");
+   var code = node("code");
+   var $var = node("var");
+   var samp = node("samp");
+   var kbd = node("kbd");
+   var sub = node("sub");
+   var sup = node("sup");
+   var i = node("i");
+   var b = node("b");
+   var u = node("u");
+   var mark = node("mark");
+   var ruby = node("ruby");
+   var rt = node("rt");
+   var rp = node("rp");
+   var bdi = node("bdi");
+   var bdo = node("bdo");
+   var span = node("span");
+   var br = node("br");
+   var wbr = node("wbr");
+   var ins = node("ins");
+   var del = node("del");
+   var img = node("img");
+   var iframe = node("iframe");
+   var embed = node("embed");
+   var object = node("object");
+   var param = node("param");
+   var video = node("video");
+   var audio = node("audio");
+   var source = node("source");
+   var track = node("track");
+   var canvas = node("canvas");
+   var svg = node("svg");
+   var math = node("math");
+   var table = node("table");
+   var caption = node("caption");
+   var colgroup = node("colgroup");
+   var col = node("col");
+   var tbody = node("tbody");
+   var thead = node("thead");
+   var tfoot = node("tfoot");
+   var tr = node("tr");
+   var td = node("td");
+   var th = node("th");
+   var form = node("form");
+   var fieldset = node("fieldset");
+   var legend = node("legend");
+   var label = node("label");
+   var input = node("input");
+   var button = node("button");
+   var select = node("select");
+   var datalist = node("datalist");
+   var optgroup = node("optgroup");
+   var option = node("option");
+   var textarea = node("textarea");
+   var keygen = node("keygen");
+   var output = node("output");
+   var progress = node("progress");
+   var meter = node("meter");
+   var details = node("details");
+   var summary = node("summary");
+   var menuitem = node("menuitem");
+   var menu = node("menu");
+   return _elm.Html.values = {_op: _op
+                             ,node: node
+                             ,text: text
+                             ,toElement: toElement
+                             ,fromElement: fromElement
+                             ,body: body
+                             ,section: section
+                             ,nav: nav
+                             ,article: article
+                             ,aside: aside
+                             ,h1: h1
+                             ,h2: h2
+                             ,h3: h3
+                             ,h4: h4
+                             ,h5: h5
+                             ,h6: h6
+                             ,header: header
+                             ,footer: footer
+                             ,address: address
+                             ,main$: main$
+                             ,p: p
+                             ,hr: hr
+                             ,pre: pre
+                             ,blockquote: blockquote
+                             ,ol: ol
+                             ,ul: ul
+                             ,li: li
+                             ,dl: dl
+                             ,dt: dt
+                             ,dd: dd
+                             ,figure: figure
+                             ,figcaption: figcaption
+                             ,div: div
+                             ,a: a
+                             ,em: em
+                             ,strong: strong
+                             ,small: small
+                             ,s: s
+                             ,cite: cite
+                             ,q: q
+                             ,dfn: dfn
+                             ,abbr: abbr
+                             ,time: time
+                             ,code: code
+                             ,$var: $var
+                             ,samp: samp
+                             ,kbd: kbd
+                             ,sub: sub
+                             ,sup: sup
+                             ,i: i
+                             ,b: b
+                             ,u: u
+                             ,mark: mark
+                             ,ruby: ruby
+                             ,rt: rt
+                             ,rp: rp
+                             ,bdi: bdi
+                             ,bdo: bdo
+                             ,span: span
+                             ,br: br
+                             ,wbr: wbr
+                             ,ins: ins
+                             ,del: del
+                             ,img: img
+                             ,iframe: iframe
+                             ,embed: embed
+                             ,object: object
+                             ,param: param
+                             ,video: video
+                             ,audio: audio
+                             ,source: source
+                             ,track: track
+                             ,canvas: canvas
+                             ,svg: svg
+                             ,math: math
+                             ,table: table
+                             ,caption: caption
+                             ,colgroup: colgroup
+                             ,col: col
+                             ,tbody: tbody
+                             ,thead: thead
+                             ,tfoot: tfoot
+                             ,tr: tr
+                             ,td: td
+                             ,th: th
+                             ,form: form
+                             ,fieldset: fieldset
+                             ,legend: legend
+                             ,label: label
+                             ,input: input
+                             ,button: button
+                             ,select: select
+                             ,datalist: datalist
+                             ,optgroup: optgroup
+                             ,option: option
+                             ,textarea: textarea
+                             ,keygen: keygen
+                             ,output: output
+                             ,progress: progress
+                             ,meter: meter
+                             ,details: details
+                             ,summary: summary
+                             ,menuitem: menuitem
+                             ,menu: menu};
+};
+Elm.StartApp = Elm.StartApp || {};
+Elm.StartApp.Simple = Elm.StartApp.Simple || {};
+Elm.StartApp.Simple.make = function (_elm) {
+   "use strict";
+   _elm.StartApp = _elm.StartApp || {};
+   _elm.StartApp.Simple = _elm.StartApp.Simple || {};
+   if (_elm.StartApp.Simple.values) return _elm.StartApp.Simple.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var start = function (config) {
+      var update = F2(function (maybeAction,model) {
+         var _p0 = maybeAction;
+         if (_p0.ctor === "Just") {
+               return A2(config.update,_p0._0,model);
+            } else {
+               return _U.crashCase("StartApp.Simple",{start: {line: 91,column: 7},end: {line: 96,column: 52}},_p0)("This should never happen.");
+            }
+      });
+      var actions = $Signal.mailbox($Maybe.Nothing);
+      var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
+      var model = A3($Signal.foldp,update,config.model,actions.signal);
+      return A2($Signal.map,config.view(address),model);
+   };
+   var Config = F3(function (a,b,c) {    return {model: a,view: b,update: c};});
+   return _elm.StartApp.Simple.values = {_op: _op,Config: Config,start: start};
+};
 function F2(fun)
 {
     function wrapper(a) { return function(b) { return fun(a,b); }; }
@@ -10060,48 +10316,6 @@ function A9(fun, a, b, c, d, e, f, g, h, i)
         ? fun.func(a, b, c, d, e, f, g, h, i)
         : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
-
-Elm.Native.ReactNative = {};
-Elm.Native.ReactNative.make = function(localRuntime) {
-    localRuntime.Native = localRuntime.Native || {};
-    localRuntime.Native.ReactNative = localRuntime.Native.ReactNative || {};
-    if (localRuntime.Native.ReactNative.values) {
-        return localRuntime.Native.ReactNative.values;
-    }
-
-    var Json = Elm.Native.Json.make(localRuntime);
-    var Signal = Elm.Native.Signal.make(localRuntime);
-
-    var prepareReset = true;
-    var eventHandlerCount = 0;
-    localRuntime.ports._ReactNativeEventHandlers = {};
-
-    function on(decoder, createMessage) {
-        if(prepareReset){
-            eventHandlerCount = 0;
-            localRuntime.ports._ReactNativeEventHandlers = {};
-        }
-
-        function eventHandler(event) {
-            var value = A2(Json.runDecoderValue, decoder, event);
-            if (value.ctor === 'Ok') {
-                Signal.sendMessage(createMessage(value._0));
-            }
-        }
-        localRuntime.ports._ReactNativeEventHandlers[++eventHandlerCount] = eventHandler;
-        prepareReset = false;
-        return eventHandlerCount;
-    }
-
-    Elm.Native.ReactNative.prepareResetHandlers = function () {
-        prepareReset = true;
-    }
-
-    localRuntime.Native.ReactNative.values = {
-        on: F2(on),
-    };
-    return localRuntime.Native.ReactNative.values;
-};
 
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.Style = Elm.ReactNative.Style || {};
@@ -10416,50 +10630,6 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
                                                 ,imageSource: imageSource
                                                 ,onPress: onPress};
 };
-Elm.ReactNative = Elm.ReactNative || {};
-Elm.ReactNative.NativeApp = Elm.ReactNative.NativeApp || {};
-Elm.ReactNative.NativeApp.make = function (_elm) {
-   "use strict";
-   _elm.ReactNative = _elm.ReactNative || {};
-   _elm.ReactNative.NativeApp = _elm.ReactNative.NativeApp || {};
-   if (_elm.ReactNative.NativeApp.values) return _elm.ReactNative.NativeApp.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var Config = F4(function (a,b,c,d) {    return {model: a,view: b,update: c,init: d};});
-   var ConfigAction = function (a) {    return {ctor: "ConfigAction",_0: a};};
-   var Init = {ctor: "Init"};
-   var start = function (config) {
-      var normalUpdate = F2(function (maybeAction,model) {
-         var _p0 = maybeAction;
-         if (_p0.ctor === "Just") {
-               return A2(config.update,_p0._0,model);
-            } else {
-               return _U.crashCase("ReactNative.NativeApp",{start: {line: 41,column: 7},end: {line: 46,column: 52}},_p0)("This should never happen.");
-            }
-      });
-      var update = F2(function (action,model) {
-         var _p2 = action;
-         if (_p2.ctor === "ConfigAction") {
-               return A2(normalUpdate,_p2._0,model);
-            } else {
-               return model;
-            }
-      });
-      var actions = $Signal.mailbox($Maybe.Nothing);
-      var merged = $Signal.mergeMany(_U.list([A2($Signal.map,ConfigAction,actions.signal),A2($Signal.map,$Basics.always(Init),config.init)]));
-      var model = A3($Signal.foldp,update,config.model,merged);
-      var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
-      return A2($Signal.map,config.view(address),model);
-   };
-   return _elm.ReactNative.NativeApp.values = {_op: _op,start: start};
-};
 Elm.Main = Elm.Main || {};
 Elm.Main.make = function (_elm) {
    "use strict";
@@ -10470,17 +10640,12 @@ Elm.Main.make = function (_elm) {
    $Debug = Elm.Debug.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
-   $ReactNative$NativeApp = Elm.ReactNative.NativeApp.make(_elm),
    $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
    $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
    var _op = {};
-   var init = Elm.Native.Port.make(_elm).inboundSignal("init",
-   "()",
-   function (v) {
-      return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple0"} : _U.badPort("an array",v);
-   });
    var button = F4(function (address,action,color,content) {
       return A2($ReactNative$ReactNative.text,
       _U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.color("white")
@@ -10519,7 +10684,7 @@ Elm.Main.make = function (_elm) {
               _U.list([A4(button,address,Decrement,"#d33","-"),A4(button,address,Increment,"#3d3","+")]))]));
    });
    var model = 9000;
-   var main = $ReactNative$NativeApp.start({model: model,view: view,update: update,init: init});
+   var main = $StartApp$Simple.start({model: model,view: view,update: update});
    return _elm.Main.values = {_op: _op,main: main,model: model,view: view,Increment: Increment,Decrement: Decrement,update: update,button: button};
 };
 module.exports = Elm;
