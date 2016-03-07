@@ -14,7 +14,7 @@ var dummyNode = {
   appendChild: function() {}
 }
 
-global.document = {
+global.document = global.document || {
   body: dummyNode,
 
   createElement: function() {
@@ -26,45 +26,40 @@ global.document = {
   }
  };
 
-// Patch Elm.Native.VirtualDom.render to set the state of our AppWrapper component
+// Returns a `make` function that will patch the local elm runtime and
+// replace the `render` and `update` functions in localRuntime.Native.VirtualDom
+// with implementations that call `setState` on the `AppWrapper` component instance
 
-function patchElmVDom(reactAppComponent) {
-  // Patch VirtualDom render functions
-  Elm.Native.VirtualDom = Elm.Native.VirtualDom || {};
-  var VDomMake = Elm.Native.VirtualDom.make || function() { return {}; };
-  Elm.Native.VirtualDom.make = function(localRuntime) {
-    var VirtualDom = VDomMake(localRuntime);
-
-    localRuntime.Native = localRuntime.Native || {};
-    localRuntime.Native.VirtualDom = localRuntime.Native.VirtualDom || {};
-    var values = localRuntime.Native.VirtualDom.values || {};
-
+function runtimePatcher(appWrapperInstance) {
+  function make(localRuntime) {
     function render(state) {
       console.log('rendering new state: ', state);
-      reactAppComponent.setState({vdom: state});
-      return reactAppComponent;
+      appWrapperInstance.setState({vdom: state});
+      return appWrapperInstance;
     }
 
     function updateAndReplace(elem, oldState, newState) {
       return render(newState);
     }
 
-    localRuntime.Native.VirtualDom.values = Object.assign({}, values, {
+    var VirtualDom = Elm.Native.VirtualDom.make(localRuntime);
+    localRuntime.Native.VirtualDom.values = {
+      ...VirtualDom,
       render: render,
       updateAndReplace: updateAndReplace,
       patchedForReactNative: true,
-    });
+    };
 
-    return localRuntime.Native.VirtualDom.values;
+    return Elm.Main.make(localRuntime);
   }
-}
 
+  return make;
+}
 
 
 const AppWrapper = React.createClass({
   componentWillMount() {
-    patchElmVDom(this);
-    Elm.fullscreen(Elm.Main);
+    Elm.fullscreen({make: runtimePatcher(this)});
   },
 
   getInitialState() {
