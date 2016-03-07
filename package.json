@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "precompile": "rm -f elm.js && bash ./scripts/patch-vdom.sh",
-    "compile": "elm-make Main.elm --output elm.js",
-    "postcompile": "echo 'module.exports = Elm;' >> elm.js",
+    "precompile": "rm -f ._eml.js && bash ./scripts/patch-vdom.sh",
+    "compile": "elm-make Main.elm --output ._elm.js",
+    "postcompile": "echo 'module.exports = Elm;' >> ._elm.js && mv ._elm.js elm.js",
     "start": "chokidar '**/*.elm' -c 'npm run compile'"
   },
   "dependencies": {
