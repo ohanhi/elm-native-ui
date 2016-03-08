@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "precompile": "rm -f ._eml.js && bash ./scripts/patch-vdom.sh",
+    "precompile": "rm -f ._elm.js && bash ./scripts/patch-vdom.sh",
     "compile": "elm-make Main.elm --output ._elm.js",
     "postcompile": "echo 'module.exports = Elm;' >> ._elm.js && mv ._elm.js elm.js",
     "start": "chokidar '**/*.elm' -c 'npm run compile'"
