@@ -1,4 +1,7 @@
 'use strict';
+require('./browser-polyfills');
+
+
 var React = require('react-native');
 var {
   AppRegistry,
@@ -9,22 +12,6 @@ var {
 
 var Elm = require('./elm');
 
-// Provide minimal 'document' for Elm.fullscreen to hook into
-var dummyNode = {
-  appendChild: function() {}
-}
-
-global.document = global.document || {
-  body: dummyNode,
-
-  createElement: function() {
-    return dummyNode;
-  },
-
-  createTextNode(text) {
-    console.log("createTextNode: ", text);
-  }
- };
 
 // Returns a `make` function that will patch the local elm runtime and
 // replace the `render` and `update` functions in localRuntime.Native.VirtualDom
