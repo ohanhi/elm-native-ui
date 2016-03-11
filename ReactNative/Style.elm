@@ -2,7 +2,6 @@ module ReactNative.Style where
 
 import Json.Encode
 
-
 type Value
   = StringValue String
   | NumberValue Float
