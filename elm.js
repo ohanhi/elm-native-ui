@@ -11097,6 +11097,25 @@ Elm.ReactNative.Style.make = function (_elm) {
                                           ,defaultTransform: defaultTransform
                                           ,transform: transform};
 };
+Elm.Native.ReactNative = {};
+Elm.Native.ReactNative.make = function(localRuntime) {
+    localRuntime.Native = localRuntime.Native || {};
+    localRuntime.Native.ReactNative = localRuntime.Native.ReactNative || {};
+    if (localRuntime.Native.ReactNative.values) {
+        return localRuntime.Native.ReactNative.values;
+    }
+
+    function bundledAsset(path) {
+      var BundledAssets = require('BundledAssets');
+      return BundledAssets[path];
+    }
+
+    localRuntime.Native.ReactNative.values = {
+        bundledAsset: bundledAsset
+    };
+    return localRuntime.Native.ReactNative.values;
+};
+
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.ReactNative = Elm.ReactNative.ReactNative || {};
 Elm.ReactNative.ReactNative.make = function (_elm) {
@@ -11111,22 +11130,32 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
    $Json$Encode = Elm.Json.Encode.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
+   $Native$ReactNative = Elm.Native.ReactNative.make(_elm),
    $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
+   $String = Elm.String.make(_elm),
    $VirtualDom = Elm.VirtualDom.make(_elm);
    var _op = {};
    var on = $VirtualDom.on;
    var onPress = F2(function (address,msg) {    return A3(on,"Press",$Json$Decode.value,function (_p0) {    return A2($Signal.message,address,msg);});});
+   var bundledAsset = function (path) {    return $Native$ReactNative.bundledAsset(path);};
    var property = $VirtualDom.property;
    var style = function (styles) {    return A2(property,"style",$ReactNative$Style.encode(styles));};
    var imageSource = function (uri) {
-      return A2(property,"source",$Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "uri",_1: $Json$Encode.string(uri)}])));
+      var bundledImagePrefix = "image!";
+      var stripBundledImagePrefix = $String.dropLeft($String.length(bundledImagePrefix));
+      var source = A2($String.startsWith,
+      bundledImagePrefix,
+      uri) ? $Native$ReactNative.bundledAsset(stripBundledImagePrefix(uri)) : $Json$Encode.object(_U.list([{ctor: "_Tuple2"
+                                                                                                           ,_0: "uri"
+                                                                                                           ,_1: $Json$Encode.string(uri)}]));
+      return A2(property,"source",source);
    };
    var node = $VirtualDom.node;
-   var view = node("View");
-   var text = F2(function (props,str) {    return A3(node,"Text",props,_U.list([$VirtualDom.text(str)]));});
-   var image = node("Image");
+   var view = node("React.View");
+   var text = F2(function (props,str) {    return A3(node,"React.Text",props,_U.list([$VirtualDom.text(str)]));});
+   var image = node("React.Image");
    return _elm.ReactNative.ReactNative.values = {_op: _op
                                                 ,node: node
                                                 ,view: view
@@ -11189,7 +11218,7 @@ Elm.RandomGif.make = function (_elm) {
               ,moreButton(address)]));
    });
    var Model = F2(function (a,b) {    return {topic: a,gifUrl: b};});
-   var init = function (topic) {    return {ctor: "_Tuple2",_0: A2(Model,topic,""),_1: getRandomGif(topic)};};
+   var init = function (topic) {    return {ctor: "_Tuple2",_0: A2(Model,topic,"image!waiting.gif"),_1: getRandomGif(topic)};};
    var update = F2(function (action,model) {
       var _p0 = action;
       if (_p0.ctor === "RequestMore") {

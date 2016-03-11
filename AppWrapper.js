@@ -2,16 +2,16 @@
 require('./browser-polyfills');
 
 
-var React = require('react-native');
-var {
+const React = require('react-native');
+const {
   AppRegistry,
   StyleSheet,
   Text,
   View,
 } = React;
 
-var Elm = require('./elm');
-
+const Elm = require('./elm');
+const ReactComponents = require('./ReactComponents');
 
 // Returns a `make` function that will patch the local elm runtime and
 // replace the `render` and `update` functions in localRuntime.Native.VirtualDom
@@ -54,13 +54,25 @@ const AppWrapper = React.createClass({
   },
 
   render() {
-    var vdom = this.state.vdom;
+    let vdom = this.state.vdom;
     return React.createElement(View, {style: styles.container},
       vDomToReactElement(vdom)
     );
   }
 });
 
+
+function getNested(obj, path) {
+  if (typeof(obj) !== 'object' || typeof(path) !== 'string') {
+    return undefined;
+  }
+  let pathComponents = path.split('.');
+  while (typeof(obj) === 'object') {
+    let p = pathComponents.shift();
+    obj = obj[p];
+  }
+  return obj;
+}
 
 function vDomToReactElement(vdomNode) {
   if (!vdomNode) {
@@ -71,16 +83,17 @@ function vDomToReactElement(vdomNode) {
     return vdomNode.text;
   }
 
-  var {tagName, properties, key} = vdomNode;
+  let {tagName, properties, key} = vdomNode;
   properties = {...properties, key};
-  var children = vdomNode.children || [];
+  let children = vdomNode.children || [];
   children = children.map(vDomToReactElement);
-  return React.createElement(React[tagName], properties, ...children);
+  let reactClass = getNested(ReactComponents, tagName);
+  return React.createElement(reactClass, properties, ...children);
 }
 
 
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',

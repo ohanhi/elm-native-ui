@@ -19,7 +19,7 @@ type alias Model =
 
 init : String -> ( Model, Effects Action )
 init topic =
-  ( Model topic ""
+  ( Model topic "image!waiting.gif"
   , getRandomGif topic
   )
 

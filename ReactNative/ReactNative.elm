@@ -6,6 +6,8 @@ import Signal
 import VirtualDom
 import Native.ElmFunctions
 import ReactNative.Style as Style
+import Native.ReactNative
+import String exposing (startsWith, length, dropLeft)
 
 
 type alias Node =
@@ -27,17 +29,17 @@ node =
 
 view : List Property -> List Node -> Node
 view =
-  node "View"
+  node "React.View"
 
 
 text : List Property -> String -> Node
 text props str =
-  node "Text" props [ VirtualDom.text str ]
+  node "React.Text" props [ VirtualDom.text str ]
 
 
 image : List Property -> List Node -> Node
 image =
-  node "Image"
+  node "React.Image"
 
 
 
@@ -56,10 +58,27 @@ style styles =
     |> property "style"
 
 
+bundledAsset : String -> Json.Decode.Value
+bundledAsset path =
+  Native.ReactNative.bundledAsset path
+
+
 imageSource : String -> Property
 imageSource uri =
-  Json.Encode.object [ ( "uri", Json.Encode.string uri ) ]
-    |> property "source"
+  let
+    bundledImagePrefix =
+      "image!"
+
+    stripBundledImagePrefix =
+      dropLeft (length bundledImagePrefix)
+
+    source =
+      if startsWith bundledImagePrefix uri then
+        Native.ReactNative.bundledAsset (stripBundledImagePrefix uri)
+      else
+        Json.Encode.object [ ( "uri", Json.Encode.string uri ) ]
+  in
+    property "source" source
 
 
 
