@@ -8,11 +8,15 @@ import ReactNative.NativeApp as NativeApp
 import ReactNative.Style as Style exposing ( defaultTransform )
 
 
--- "main"
-port viewTree : Signal Json.Encode.Value
-port viewTree =
+app =
   NativeApp.start { model = model, view = view, update = update, init = init }
 
+main = 
+  app.html
+
+port tasks : Signal (Task.Task Never ())
+port tasks =
+  app.tasks
 
 type alias Model = Int
 
@@ -77,7 +81,3 @@ button address action color content =
     ]
     (Just <| RN.onPress address action)
     content
-
-
--- for the first vtree
-port init : Signal ()
