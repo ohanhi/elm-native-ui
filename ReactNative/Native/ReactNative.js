@@ -24,8 +24,11 @@ Elm.Native.ReactNative.make = function(localRuntime) {
     function vtreeToReactElement(vtree) {
       switch (vtree.ctor) {
         case 'VString':
+        {
           return vtree._0;
-        case 'VNode': {
+        }
+        case 'VNode':
+        {
           let tagName = vtree._0;
           let propertyList = vtree._1;
           let childNodes = vtree._2;
@@ -36,6 +39,10 @@ Elm.Native.ReactNative.make = function(localRuntime) {
 
           return React.createElement(reactClass, props, ...children);
         }
+        default:
+          throw new Error(`I don't know how to render a VTree of type '${vtree.ctor}'.\n` +
+            `If you've recently added a new type of VTree, you must add a new case to\n` +
+            `the switch statement in Native.ReactNative.vtreeToReactElement()`);
       }
     }
 
