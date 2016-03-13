@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "Experimental support for writing React Native powered mobile applications",
-    "repository": "https://github.com/ohanhi/elm-native.git",
+    "repository": "https://github.com/elm-native-ui/elm-native-ui.git",
     "license": "BSD3",
     "source-directories": [
         ".",
