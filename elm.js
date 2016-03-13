@@ -8862,33 +8862,19 @@ Elm.Native.ReactNative.make = function(localRuntime) {
     var Json = Elm.Native.Json.make(localRuntime);
     var Signal = Elm.Native.Signal.make(localRuntime);
 
-    var prepareReset = true;
-    var eventHandlerCount = 0;
-    localRuntime.ports._ReactNativeEventHandlers = {};
 
-    function on(decoder, createMessage) {
-        if(prepareReset){
-            eventHandlerCount = 0;
-            localRuntime.ports._ReactNativeEventHandlers = {};
-        }
-
+    function nativeEventHandler(decoder, createMessage) {
         function eventHandler(event) {
             var value = A2(Json.runDecoderValue, decoder, event);
             if (value.ctor === 'Ok') {
                 Signal.sendMessage(createMessage(value._0));
             }
         }
-        localRuntime.ports._ReactNativeEventHandlers[++eventHandlerCount] = eventHandler;
-        prepareReset = false;
-        return eventHandlerCount;
-    }
-
-    Elm.Native.ReactNative.prepareResetHandlers = function () {
-        prepareReset = true;
+        return eventHandler;
     }
 
     localRuntime.Native.ReactNative.values = {
-        on: F2(on),
+        nativeEventHandler: F2(nativeEventHandler),
     };
     return localRuntime.Native.ReactNative.values;
 };
@@ -8914,95 +8900,59 @@ Elm.ReactNative.ReactNative.make = function (_elm) {
        $Result = Elm.Result.make(_elm),
        $Signal = Elm.Signal.make(_elm);
        var _op = {};
-       var maybeEncodeHandler = function (handler) {
-          var _p0 = handler;
-          if (_p0.ctor === "Just") {
-             return A2($List._op["::"]
-                      ,{ctor: "_Tuple2"
-                       ,_0: _p0._0._0
-                       ,_1: $Json$Encode.$int(_p0._0._1)}
-                      ,_U.list([]));
-          } else {
-             return _U.list([]);
-          }
-       };
-       var encode = function (vtree) {
-          var _p1 = vtree;
-          switch (_p1.ctor)
-          {
-            case "VNode":
-              return $Json$Encode.object(_U.list([{ctor: "_Tuple2"
-                                                  ,_0: "tagName"
-                                                  ,_1: $Json$Encode.string(_p1._0)}
-                                                 ,{ctor: "_Tuple2"
-                                                  ,_0: "style"
-                                                  ,_1: $ReactNative$Style.encode(_p1._1)}
-                                                 ,{ctor: "_Tuple2"
-                                                  ,_0: "children"
-                                                  ,_1: $Json$Encode.list(A2($List.map,encode,_p1._2))}]));
-            case "VText":
-              return $Json$Encode.object(A2($Basics._op["++"]
-                                           ,maybeEncodeHandler(_p1._1)
-                                           ,_U.list([{ctor: "_Tuple2"
-                                                     ,_0: "tagName"
-                                                     ,_1: $Json$Encode.string("Text")}
-                                                    ,{ctor: "_Tuple2"
-                                                     ,_0: "style"
-                                                     ,_1: $ReactNative$Style.encode(_p1._0)}
-                                                    ,{ctor: "_Tuple2"
-                                                     ,_0: "children"
-                                                     ,_1: $Json$Encode.list(_U.list([$Json$Encode.string(_p1._2)]))}])));
-            default:
-              return $Json$Encode.object(_U.list([{ctor: "_Tuple2"
-                                                  ,_0: "tagName"
-                                                  ,_1: $Json$Encode.string("Image")}
-                                                 ,{ctor: "_Tuple2"
-                                                  ,_0: "style"
-                                                  ,_1: $ReactNative$Style.encode(_p1._0)}
-                                                 ,{ctor: "_Tuple2"
-                                                  ,_0: "source"
-                                                  ,_1: $Json$Encode.string(_p1._1)}]));
-          }
-       };
-       var on = F2(function (decoder,toMessage) {
-                   return A2($Native$ReactNative.on,decoder,toMessage);
+       var nativeEventHandler = $Native$ReactNative.nativeEventHandler;
+       var NativeValue = {ctor: "NativeValue"};
+       var NativeProperty = F2(function (a,b) {
+                               return {ctor: "NativeProperty",_0: a,_1: b};
+                            });
+       var on = F3(function (name,decoder,toMessage) {
+                   var handler = A2(nativeEventHandler,decoder,toMessage);
+                   var fullName = A2($Basics._op["++"],"on",name);
+                   return A2(NativeProperty,fullName,handler);
                 });
        var onPress = F2(function (address,msg) {
-                        return {ctor: "_Tuple2"
-                               ,_0: "onPress"
-                               ,_1: A2(on
-                                      ,$Json$Decode.value
-                                      ,function (_p2) {
-                                         return A2($Signal.message,address,msg);
-                                      })};
+                        return A3(on
+                                 ,"Press"
+                                 ,$Json$Decode.value
+                                 ,function (_p0) {
+                                    return A2($Signal.message,address,msg);
+                                 });
                      });
-       var VImage = F2(function (a,b) {
-                       return {ctor: "VImage",_0: a,_1: b};
-                    });
-       var image = F2(function (styles,source) {
-                      return A2(VImage,styles,source);
-                   });
-       var VText = F3(function (a,b,c) {
-                      return {ctor: "VText",_0: a,_1: b,_2: c};
-                   });
-       var text = F3(function (styles,handler,textContent) {
-                     return A3(VText,styles,handler,textContent);
-                  });
+       var JsonProperty = F2(function (a,b) {
+                             return {ctor: "JsonProperty",_0: a,_1: b};
+                          });
+       var property = JsonProperty;
+       var imageSource = function (uri) {
+          return A2(property
+                   ,"source"
+                   ,$Json$Encode.object(_U.list([{ctor: "_Tuple2"
+                                                 ,_0: "uri"
+                                                 ,_1: $Json$Encode.string(uri)}])));
+       };
+       var style = function (styles) {
+          return A2(property,"style",$ReactNative$Style.encode(styles));
+       };
+       var VString = function (a) { return {ctor: "VString",_0: a};};
+       var string = VString;
        var VNode = F3(function (a,b,c) {
                       return {ctor: "VNode",_0: a,_1: b,_2: c};
                    });
-       var node = F3(function (tagName,styles,children) {
-                     return A3(VNode,tagName,styles,children);
+       var node = F3(function (tagName,props,children) {
+                     return A3(VNode,tagName,props,children);
                   });
-       var view = F2(function (styles,children) {
-                     return A3(VNode,"View",styles,children);
-                  });
+       var view = VNode("View");
+       var text = VNode("Text");
+       var image = F2(function (props,source) {
+                      return A3(VNode,"Image",props,source);
+                   });
        return _elm.ReactNative.ReactNative.values = {_op: _op
                                                     ,node: node
+                                                    ,string: string
                                                     ,view: view
                                                     ,text: text
                                                     ,image: image
-                                                    ,encode: encode
+                                                    ,style: style
+                                                    ,imageSource: imageSource
                                                     ,onPress: onPress};
     };
 Elm.ReactNative = Elm.ReactNative || {};
@@ -9078,24 +9028,22 @@ Elm.Main.make = function (_elm) {
        $Signal = Elm.Signal.make(_elm);
        var _op = {};
        var button = F4(function (address,action,color,content) {
-                       return A3($ReactNative$ReactNative.text
-                                ,_U.list([$ReactNative$Style.color("white")
-                                         ,$ReactNative$Style.textAlign("center")
-                                         ,$ReactNative$Style.backgroundColor(color)
-                                         ,$ReactNative$Style.paddingTop(5)
-                                         ,$ReactNative$Style.paddingBottom(5)
-                                         ,$ReactNative$Style.width(30)
-                                         ,$ReactNative$Style.fontWeight("bold")
-                                         ,$ReactNative$Style.shadowColor("#000")
-                                         ,$ReactNative$Style.shadowOpacity(0.25)
-                                         ,A2($ReactNative$Style.shadowOffset,1,1)
-                                         ,$ReactNative$Style.shadowRadius(5)
-                                         ,$ReactNative$Style.transform(_U.update($ReactNative$Style.defaultTransform
-                                                                                ,{rotate: $Maybe.Just("10deg")}))])
-                                ,$Maybe.Just(A2($ReactNative$ReactNative.onPress
-                                               ,address
-                                               ,action))
-                                ,content);
+                       return A2($ReactNative$ReactNative.text
+                                ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.color("white")
+                                                                                 ,$ReactNative$Style.textAlign("center")
+                                                                                 ,$ReactNative$Style.backgroundColor(color)
+                                                                                 ,$ReactNative$Style.paddingTop(5)
+                                                                                 ,$ReactNative$Style.paddingBottom(5)
+                                                                                 ,$ReactNative$Style.width(30)
+                                                                                 ,$ReactNative$Style.fontWeight("bold")
+                                                                                 ,$ReactNative$Style.shadowColor("#000")
+                                                                                 ,$ReactNative$Style.shadowOpacity(0.25)
+                                                                                 ,A2($ReactNative$Style.shadowOffset,1,1)
+                                                                                 ,$ReactNative$Style.shadowRadius(5)
+                                                                                 ,$ReactNative$Style.transform(_U.update($ReactNative$Style.defaultTransform
+                                                                                                                        ,{rotate: $Maybe.Just("10deg")}))]))
+                                         ,A2($ReactNative$ReactNative.onPress,address,action)])
+                                ,_U.list([$ReactNative$ReactNative.string(content)]));
                     });
        var update = F2(function (action,model) {
                        var _p0 = action;
@@ -9109,21 +9057,23 @@ Elm.Main.make = function (_elm) {
        var Increment = {ctor: "Increment"};
        var view = F2(function (address,count) {
                      return A2($ReactNative$ReactNative.view
-                              ,_U.list([$ReactNative$Style.alignItems("center")])
+                              ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.alignItems("center")]))])
                               ,_U.list([A2($ReactNative$ReactNative.image
-                                          ,_U.list([$ReactNative$Style.height(64)
-                                                   ,$ReactNative$Style.width(64)
-                                                   ,$ReactNative$Style.marginBottom(30)])
-                                          ,"https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png")
-                                       ,A3($ReactNative$ReactNative.text
-                                          ,_U.list([$ReactNative$Style.textAlign("center")
-                                                   ,$ReactNative$Style.marginBottom(30)])
-                                          ,$Maybe.Nothing
-                                          ,A2($Basics._op["++"],"Counter: ",$Basics.toString(count)))
+                                          ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.height(64)
+                                                                                           ,$ReactNative$Style.width(64)
+                                                                                           ,$ReactNative$Style.marginBottom(30)]))
+                                                   ,$ReactNative$ReactNative.imageSource("https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png")])
+                                          ,_U.list([]))
+                                       ,A2($ReactNative$ReactNative.text
+                                          ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.textAlign("center")
+                                                                                           ,$ReactNative$Style.marginBottom(30)]))])
+                                          ,_U.list([$ReactNative$ReactNative.string(A2($Basics._op["++"]
+                                                                                      ,"Counter: "
+                                                                                      ,$Basics.toString(count)))]))
                                        ,A2($ReactNative$ReactNative.view
-                                          ,_U.list([$ReactNative$Style.width(80)
-                                                   ,$ReactNative$Style.flexDirection("row")
-                                                   ,$ReactNative$Style.justifyContent("space-between")])
+                                          ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.width(80)
+                                                                                           ,$ReactNative$Style.flexDirection("row")
+                                                                                           ,$ReactNative$Style.justifyContent("space-between")]))])
                                           ,_U.list([A4(button,address,Decrement,"#d33","-")
                                                    ,A4(button,address,Increment,"#3d3","+")]))]));
                   });

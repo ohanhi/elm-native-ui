@@ -9,33 +9,19 @@ Elm.Native.ReactNative.make = function(localRuntime) {
     var Json = Elm.Native.Json.make(localRuntime);
     var Signal = Elm.Native.Signal.make(localRuntime);
 
-    var prepareReset = true;
-    var eventHandlerCount = 0;
-    localRuntime.ports._ReactNativeEventHandlers = {};
 
-    function on(decoder, createMessage) {
-        if(prepareReset){
-            eventHandlerCount = 0;
-            localRuntime.ports._ReactNativeEventHandlers = {};
-        }
-
+    function nativeEventHandler(decoder, createMessage) {
         function eventHandler(event) {
             var value = A2(Json.runDecoderValue, decoder, event);
             if (value.ctor === 'Ok') {
                 Signal.sendMessage(createMessage(value._0));
             }
         }
-        localRuntime.ports._ReactNativeEventHandlers[++eventHandlerCount] = eventHandler;
-        prepareReset = false;
-        return eventHandlerCount;
-    }
-
-    Elm.Native.ReactNative.prepareResetHandlers = function () {
-        prepareReset = true;
+        return eventHandler;
     }
 
     localRuntime.Native.ReactNative.values = {
-        on: F2(on),
+        nativeEventHandler: F2(nativeEventHandler),
     };
     return localRuntime.Native.ReactNative.values;
 };
