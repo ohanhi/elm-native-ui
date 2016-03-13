@@ -9,14 +9,14 @@ import ReactNative.Style as Style exposing ( defaultTransform )
 
 
 app =
-  NativeApp.start { model = model, view = view, update = update, init = init }
+  NativeApp.start { model = model, view = view, update = update }
 
-main = 
-  app.html
+main =
+  app
 
-port tasks : Signal (Task.Task Never ())
-port tasks =
-  app.tasks
+-- port tasks : Signal (Task.Task Never ())
+-- port tasks =
+--   app.tasks
 
 type alias Model = Int
 
