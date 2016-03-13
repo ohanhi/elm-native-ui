@@ -40,8 +40,6 @@ Elm.Native.ReactNative.make = function(localRuntime) {
     }
 
     function propertyToJS(property) {
-      console.log('converting RN property: ', property);
-
       if (property.ctor !== 'JsonProperty' &&
           property.ctor !== 'NativeProperty') {
         return undefined;
@@ -72,8 +70,6 @@ Elm.Native.ReactNative.make = function(localRuntime) {
     }
 
     function setReactVTree(reactElement, vtree) {
-      console.info('updating vtree: ', vtree);
-
 			var newState = Object.assign({},
 				reactElement.state,
 				{_elmVTree: vtreeToReactElement(vtree)}
