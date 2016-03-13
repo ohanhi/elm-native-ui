@@ -1281,34 +1281,8 @@ if (!Elm.fullscreen) {
 			return init(Display.NONE, {}, module, args || {});
 		};
 
-		Elm.embedReact = function(module, containerElement, reactEnvironment, args)
+		Elm.embedReact = function(module, containerElement, args)
 		{
-			if ((typeof reactEnvironment !== 'object') ||
-			  	(typeof reactEnvironment.React !== 'object'))
-			{
-				throw new Error(
-					"Elm.embedReact() requires at least three arguments:\n" +
-					"1: the Elm module you want to run e.g. `Elm.Main`\n" +
-					"2: an instantiated React element to conain the app\n" +
-					"3: an object containing a field named `React` whose value is\n" +
-					"   the output of `require('react-native')`.\n" +
-					"   If you want non-standard components to be accessible to Elm,\n" +
-					"   you can `require` them into this object." +
-					"   For example: \n" +
-					"     {\n" +
-					"       React: require('react-native'),\n" +
-					"       MyComponents: {\n" +
-					"         Awesome: // require your component here...\n " +
-					"       }\n" +
-					"     }\n" +
-					"   With the above, you could write an Elm function for the Awesome component: \n" +
-					"     awesome : List ReactNative.Property -> List ReactNative.Node -> ReactNative.Node\n"+
-					"     awesome = ReactNative.Node \"MyComponents.Awesome\"\n" +
-					"4: the fourth argument is an optional object containing inputs to your Elm program.\n" +
-					"   it is equivalent to the final argument of `Elm.fullscreen` or `Elm.embed`"
-				);
-			}
-
 			function isReactElement(maybeElement) {
 				return maybeElement['$$typeof'] === Symbol.for('react.element');
 			}
@@ -1330,7 +1304,6 @@ if (!Elm.fullscreen) {
 			}
 
 			var container = {
-				reactEnvironment: reactEnvironment,
 				firstChild: containerElement,
 				appendChild: function (child) {
 					this.firstChild = containerElement;
@@ -8859,9 +8832,10 @@ Elm.Native.ReactNative.make = function(localRuntime) {
         return localRuntime.Native.ReactNative.values;
     }
 
+    var List = Elm.Native.List.make(localRuntime);
     var Json = Elm.Native.Json.make(localRuntime);
     var Signal = Elm.Native.Signal.make(localRuntime);
-
+    var React = require('react-native');
 
     function nativeEventHandler(decoder, createMessage) {
         function eventHandler(event) {
@@ -8873,7 +8847,75 @@ Elm.Native.ReactNative.make = function(localRuntime) {
         return eventHandler;
     }
 
+    function vtreeToReactElement(vtree) {
+      switch (vtree.ctor) {
+        case 'VString':
+          return vtree._0;
+        case 'VNode': {
+          let tagName = vtree._0;
+          let propertyList = vtree._1;
+          let childNodes = vtree._2;
+
+          let reactClass = React[tagName];
+          let props = propertyListToJS(propertyList);
+          let children = List.toArray(childNodes).map(vtreeToReactElement);
+
+          return React.createElement(reactClass, props, ...children);
+        }
+      }
+    }
+
+    function propertyToJS(property) {
+      console.log('converting RN property: ', property);
+
+      if (property.ctor !== 'JsonProperty' &&
+          property.ctor !== 'NativeProperty') {
+        return undefined;
+      }
+
+      return {
+        key: property._0,
+        value: property._1,
+      }
+    }
+
+    function propertyListToJS(list)
+  	{
+  		var object = {};
+  		while (list.ctor !== '[]')
+  		{
+  			var entry = propertyToJS(list._0);
+        if (entry) {
+  			  object[entry.key] = entry.value;
+        }
+  			list = list._1;
+  		}
+  		return object;
+  	}
+
+    function render(vtree) {
+      return vtreeToReactElement(vtree);
+    }
+
+    function setReactVTree(reactElement, vtree) {
+      console.info('updating vtree: ', vtree);
+
+			var newState = Object.assign({},
+				reactElement.state,
+				{_elmVTree: vtreeToReactElement(vtree)}
+			);
+
+			reactElement.setState(newState);
+		}
+
+    function updateAndReplace(containerElement, oldVTree, newVTree) {
+      setReactVTree(containerElement, newVTree);
+    }
+
+
     localRuntime.Native.ReactNative.values = {
+        render: render,
+        updateAndReplace: updateAndReplace,
         nativeEventHandler: F2(nativeEventHandler),
     };
     return localRuntime.Native.ReactNative.values;
