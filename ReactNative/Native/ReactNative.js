@@ -29,44 +29,45 @@ Elm.Native.ReactNative.make = function(localRuntime) {
         }
         case 'VNode':
         {
-          let tagName = vtree._0;
-          let propertyList = vtree._1;
-          let childNodes = vtree._2;
+          var tagName = vtree._0;
+          var propertyList = vtree._1;
+          var childNodes = vtree._2;
 
-          let reactClass = React[tagName];
-          let props = propertyListToJS(propertyList);
-          let children = List.toArray(childNodes).map(vtreeToReactElement);
+          var reactClass = React[tagName];
+          var props = propertyListToObject(propertyList);
+          var children = List.toArray(childNodes).map(vtreeToReactElement);
 
-          return React.createElement(reactClass, props, ...children);
+          var args = [reactClass, props].concat(children);
+          return React.createElement.apply(null, args);
         }
         default:
-          throw new Error(`I don't know how to render a VTree of type '${vtree.ctor}'.\n` +
-            `If you've recently added a new type of VTree, you must add a new case to\n` +
-            `the switch statement in Native.ReactNative.vtreeToReactElement()`);
+          throw new Error("I don't know how to render a VTree of type '" + vtree.ctor + "'\n" +
+            "If you've recently added a new type of VTree, you must add a new case to\n" +
+            "the switch statement in Native.ReactNative.vtreeToReactElement");
       }
     }
 
-    function propertyToJS(property) {
+    function propertyToObject(property) {
       if (property.ctor !== 'JsonProperty' &&
           property.ctor !== 'NativeProperty') {
-        return undefined;
+        throw new Error("I don't know how to handle a Property of type '" + property.ctor + "'\n" +
+          "If you've recently added a new type of Property, you must edit the\n" +
+          "function Native.ReactiNative.propertyToObject");
       }
 
       return {
         key: property._0,
         value: property._1,
-      }
+      };
     }
 
-    function propertyListToJS(list)
+    function propertyListToObject(list)
   	{
   		var object = {};
   		while (list.ctor !== '[]')
   		{
-  			var entry = propertyToJS(list._0);
-        if (entry) {
-  			  object[entry.key] = entry.value;
-        }
+  			var entry = propertyToObject(list._0);
+  			object[entry.key] = entry.value;
   			list = list._1;
   		}
   		return object;
