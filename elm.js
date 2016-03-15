@@ -8869,7 +8869,7 @@ Elm.Native.ReactNative.make = function(localRuntime) {
         default:
           throw new Error("I don't know how to render a VTree of type '" + vtree.ctor + "'\n" +
             "If you've recently added a new type of VTree, you must add a new case to\n" +
-            "the switch statement in Native.ReactNative.vtreeToReactElement()");
+            "the switch statement in Native.ReactNative.vtreeToReactElement");
       }
     }
 
@@ -8878,7 +8878,7 @@ Elm.Native.ReactNative.make = function(localRuntime) {
           property.ctor !== 'NativeProperty') {
         throw new Error("I don't know how to handle a Property of type '" + property.ctor + "'\n" +
           "If you've recently added a new type of Property, you must edit the\n" +
-          "propertyToObject() function in Native.ReactiNative.js");
+          "function Native.ReactiNative.propertyToObject");
       }
 
       return {
@@ -8928,98 +8928,134 @@ Elm.Native.ReactNative.make = function(localRuntime) {
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.ReactNative = Elm.ReactNative.ReactNative || {};
 Elm.ReactNative.ReactNative.make = function (_elm) {
-   "use strict";
-   _elm.ReactNative = _elm.ReactNative || {};
-   _elm.ReactNative.ReactNative = _elm.ReactNative.ReactNative || {};
-   if (_elm.ReactNative.ReactNative.values) return _elm.ReactNative.ReactNative.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Json$Decode = Elm.Json.Decode.make(_elm),
-   $Json$Encode = Elm.Json.Encode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Native$ReactNative = Elm.Native.ReactNative.make(_elm),
-   $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var nativeEventHandler = $Native$ReactNative.nativeEventHandler;
-   var NativeValue = {ctor: "NativeValue"};
-   var NativeProperty = F2(function (a,b) {    return {ctor: "NativeProperty",_0: a,_1: b};});
-   var on = F3(function (name,decoder,toMessage) {
-      var handler = A2(nativeEventHandler,decoder,toMessage);
-      var fullName = A2($Basics._op["++"],"on",name);
-      return A2(NativeProperty,fullName,handler);
-   });
-   var onPress = F2(function (address,msg) {    return A3(on,"Press",$Json$Decode.value,function (_p0) {    return A2($Signal.message,address,msg);});});
-   var JsonProperty = F2(function (a,b) {    return {ctor: "JsonProperty",_0: a,_1: b};});
-   var property = JsonProperty;
-   var imageSource = function (uri) {
-      return A2(property,"source",$Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "uri",_1: $Json$Encode.string(uri)}])));
-   };
-   var style = function (styles) {    return A2(property,"style",$ReactNative$Style.encode(styles));};
-   var VString = function (a) {    return {ctor: "VString",_0: a};};
-   var string = VString;
-   var VNode = F3(function (a,b,c) {    return {ctor: "VNode",_0: a,_1: b,_2: c};});
-   var node = F3(function (tagName,props,children) {    return A3(VNode,tagName,props,children);});
-   var view = VNode("View");
-   var text = VNode("Text");
-   var image = F2(function (props,source) {    return A3(VNode,"Image",props,source);});
-   return _elm.ReactNative.ReactNative.values = {_op: _op
-                                                ,node: node
-                                                ,string: string
-                                                ,view: view
-                                                ,text: text
-                                                ,image: image
-                                                ,style: style
-                                                ,imageSource: imageSource
-                                                ,onPress: onPress};
-};
+       "use strict";
+       _elm.ReactNative = _elm.ReactNative || {};
+       _elm.ReactNative.ReactNative = _elm.ReactNative.ReactNative ||
+           {};
+       if (_elm.ReactNative.ReactNative.values)
+          return _elm.ReactNative.ReactNative.values;
+       var _U = Elm.Native.Utils.make(_elm),
+       $Basics = Elm.Basics.make(_elm),
+       $Debug = Elm.Debug.make(_elm),
+       $Json$Decode = Elm.Json.Decode.make(_elm),
+       $Json$Encode = Elm.Json.Encode.make(_elm),
+       $List = Elm.List.make(_elm),
+       $Maybe = Elm.Maybe.make(_elm),
+       $Native$ReactNative = Elm.Native.ReactNative.make(_elm),
+       $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
+       $Result = Elm.Result.make(_elm),
+       $Signal = Elm.Signal.make(_elm);
+       var _op = {};
+       var nativeEventHandler = $Native$ReactNative.nativeEventHandler;
+       var NativeValue = {ctor: "NativeValue"};
+       var NativeProperty = F2(function (a,b) {
+                               return {ctor: "NativeProperty",_0: a,_1: b};
+                            });
+       var on = F3(function (name,decoder,toMessage) {
+                   var handler = A2(nativeEventHandler,decoder,toMessage);
+                   var fullName = A2($Basics._op["++"],"on",name);
+                   return A2(NativeProperty,fullName,handler);
+                });
+       var onPress = F2(function (address,msg) {
+                        return A3(on
+                                 ,"Press"
+                                 ,$Json$Decode.value
+                                 ,function (_p0) {
+                                    return A2($Signal.message,address,msg);
+                                 });
+                     });
+       var JsonProperty = F2(function (a,b) {
+                             return {ctor: "JsonProperty",_0: a,_1: b};
+                          });
+       var property = F2(function (name,value) {
+                         return A2(JsonProperty,name,value);
+                      });
+       var imageSource = function (uri) {
+          return A2(property
+                   ,"source"
+                   ,$Json$Encode.object(_U.list([{ctor: "_Tuple2"
+                                                 ,_0: "uri"
+                                                 ,_1: $Json$Encode.string(uri)}])));
+       };
+       var style = function (styles) {
+          return A2(property,"style",$ReactNative$Style.encode(styles));
+       };
+       var VString = function (a) { return {ctor: "VString",_0: a};};
+       var string = VString;
+       var VNode = F3(function (a,b,c) {
+                      return {ctor: "VNode",_0: a,_1: b,_2: c};
+                   });
+       var node = F3(function (tagName,props,children) {
+                     return A3(VNode,tagName,props,children);
+                  });
+       var view = VNode("View");
+       var text = VNode("Text");
+       var image = VNode("Image");
+       return _elm.ReactNative.ReactNative.values = {_op: _op
+                                                    ,node: node
+                                                    ,string: string
+                                                    ,view: view
+                                                    ,text: text
+                                                    ,image: image
+                                                    ,style: style
+                                                    ,imageSource: imageSource
+                                                    ,onPress: onPress};
+    };
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.NativeApp = Elm.ReactNative.NativeApp || {};
 Elm.ReactNative.NativeApp.make = function (_elm) {
-   "use strict";
-   _elm.ReactNative = _elm.ReactNative || {};
-   _elm.ReactNative.NativeApp = _elm.ReactNative.NativeApp || {};
-   if (_elm.ReactNative.NativeApp.values) return _elm.ReactNative.NativeApp.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var Config = F3(function (a,b,c) {    return {model: a,view: b,update: c};});
-   var ConfigAction = function (a) {    return {ctor: "ConfigAction",_0: a};};
-   var start = function (config) {
-      var normalUpdate = F2(function (maybeAction,model) {
-         var _p0 = maybeAction;
-         if (_p0.ctor === "Just") {
-               return A2(config.update,_p0._0,model);
-            } else {
-               return _U.crashCase("ReactNative.NativeApp",{start: {line: 39,column: 7},end: {line: 44,column: 52}},_p0)("This should never happen.");
-            }
-      });
-      var update = F2(function (action,model) {
-         var _p2 = action;
-         if (_p2.ctor === "ConfigAction") {
-               return A2(normalUpdate,_p2._0,model);
-            } else {
-               return model;
-            }
-      });
-      var actions = $Signal.mailbox($Maybe.Nothing);
-      var merged = $Signal.mergeMany(_U.list([A2($Signal.map,ConfigAction,actions.signal)]));
-      var model = A3($Signal.foldp,update,config.model,merged);
-      var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
-      return A2($Signal.map,config.view(address),model);
-   };
-   var Init = {ctor: "Init"};
-   return _elm.ReactNative.NativeApp.values = {_op: _op,start: start};
-};
+       "use strict";
+       _elm.ReactNative = _elm.ReactNative || {};
+       _elm.ReactNative.NativeApp = _elm.ReactNative.NativeApp || {};
+       if (_elm.ReactNative.NativeApp.values)
+          return _elm.ReactNative.NativeApp.values;
+       var _U = Elm.Native.Utils.make(_elm),
+       $Basics = Elm.Basics.make(_elm),
+       $Debug = Elm.Debug.make(_elm),
+       $List = Elm.List.make(_elm),
+       $Maybe = Elm.Maybe.make(_elm),
+       $ReactNative$ReactNative =
+       Elm.ReactNative.ReactNative.make(_elm),
+       $Result = Elm.Result.make(_elm),
+       $Signal = Elm.Signal.make(_elm);
+       var _op = {};
+       var Config = F3(function (a,b,c) {
+                       return {model: a,view: b,update: c};
+                    });
+       var ConfigAction = function (a) {
+          return {ctor: "ConfigAction",_0: a};
+       };
+       var start = function (config) {
+          var normalUpdate = F2(function (maybeAction,model) {
+                                var _p0 = maybeAction;
+                                if (_p0.ctor === "Just") {
+                                   return A2(config.update,_p0._0,model);
+                                } else {
+                                   return _U.crashCase("ReactNative.NativeApp"
+                                                      ,{start: {line: 39,column: 7},end: {line: 44,column: 52}}
+                                                      ,_p0)("This should never happen.");
+                                }
+                             });
+          var update = F2(function (action,model) {
+                          var _p2 = action;
+                          if (_p2.ctor === "ConfigAction") {
+                             return A2(normalUpdate,_p2._0,model);
+                          } else {
+                             return model;
+                          }
+                       });
+          var actions = $Signal.mailbox($Maybe.Nothing);
+          var merged = $Signal.mergeMany(_U.list([A2($Signal.map
+                                                    ,ConfigAction
+                                                    ,actions.signal)]));
+          var model = A3($Signal.foldp,update,config.model,merged);
+          var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
+          return A2($Signal.map,config.view(address),model);
+       };
+       var Init = {ctor: "Init"};
+       return _elm.ReactNative.NativeApp.values = {_op: _op
+                                                  ,start: start};
+    };
 Elm.Main = Elm.Main || {};
 Elm.Main.make = function (_elm) {
        "use strict";
