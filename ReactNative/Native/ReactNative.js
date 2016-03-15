@@ -52,7 +52,7 @@ Elm.Native.ReactNative.make = function(localRuntime) {
           property.ctor !== 'NativeProperty') {
         throw new Error("I don't know how to handle a Property of type '" + property.ctor + "'\n" +
           "If you've recently added a new type of Property, you must edit the\n" +
-          "function Native.ReactiNative.propertyToObject");
+          "function Native.ReactNative.propertyToObject");
       }
 
       return {
