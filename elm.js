@@ -1281,6 +1281,48 @@ if (!Elm.fullscreen) {
 			return init(Display.NONE, {}, module, args || {});
 		};
 
+		Elm.embedReact = function(module, containerElement, args)
+		{
+			function isReactElement(maybeElement) {
+				return maybeElement['$$typeof'] === Symbol.for('react.element');
+			}
+
+			function setReactVTree(reactElement, vtree) {
+				var newState = Object.assign({},
+					reactElement.state,
+					{_elmVTree: vtree}
+				);
+
+				console.log('setting state of react element: ', reactElement);
+				console.log('new state: ', newState);
+				reactElement.setState(newState);
+			}
+
+			function displayReactError(message) {
+				// TODO: bring up the RedBox with the error message
+				console.error(message);
+			}
+
+			var container = {
+				firstChild: containerElement,
+				appendChild: function (child) {
+					this.firstChild = containerElement;
+					if (isReactElement(child)) {
+						setReactVTree(containerElement, child);
+						return child;
+					} else {
+						console.warn('appendChild called on React container with non-React element: ', child);
+					}
+				},
+				removeChild: function() {
+					this.firstChild = null;
+				},
+				displayReactError: displayReactError,
+			}
+
+			init(Display.COMPONENT, container, module, args || {});
+		}
+
 		function init(display, container, module, args, moduleToReplace)
 		{
 			// defining state needed for an instance of the Elm RTS
@@ -1385,7 +1427,10 @@ if (!Elm.fullscreen) {
 			}
 			catch (error)
 			{
-				if (typeof container.appendChild === "function")
+				if (typeof container.displayReactError === 'function') {
+					container.displayReactError(error.message);
+				}
+				else if (typeof container.appendChild === "function")
 				{
 					container.appendChild(errorNode(error.message));
 				}
@@ -1571,9 +1616,19 @@ if (!Elm.fullscreen) {
 			}
 			else
 			{
-				var VirtualDom = Elm.Native.VirtualDom.make(elm);
-				render = VirtualDom.render;
-				update = VirtualDom.updateAndReplace;
+				if (typeof Elm.Native.ReactNative !== 'undefined') {
+					var ReactNative = Elm.Native.ReactNative.make(elm);
+					render = ReactNative.render;
+					update = ReactNative.updateAndReplace;
+				} else if (typeof Elm.Native.VirtualDom !== 'undefined') {
+					VirtualDom = Elm.Native.VirtualDom.make(elm);
+					render = VirtualDom.render;
+					update = VirtualDom.updateAndReplace;
+				} else {
+					throw new Error(
+						"It looks like you'd like to render with either React Native\n" +
+						"or VirtualDom, but I can't find either in the Elm.Native runtime.");
+				}
 			}
 
 			// Add the initialScene to the DOM
@@ -6594,7 +6649,7 @@ Elm.Signal.make = function (_elm) {
    var mergeMany = function (signalList) {
       var _p7 = $List.reverse(signalList);
       if (_p7.ctor === "[]") {
-            return _U.crashCase("Signal",{start: {line: 184,column: 3},end: {line: 189,column: 40}},_p7)("mergeMany was given an empty list!");
+            return _U.crashCase("Signal",{start: {line: 189,column: 3},end: {line: 194,column: 40}},_p7)("mergeMany was given an empty list!");
          } else {
             return A3($List.foldl,merge,_p7._0,_p7._1);
          }
@@ -8288,276 +8343,354 @@ Elm.Json.Decode.make = function (_elm) {
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.Style = Elm.ReactNative.Style || {};
 Elm.ReactNative.Style.make = function (_elm) {
-   "use strict";
-   _elm.ReactNative = _elm.ReactNative || {};
-   _elm.ReactNative.Style = _elm.ReactNative.Style || {};
-   if (_elm.ReactNative.Style.values) return _elm.ReactNative.Style.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Json$Encode = Elm.Json.Encode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var defaultTransform = {perspective: $Maybe.Nothing
-                          ,rotate: $Maybe.Nothing
-                          ,rotateX: $Maybe.Nothing
-                          ,rotateY: $Maybe.Nothing
-                          ,rotateZ: $Maybe.Nothing
-                          ,scale: $Maybe.Nothing
-                          ,scaleX: $Maybe.Nothing
-                          ,scaleY: $Maybe.Nothing
-                          ,translateX: $Maybe.Nothing
-                          ,translateY: $Maybe.Nothing
-                          ,skewX: $Maybe.Nothing
-                          ,skewY: $Maybe.Nothing};
-   var Transform = function (a) {
-      return function (b) {
-         return function (c) {
-            return function (d) {
-               return function (e) {
-                  return function (f) {
-                     return function (g) {
-                        return function (h) {
-                           return function (i) {
-                              return function (j) {
-                                 return function (k) {
-                                    return function (l) {
-                                       return {perspective: a
-                                              ,rotate: b
-                                              ,rotateX: c
-                                              ,rotateY: d
-                                              ,rotateZ: e
-                                              ,scale: f
-                                              ,scaleX: g
-                                              ,scaleY: h
-                                              ,translateX: i
-                                              ,translateY: j
-                                              ,skewX: k
-                                              ,skewY: l};
-                                    };
-                                 };
-                              };
-                           };
-                        };
+       "use strict";
+       _elm.ReactNative = _elm.ReactNative || {};
+       _elm.ReactNative.Style = _elm.ReactNative.Style || {};
+       if (_elm.ReactNative.Style.values)
+          return _elm.ReactNative.Style.values;
+       var _U = Elm.Native.Utils.make(_elm),
+       $Basics = Elm.Basics.make(_elm),
+       $Debug = Elm.Debug.make(_elm),
+       $Json$Encode = Elm.Json.Encode.make(_elm),
+       $List = Elm.List.make(_elm),
+       $Maybe = Elm.Maybe.make(_elm),
+       $Result = Elm.Result.make(_elm),
+       $Signal = Elm.Signal.make(_elm);
+       var _op = {};
+       var defaultTransform = {perspective: $Maybe.Nothing
+                              ,rotate: $Maybe.Nothing
+                              ,rotateX: $Maybe.Nothing
+                              ,rotateY: $Maybe.Nothing
+                              ,rotateZ: $Maybe.Nothing
+                              ,scale: $Maybe.Nothing
+                              ,scaleX: $Maybe.Nothing
+                              ,scaleY: $Maybe.Nothing
+                              ,translateX: $Maybe.Nothing
+                              ,translateY: $Maybe.Nothing
+                              ,skewX: $Maybe.Nothing
+                              ,skewY: $Maybe.Nothing};
+       var Transform = function (a) {
+          return function (b) {
+                 return function (c) {
+                        return function (d) {
+                               return function (e) {
+                                      return function (f) {
+                                             return function (g) {
+                                                    return function (h) {
+                                                           return function (i) {
+                                                                  return function (j) {
+                                                                         return function (k) {
+                                                                                return function (l) {
+                                                                                       return {perspective: a
+                                                                                              ,rotate: b
+                                                                                              ,rotateX: c
+                                                                                              ,rotateY: d
+                                                                                              ,rotateZ: e
+                                                                                              ,scale: f
+                                                                                              ,scaleX: g
+                                                                                              ,scaleY: h
+                                                                                              ,translateX: i
+                                                                                              ,translateY: j
+                                                                                              ,skewX: k
+                                                                                              ,skewY: l};
+                                                                                    };
+                                                                             };
+                                                                      };
+                                                               };
+                                                        };
+                                                 };
+                                          };
+                                   };
+                            };
                      };
-                  };
-               };
-            };
-         };
-      };
-   };
-   var encodeValue = function (value) {
-      var _p0 = value;
-      switch (_p0.ctor)
-      {case "NumberValue": return $Json$Encode.$float(_p0._0);
-         case "StringValue": return $Json$Encode.string(_p0._0);
-         case "ObjectValue": return $Json$Encode.object(A2($List.map,encodeDeclaration,_p0._0));
-         default: return $Json$Encode.list(A2($List.map,encodeObject,A2($List.filterMap,$Basics.identity,_p0._0)));}
-   };
-   var encodeDeclaration = function (_p1) {    var _p2 = _p1;return {ctor: "_Tuple2",_0: _p2._0,_1: encodeValue(_p2._1)};};
-   var encodeObject = function (_p3) {    var _p4 = _p3;return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: _p4._0,_1: encodeValue(_p4._1)}]));};
-   var toJsonProperty = function (style) {
-      var _p5 = style;
-      switch (_p5.ctor)
-      {case "StringStyle": return {ctor: "_Tuple2",_0: _p5._0._0,_1: encodeValue(_p5._0._1)};
-         case "NumberStyle": return {ctor: "_Tuple2",_0: _p5._0._0,_1: encodeValue(_p5._0._1)};
-         case "ObjectStyle": return {ctor: "_Tuple2",_0: _p5._0._0,_1: encodeValue(_p5._0._1)};
-         default: return {ctor: "_Tuple2",_0: _p5._0._0,_1: encodeValue(_p5._0._1)};}
-   };
-   var encode = function (styles) {    return $Json$Encode.object(A2($List.map,toJsonProperty,styles));};
-   var ListStyle = function (a) {    return {ctor: "ListStyle",_0: a};};
-   var ObjectStyle = function (a) {    return {ctor: "ObjectStyle",_0: a};};
-   var NumberStyle = function (a) {    return {ctor: "NumberStyle",_0: a};};
-   var StringStyle = function (a) {    return {ctor: "StringStyle",_0: a};};
-   var ListValue = function (a) {    return {ctor: "ListValue",_0: a};};
-   var listDeclaration = F2(function (name,value) {    return {ctor: "_Tuple2",_0: name,_1: ListValue(value)};});
-   var listStyle = F2(function (name,list) {    return ListStyle(A2(listDeclaration,name,list));});
-   var ObjectValue = function (a) {    return {ctor: "ObjectValue",_0: a};};
-   var objectDeclaration = F2(function (name,value) {    return {ctor: "_Tuple2",_0: name,_1: ObjectValue(value)};});
-   var objectStyle = F2(function (name,list) {    return ObjectStyle(A2(objectDeclaration,name,list));});
-   var NumberValue = function (a) {    return {ctor: "NumberValue",_0: a};};
-   var numberDeclaration = F2(function (name,value) {    return {ctor: "_Tuple2",_0: name,_1: NumberValue(value)};});
-   var numberStyle = F2(function (name,value) {    return NumberStyle(A2(numberDeclaration,name,value));});
-   var fontSize = numberStyle("fontSize");
-   var letterSpacing = numberStyle("letterSpacing");
-   var lineHeight = numberStyle("lineHeight");
-   var borderRadius = numberStyle("borderRadius");
-   var borderTopLeftRadius = numberStyle("borderTopLeftRadius");
-   var borderTopRightRadius = numberStyle("borderTopRightRadius");
-   var borderBottomLeftRadius = numberStyle("borderBottomLeftRadius");
-   var borderBottomRightRadius = numberStyle("borderBottomRightRadius");
-   var borderWidth = numberStyle("borderWidth");
-   var borderTopWidth = numberStyle("borderTopWidth");
-   var borderRightWidth = numberStyle("borderRightWidth");
-   var borderBottomWidth = numberStyle("borderBottomWidth");
-   var borderLeftWidth = numberStyle("borderLeftWidth");
-   var opacity = numberStyle("opacity");
-   var shadowOpacity = numberStyle("shadowOpacity");
-   var shadowRadius = numberStyle("shadowRadius");
-   var bottom = numberStyle("bottom");
-   var flex = numberStyle("flex");
-   var height = numberStyle("height");
-   var left = numberStyle("left");
-   var margin = numberStyle("margin");
-   var marginBottom = numberStyle("marginBottom");
-   var marginHorizontal = numberStyle("marginHorizontal");
-   var marginLeft = numberStyle("marginLeft");
-   var marginRight = numberStyle("marginRight");
-   var marginTop = numberStyle("marginTop");
-   var marginVertical = numberStyle("marginVertical");
-   var padding = numberStyle("padding");
-   var paddingBottom = numberStyle("paddingBottom");
-   var paddingHorizontal = numberStyle("paddingHorizontal");
-   var paddingLeft = numberStyle("paddingLeft");
-   var paddingRight = numberStyle("paddingRight");
-   var paddingTop = numberStyle("paddingTop");
-   var paddingVertical = numberStyle("paddingVertical");
-   var right = numberStyle("right");
-   var top = numberStyle("top");
-   var width = numberStyle("width");
-   var shadowOffset = F2(function (width,height) {
-      return A2(objectStyle,"shadowOffset",_U.list([A2(numberDeclaration,"width",width),A2(numberDeclaration,"height",height)]));
-   });
-   var StringValue = function (a) {    return {ctor: "StringValue",_0: a};};
-   var stringDeclaration = F2(function (name,value) {    return {ctor: "_Tuple2",_0: name,_1: StringValue(value)};});
-   var stringStyle = F2(function (name,value) {    return StringStyle(A2(stringDeclaration,name,value));});
-   var color = stringStyle("color");
-   var fontFamily = stringStyle("fontFamily");
-   var fontStyle = stringStyle("fontStyle");
-   var fontWeight = stringStyle("fontWeight");
-   var textAlign = stringStyle("textAlign");
-   var textDecorationLine = stringStyle("textDecorationLine");
-   var textDecorationStyle = stringStyle("textDecorationStyle");
-   var textDecorationColor = stringStyle("textDecorationColor");
-   var writingDirection = stringStyle("writingDirection");
-   var backfaceVisibility = stringStyle("backfaceVisibility");
-   var backgroundColor = stringStyle("backgroundColor");
-   var borderColor = stringStyle("borderColor");
-   var borderTopColor = stringStyle("borderTopColor");
-   var borderRightColor = stringStyle("borderRightColor");
-   var borderBottomColor = stringStyle("borderBottomColor");
-   var borderLeftColor = stringStyle("borderLeftColor");
-   var borderStyle = stringStyle("borderStyle");
-   var overflow = stringStyle("overflow");
-   var shadowColor = stringStyle("shadowColor");
-   var resizeMode = stringStyle("resizeMode");
-   var tintColor = stringStyle("tintColor");
-   var alignItems = stringStyle("alignItems");
-   var alignSelf = stringStyle("alignSelf");
-   var flexDirection = stringStyle("flexDirection");
-   var flexWrap = stringStyle("flexWrap");
-   var justifyContent = stringStyle("justifyContent");
-   var position = stringStyle("position");
-   var transform = function (options) {
-      return A2(listStyle,
-      "transform",
-      _U.list([A2($Maybe.map,numberDeclaration("perspective"),options.perspective)
-              ,A2($Maybe.map,stringDeclaration("rotate"),options.rotate)
-              ,A2($Maybe.map,stringDeclaration("rotateX"),options.rotateX)
-              ,A2($Maybe.map,stringDeclaration("rotateY"),options.rotateY)
-              ,A2($Maybe.map,stringDeclaration("rotateZ"),options.rotateZ)
-              ,A2($Maybe.map,numberDeclaration("scale"),options.scale)
-              ,A2($Maybe.map,numberDeclaration("scaleX"),options.scaleX)
-              ,A2($Maybe.map,numberDeclaration("scaleY"),options.scaleY)
-              ,A2($Maybe.map,numberDeclaration("translateX"),options.translateX)
-              ,A2($Maybe.map,numberDeclaration("translateY"),options.translateY)
-              ,A2($Maybe.map,stringDeclaration("skewX"),options.skewX)
-              ,A2($Maybe.map,stringDeclaration("skewY"),options.skewY)]));
-   };
-   return _elm.ReactNative.Style.values = {_op: _op
-                                          ,StringValue: StringValue
-                                          ,NumberValue: NumberValue
-                                          ,ObjectValue: ObjectValue
-                                          ,ListValue: ListValue
-                                          ,stringDeclaration: stringDeclaration
-                                          ,numberDeclaration: numberDeclaration
-                                          ,objectDeclaration: objectDeclaration
-                                          ,listDeclaration: listDeclaration
-                                          ,stringStyle: stringStyle
-                                          ,numberStyle: numberStyle
-                                          ,objectStyle: objectStyle
-                                          ,listStyle: listStyle
-                                          ,StringStyle: StringStyle
-                                          ,NumberStyle: NumberStyle
-                                          ,ObjectStyle: ObjectStyle
-                                          ,ListStyle: ListStyle
-                                          ,encodeValue: encodeValue
-                                          ,encodeDeclaration: encodeDeclaration
-                                          ,encodeObject: encodeObject
-                                          ,toJsonProperty: toJsonProperty
-                                          ,encode: encode
-                                          ,color: color
-                                          ,fontFamily: fontFamily
-                                          ,fontSize: fontSize
-                                          ,fontStyle: fontStyle
-                                          ,fontWeight: fontWeight
-                                          ,letterSpacing: letterSpacing
-                                          ,lineHeight: lineHeight
-                                          ,textAlign: textAlign
-                                          ,textDecorationLine: textDecorationLine
-                                          ,textDecorationStyle: textDecorationStyle
-                                          ,textDecorationColor: textDecorationColor
-                                          ,writingDirection: writingDirection
-                                          ,backfaceVisibility: backfaceVisibility
-                                          ,backgroundColor: backgroundColor
-                                          ,borderColor: borderColor
-                                          ,borderTopColor: borderTopColor
-                                          ,borderRightColor: borderRightColor
-                                          ,borderBottomColor: borderBottomColor
-                                          ,borderLeftColor: borderLeftColor
-                                          ,borderRadius: borderRadius
-                                          ,borderTopLeftRadius: borderTopLeftRadius
-                                          ,borderTopRightRadius: borderTopRightRadius
-                                          ,borderBottomLeftRadius: borderBottomLeftRadius
-                                          ,borderBottomRightRadius: borderBottomRightRadius
-                                          ,borderStyle: borderStyle
-                                          ,borderWidth: borderWidth
-                                          ,borderTopWidth: borderTopWidth
-                                          ,borderRightWidth: borderRightWidth
-                                          ,borderBottomWidth: borderBottomWidth
-                                          ,borderLeftWidth: borderLeftWidth
-                                          ,opacity: opacity
-                                          ,overflow: overflow
-                                          ,shadowColor: shadowColor
-                                          ,shadowOffset: shadowOffset
-                                          ,shadowOpacity: shadowOpacity
-                                          ,shadowRadius: shadowRadius
-                                          ,resizeMode: resizeMode
-                                          ,tintColor: tintColor
-                                          ,alignItems: alignItems
-                                          ,alignSelf: alignSelf
-                                          ,bottom: bottom
-                                          ,flex: flex
-                                          ,flexDirection: flexDirection
-                                          ,flexWrap: flexWrap
-                                          ,height: height
-                                          ,justifyContent: justifyContent
-                                          ,left: left
-                                          ,margin: margin
-                                          ,marginBottom: marginBottom
-                                          ,marginHorizontal: marginHorizontal
-                                          ,marginLeft: marginLeft
-                                          ,marginRight: marginRight
-                                          ,marginTop: marginTop
-                                          ,marginVertical: marginVertical
-                                          ,padding: padding
-                                          ,paddingBottom: paddingBottom
-                                          ,paddingHorizontal: paddingHorizontal
-                                          ,paddingLeft: paddingLeft
-                                          ,paddingRight: paddingRight
-                                          ,paddingTop: paddingTop
-                                          ,paddingVertical: paddingVertical
-                                          ,position: position
-                                          ,right: right
-                                          ,top: top
-                                          ,width: width
-                                          ,Transform: Transform
-                                          ,defaultTransform: defaultTransform
-                                          ,transform: transform};
-};
+              };
+       };
+       var encodeValue = function (value) {
+          var _p0 = value;
+          switch (_p0.ctor)
+          {
+            case "NumberValue":
+              return $Json$Encode.$float(_p0._0);
+            case "StringValue":
+              return $Json$Encode.string(_p0._0);
+            case "ObjectValue":
+              return $Json$Encode.object(A2($List.map
+                                           ,encodeDeclaration
+                                           ,_p0._0));
+            default:
+              return $Json$Encode.list(A2($List.map
+                                         ,encodeObject
+                                         ,A2($List.filterMap,$Basics.identity,_p0._0)));
+          }
+       };
+       var encodeDeclaration = function (_p1) {
+          var _p2 = _p1;
+          return {ctor: "_Tuple2",_0: _p2._0,_1: encodeValue(_p2._1)};
+       };
+       var encodeObject = function (_p3) {
+          var _p4 = _p3;
+          return $Json$Encode.object(_U.list([{ctor: "_Tuple2"
+                                              ,_0: _p4._0
+                                              ,_1: encodeValue(_p4._1)}]));
+       };
+       var toJsonProperty = function (style) {
+          var _p5 = style;
+          switch (_p5.ctor)
+          {
+            case "StringStyle":
+              return {ctor: "_Tuple2"
+                     ,_0: _p5._0._0
+                     ,_1: encodeValue(_p5._0._1)};
+            case "NumberStyle":
+              return {ctor: "_Tuple2"
+                     ,_0: _p5._0._0
+                     ,_1: encodeValue(_p5._0._1)};
+            case "ObjectStyle":
+              return {ctor: "_Tuple2"
+                     ,_0: _p5._0._0
+                     ,_1: encodeValue(_p5._0._1)};
+            default:
+              return {ctor: "_Tuple2"
+                     ,_0: _p5._0._0
+                     ,_1: encodeValue(_p5._0._1)};
+          }
+       };
+       var encode = function (styles) {
+          return $Json$Encode.object(A2($List.map,toJsonProperty,styles));
+       };
+       var ListStyle = function (a) {
+          return {ctor: "ListStyle",_0: a};
+       };
+       var ObjectStyle = function (a) {
+          return {ctor: "ObjectStyle",_0: a};
+       };
+       var NumberStyle = function (a) {
+          return {ctor: "NumberStyle",_0: a};
+       };
+       var StringStyle = function (a) {
+          return {ctor: "StringStyle",_0: a};
+       };
+       var ListValue = function (a) {
+          return {ctor: "ListValue",_0: a};
+       };
+       var listDeclaration = F2(function (name,value) {
+                                return {ctor: "_Tuple2",_0: name,_1: ListValue(value)};
+                             });
+       var listStyle = F2(function (name,list) {
+                          return ListStyle(A2(listDeclaration,name,list));
+                       });
+       var ObjectValue = function (a) {
+          return {ctor: "ObjectValue",_0: a};
+       };
+       var objectDeclaration = F2(function (name,value) {
+                                  return {ctor: "_Tuple2",_0: name,_1: ObjectValue(value)};
+                               });
+       var objectStyle = F2(function (name,list) {
+                            return ObjectStyle(A2(objectDeclaration,name,list));
+                         });
+       var NumberValue = function (a) {
+          return {ctor: "NumberValue",_0: a};
+       };
+       var numberDeclaration = F2(function (name,value) {
+                                  return {ctor: "_Tuple2",_0: name,_1: NumberValue(value)};
+                               });
+       var numberStyle = F2(function (name,value) {
+                            return NumberStyle(A2(numberDeclaration,name,value));
+                         });
+       var fontSize = numberStyle("fontSize");
+       var letterSpacing = numberStyle("letterSpacing");
+       var lineHeight = numberStyle("lineHeight");
+       var borderRadius = numberStyle("borderRadius");
+       var borderTopLeftRadius = numberStyle("borderTopLeftRadius");
+       var borderTopRightRadius = numberStyle("borderTopRightRadius");
+       var borderBottomLeftRadius =
+       numberStyle("borderBottomLeftRadius");
+       var borderBottomRightRadius =
+       numberStyle("borderBottomRightRadius");
+       var borderWidth = numberStyle("borderWidth");
+       var borderTopWidth = numberStyle("borderTopWidth");
+       var borderRightWidth = numberStyle("borderRightWidth");
+       var borderBottomWidth = numberStyle("borderBottomWidth");
+       var borderLeftWidth = numberStyle("borderLeftWidth");
+       var opacity = numberStyle("opacity");
+       var shadowOpacity = numberStyle("shadowOpacity");
+       var shadowRadius = numberStyle("shadowRadius");
+       var bottom = numberStyle("bottom");
+       var flex = numberStyle("flex");
+       var height = numberStyle("height");
+       var left = numberStyle("left");
+       var margin = numberStyle("margin");
+       var marginBottom = numberStyle("marginBottom");
+       var marginHorizontal = numberStyle("marginHorizontal");
+       var marginLeft = numberStyle("marginLeft");
+       var marginRight = numberStyle("marginRight");
+       var marginTop = numberStyle("marginTop");
+       var marginVertical = numberStyle("marginVertical");
+       var padding = numberStyle("padding");
+       var paddingBottom = numberStyle("paddingBottom");
+       var paddingHorizontal = numberStyle("paddingHorizontal");
+       var paddingLeft = numberStyle("paddingLeft");
+       var paddingRight = numberStyle("paddingRight");
+       var paddingTop = numberStyle("paddingTop");
+       var paddingVertical = numberStyle("paddingVertical");
+       var right = numberStyle("right");
+       var top = numberStyle("top");
+       var width = numberStyle("width");
+       var shadowOffset = F2(function (width,height) {
+                             return A2(objectStyle
+                                      ,"shadowOffset"
+                                      ,_U.list([A2(numberDeclaration,"width",width)
+                                               ,A2(numberDeclaration,"height",height)]));
+                          });
+       var StringValue = function (a) {
+          return {ctor: "StringValue",_0: a};
+       };
+       var stringDeclaration = F2(function (name,value) {
+                                  return {ctor: "_Tuple2",_0: name,_1: StringValue(value)};
+                               });
+       var stringStyle = F2(function (name,value) {
+                            return StringStyle(A2(stringDeclaration,name,value));
+                         });
+       var color = stringStyle("color");
+       var fontFamily = stringStyle("fontFamily");
+       var fontStyle = stringStyle("fontStyle");
+       var fontWeight = stringStyle("fontWeight");
+       var textAlign = stringStyle("textAlign");
+       var textDecorationLine = stringStyle("textDecorationLine");
+       var textDecorationStyle = stringStyle("textDecorationStyle");
+       var textDecorationColor = stringStyle("textDecorationColor");
+       var writingDirection = stringStyle("writingDirection");
+       var backfaceVisibility = stringStyle("backfaceVisibility");
+       var backgroundColor = stringStyle("backgroundColor");
+       var borderColor = stringStyle("borderColor");
+       var borderTopColor = stringStyle("borderTopColor");
+       var borderRightColor = stringStyle("borderRightColor");
+       var borderBottomColor = stringStyle("borderBottomColor");
+       var borderLeftColor = stringStyle("borderLeftColor");
+       var borderStyle = stringStyle("borderStyle");
+       var overflow = stringStyle("overflow");
+       var shadowColor = stringStyle("shadowColor");
+       var resizeMode = stringStyle("resizeMode");
+       var tintColor = stringStyle("tintColor");
+       var alignItems = stringStyle("alignItems");
+       var alignSelf = stringStyle("alignSelf");
+       var flexDirection = stringStyle("flexDirection");
+       var flexWrap = stringStyle("flexWrap");
+       var justifyContent = stringStyle("justifyContent");
+       var position = stringStyle("position");
+       var transform = function (options) {
+          return A2(listStyle
+                   ,"transform"
+                   ,_U.list([A2($Maybe.map
+                               ,numberDeclaration("perspective")
+                               ,options.perspective)
+                            ,A2($Maybe.map,stringDeclaration("rotate"),options.rotate)
+                            ,A2($Maybe.map,stringDeclaration("rotateX"),options.rotateX)
+                            ,A2($Maybe.map,stringDeclaration("rotateY"),options.rotateY)
+                            ,A2($Maybe.map,stringDeclaration("rotateZ"),options.rotateZ)
+                            ,A2($Maybe.map,numberDeclaration("scale"),options.scale)
+                            ,A2($Maybe.map,numberDeclaration("scaleX"),options.scaleX)
+                            ,A2($Maybe.map,numberDeclaration("scaleY"),options.scaleY)
+                            ,A2($Maybe.map
+                               ,numberDeclaration("translateX")
+                               ,options.translateX)
+                            ,A2($Maybe.map
+                               ,numberDeclaration("translateY")
+                               ,options.translateY)
+                            ,A2($Maybe.map,stringDeclaration("skewX"),options.skewX)
+                            ,A2($Maybe.map,stringDeclaration("skewY"),options.skewY)]));
+       };
+       return _elm.ReactNative.Style.values = {_op: _op
+                                              ,StringValue: StringValue
+                                              ,NumberValue: NumberValue
+                                              ,ObjectValue: ObjectValue
+                                              ,ListValue: ListValue
+                                              ,stringDeclaration: stringDeclaration
+                                              ,numberDeclaration: numberDeclaration
+                                              ,objectDeclaration: objectDeclaration
+                                              ,listDeclaration: listDeclaration
+                                              ,stringStyle: stringStyle
+                                              ,numberStyle: numberStyle
+                                              ,objectStyle: objectStyle
+                                              ,listStyle: listStyle
+                                              ,StringStyle: StringStyle
+                                              ,NumberStyle: NumberStyle
+                                              ,ObjectStyle: ObjectStyle
+                                              ,ListStyle: ListStyle
+                                              ,encodeValue: encodeValue
+                                              ,encodeDeclaration: encodeDeclaration
+                                              ,encodeObject: encodeObject
+                                              ,toJsonProperty: toJsonProperty
+                                              ,encode: encode
+                                              ,color: color
+                                              ,fontFamily: fontFamily
+                                              ,fontSize: fontSize
+                                              ,fontStyle: fontStyle
+                                              ,fontWeight: fontWeight
+                                              ,letterSpacing: letterSpacing
+                                              ,lineHeight: lineHeight
+                                              ,textAlign: textAlign
+                                              ,textDecorationLine: textDecorationLine
+                                              ,textDecorationStyle: textDecorationStyle
+                                              ,textDecorationColor: textDecorationColor
+                                              ,writingDirection: writingDirection
+                                              ,backfaceVisibility: backfaceVisibility
+                                              ,backgroundColor: backgroundColor
+                                              ,borderColor: borderColor
+                                              ,borderTopColor: borderTopColor
+                                              ,borderRightColor: borderRightColor
+                                              ,borderBottomColor: borderBottomColor
+                                              ,borderLeftColor: borderLeftColor
+                                              ,borderRadius: borderRadius
+                                              ,borderTopLeftRadius: borderTopLeftRadius
+                                              ,borderTopRightRadius: borderTopRightRadius
+                                              ,borderBottomLeftRadius: borderBottomLeftRadius
+                                              ,borderBottomRightRadius: borderBottomRightRadius
+                                              ,borderStyle: borderStyle
+                                              ,borderWidth: borderWidth
+                                              ,borderTopWidth: borderTopWidth
+                                              ,borderRightWidth: borderRightWidth
+                                              ,borderBottomWidth: borderBottomWidth
+                                              ,borderLeftWidth: borderLeftWidth
+                                              ,opacity: opacity
+                                              ,overflow: overflow
+                                              ,shadowColor: shadowColor
+                                              ,shadowOffset: shadowOffset
+                                              ,shadowOpacity: shadowOpacity
+                                              ,shadowRadius: shadowRadius
+                                              ,resizeMode: resizeMode
+                                              ,tintColor: tintColor
+                                              ,alignItems: alignItems
+                                              ,alignSelf: alignSelf
+                                              ,bottom: bottom
+                                              ,flex: flex
+                                              ,flexDirection: flexDirection
+                                              ,flexWrap: flexWrap
+                                              ,height: height
+                                              ,justifyContent: justifyContent
+                                              ,left: left
+                                              ,margin: margin
+                                              ,marginBottom: marginBottom
+                                              ,marginHorizontal: marginHorizontal
+                                              ,marginLeft: marginLeft
+                                              ,marginRight: marginRight
+                                              ,marginTop: marginTop
+                                              ,marginVertical: marginVertical
+                                              ,padding: padding
+                                              ,paddingBottom: paddingBottom
+                                              ,paddingHorizontal: paddingHorizontal
+                                              ,paddingLeft: paddingLeft
+                                              ,paddingRight: paddingRight
+                                              ,paddingTop: paddingTop
+                                              ,paddingVertical: paddingVertical
+                                              ,position: position
+                                              ,right: right
+                                              ,top: top
+                                              ,width: width
+                                              ,Transform: Transform
+                                              ,defaultTransform: defaultTransform
+                                              ,transform: transform};
+    };
 function F2(fun)
 {
     function wrapper(a) { return function(b) { return fun(a,b); }; }
@@ -8699,36 +8832,95 @@ Elm.Native.ReactNative.make = function(localRuntime) {
         return localRuntime.Native.ReactNative.values;
     }
 
+    var List = Elm.Native.List.make(localRuntime);
     var Json = Elm.Native.Json.make(localRuntime);
     var Signal = Elm.Native.Signal.make(localRuntime);
+    var React = require('react-native');
 
-    var prepareReset = true;
-    var eventHandlerCount = 0;
-    localRuntime.ports._ReactNativeEventHandlers = {};
-
-    function on(decoder, createMessage) {
-        if(prepareReset){
-            eventHandlerCount = 0;
-            localRuntime.ports._ReactNativeEventHandlers = {};
-        }
-
+    function nativeEventHandler(decoder, createMessage) {
         function eventHandler(event) {
             var value = A2(Json.runDecoderValue, decoder, event);
             if (value.ctor === 'Ok') {
                 Signal.sendMessage(createMessage(value._0));
             }
         }
-        localRuntime.ports._ReactNativeEventHandlers[++eventHandlerCount] = eventHandler;
-        prepareReset = false;
-        return eventHandlerCount;
+        return eventHandler;
     }
 
-    Elm.Native.ReactNative.prepareResetHandlers = function () {
-        prepareReset = true;
+    function vtreeToReactElement(vtree) {
+      switch (vtree.ctor) {
+        case 'VString':
+        {
+          return vtree._0;
+        }
+        case 'VNode':
+        {
+          var tagName = vtree._0;
+          var propertyList = vtree._1;
+          var childNodes = vtree._2;
+
+          var reactClass = React[tagName];
+          var props = propertyListToObject(propertyList);
+          var children = List.toArray(childNodes).map(vtreeToReactElement);
+
+          var args = [reactClass, props].concat(children);
+          return React.createElement.apply(null, args);
+        }
+        default:
+          throw new Error("I don't know how to render a VTree of type '" + vtree.ctor + "'\n" +
+            "If you've recently added a new type of VTree, you must add a new case to\n" +
+            "the switch statement in Native.ReactNative.vtreeToReactElement");
+      }
     }
+
+    function propertyToObject(property) {
+      if (property.ctor !== 'JsonProperty' &&
+          property.ctor !== 'NativeProperty') {
+        throw new Error("I don't know how to handle a Property of type '" + property.ctor + "'\n" +
+          "If you've recently added a new type of Property, you must edit the\n" +
+          "function Native.ReactiNative.propertyToObject");
+      }
+
+      return {
+        key: property._0,
+        value: property._1,
+      };
+    }
+
+    function propertyListToObject(list)
+  	{
+  		var object = {};
+  		while (list.ctor !== '[]')
+  		{
+  			var entry = propertyToObject(list._0);
+  			object[entry.key] = entry.value;
+  			list = list._1;
+  		}
+  		return object;
+  	}
+
+    function render(vtree) {
+      return vtreeToReactElement(vtree);
+    }
+
+    function setReactVTree(reactElement, vtree) {
+			var newState = Object.assign({},
+				reactElement.state,
+				{_elmVTree: vtreeToReactElement(vtree)}
+			);
+
+			reactElement.setState(newState);
+		}
+
+    function updateAndReplace(containerElement, oldVTree, newVTree) {
+      setReactVTree(containerElement, newVTree);
+    }
+
 
     localRuntime.Native.ReactNative.values = {
-        on: F2(on),
+        render: render,
+        updateAndReplace: updateAndReplace,
+        nativeEventHandler: F2(nativeEventHandler),
     };
     return localRuntime.Native.ReactNative.values;
 };
@@ -8736,165 +8928,214 @@ Elm.Native.ReactNative.make = function(localRuntime) {
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.ReactNative = Elm.ReactNative.ReactNative || {};
 Elm.ReactNative.ReactNative.make = function (_elm) {
-   "use strict";
-   _elm.ReactNative = _elm.ReactNative || {};
-   _elm.ReactNative.ReactNative = _elm.ReactNative.ReactNative || {};
-   if (_elm.ReactNative.ReactNative.values) return _elm.ReactNative.ReactNative.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Json$Decode = Elm.Json.Decode.make(_elm),
-   $Json$Encode = Elm.Json.Encode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Native$ReactNative = Elm.Native.ReactNative.make(_elm),
-   $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var maybeEncodeHandler = function (handler) {
-      var _p0 = handler;
-      if (_p0.ctor === "Just") {
-            return A2($List._op["::"],{ctor: "_Tuple2",_0: _p0._0._0,_1: $Json$Encode.$int(_p0._0._1)},_U.list([]));
-         } else {
-            return _U.list([]);
-         }
-   };
-   var encode = function (vtree) {
-      var _p1 = vtree;
-      switch (_p1.ctor)
-      {case "VNode": return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string(_p1._0)}
-                                                        ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._1)}
-                                                        ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(A2($List.map,encode,_p1._2))}]));
-         case "VText": return $Json$Encode.object(A2($Basics._op["++"],
-           maybeEncodeHandler(_p1._1),
-           _U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string("Text")}
-                   ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._0)}
-                   ,{ctor: "_Tuple2",_0: "children",_1: $Json$Encode.list(_U.list([$Json$Encode.string(_p1._2)]))}])));
-         default: return $Json$Encode.object(_U.list([{ctor: "_Tuple2",_0: "tagName",_1: $Json$Encode.string("Image")}
-                                                     ,{ctor: "_Tuple2",_0: "style",_1: $ReactNative$Style.encode(_p1._0)}
-                                                     ,{ctor: "_Tuple2",_0: "source",_1: $Json$Encode.string(_p1._1)}]));}
-   };
-   var on = F2(function (decoder,toMessage) {    return A2($Native$ReactNative.on,decoder,toMessage);});
-   var onPress = F2(function (address,msg) {
-      return {ctor: "_Tuple2",_0: "onPress",_1: A2(on,$Json$Decode.value,function (_p2) {    return A2($Signal.message,address,msg);})};
-   });
-   var VImage = F2(function (a,b) {    return {ctor: "VImage",_0: a,_1: b};});
-   var image = F2(function (styles,source) {    return A2(VImage,styles,source);});
-   var VText = F3(function (a,b,c) {    return {ctor: "VText",_0: a,_1: b,_2: c};});
-   var text = F3(function (styles,handler,textContent) {    return A3(VText,styles,handler,textContent);});
-   var VNode = F3(function (a,b,c) {    return {ctor: "VNode",_0: a,_1: b,_2: c};});
-   var node = F3(function (tagName,styles,children) {    return A3(VNode,tagName,styles,children);});
-   var view = F2(function (styles,children) {    return A3(VNode,"View",styles,children);});
-   return _elm.ReactNative.ReactNative.values = {_op: _op,node: node,view: view,text: text,image: image,encode: encode,onPress: onPress};
-};
+       "use strict";
+       _elm.ReactNative = _elm.ReactNative || {};
+       _elm.ReactNative.ReactNative = _elm.ReactNative.ReactNative ||
+           {};
+       if (_elm.ReactNative.ReactNative.values)
+          return _elm.ReactNative.ReactNative.values;
+       var _U = Elm.Native.Utils.make(_elm),
+       $Basics = Elm.Basics.make(_elm),
+       $Debug = Elm.Debug.make(_elm),
+       $Json$Decode = Elm.Json.Decode.make(_elm),
+       $Json$Encode = Elm.Json.Encode.make(_elm),
+       $List = Elm.List.make(_elm),
+       $Maybe = Elm.Maybe.make(_elm),
+       $Native$ReactNative = Elm.Native.ReactNative.make(_elm),
+       $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
+       $Result = Elm.Result.make(_elm),
+       $Signal = Elm.Signal.make(_elm);
+       var _op = {};
+       var nativeEventHandler = $Native$ReactNative.nativeEventHandler;
+       var NativeValue = {ctor: "NativeValue"};
+       var NativeProperty = F2(function (a,b) {
+                               return {ctor: "NativeProperty",_0: a,_1: b};
+                            });
+       var on = F3(function (name,decoder,toMessage) {
+                   var handler = A2(nativeEventHandler,decoder,toMessage);
+                   var fullName = A2($Basics._op["++"],"on",name);
+                   return A2(NativeProperty,fullName,handler);
+                });
+       var onPress = F2(function (address,msg) {
+                        return A3(on
+                                 ,"Press"
+                                 ,$Json$Decode.value
+                                 ,function (_p0) {
+                                    return A2($Signal.message,address,msg);
+                                 });
+                     });
+       var JsonProperty = F2(function (a,b) {
+                             return {ctor: "JsonProperty",_0: a,_1: b};
+                          });
+       var property = F2(function (name,value) {
+                         return A2(JsonProperty,name,value);
+                      });
+       var imageSource = function (uri) {
+          return A2(property
+                   ,"source"
+                   ,$Json$Encode.object(_U.list([{ctor: "_Tuple2"
+                                                 ,_0: "uri"
+                                                 ,_1: $Json$Encode.string(uri)}])));
+       };
+       var style = function (styles) {
+          return A2(property,"style",$ReactNative$Style.encode(styles));
+       };
+       var VString = function (a) { return {ctor: "VString",_0: a};};
+       var string = VString;
+       var VNode = F3(function (a,b,c) {
+                      return {ctor: "VNode",_0: a,_1: b,_2: c};
+                   });
+       var node = F3(function (tagName,props,children) {
+                     return A3(VNode,tagName,props,children);
+                  });
+       var view = VNode("View");
+       var text = VNode("Text");
+       var image = VNode("Image");
+       return _elm.ReactNative.ReactNative.values = {_op: _op
+                                                    ,node: node
+                                                    ,string: string
+                                                    ,view: view
+                                                    ,text: text
+                                                    ,image: image
+                                                    ,style: style
+                                                    ,imageSource: imageSource
+                                                    ,onPress: onPress};
+    };
 Elm.ReactNative = Elm.ReactNative || {};
 Elm.ReactNative.NativeApp = Elm.ReactNative.NativeApp || {};
 Elm.ReactNative.NativeApp.make = function (_elm) {
-   "use strict";
-   _elm.ReactNative = _elm.ReactNative || {};
-   _elm.ReactNative.NativeApp = _elm.ReactNative.NativeApp || {};
-   if (_elm.ReactNative.NativeApp.values) return _elm.ReactNative.NativeApp.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Json$Encode = Elm.Json.Encode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var Config = F4(function (a,b,c,d) {    return {model: a,view: b,update: c,init: d};});
-   var ConfigAction = function (a) {    return {ctor: "ConfigAction",_0: a};};
-   var Init = {ctor: "Init"};
-   var start = function (config) {
-      var normalUpdate = F2(function (maybeAction,model) {
-         var _p0 = maybeAction;
-         if (_p0.ctor === "Just") {
-               return A2(config.update,_p0._0,model);
-            } else {
-               return _U.crashCase("ReactNative.NativeApp",{start: {line: 41,column: 7},end: {line: 46,column: 52}},_p0)("This should never happen.");
-            }
-      });
-      var update = F2(function (action,model) {
-         var _p2 = action;
-         if (_p2.ctor === "ConfigAction") {
-               return A2(normalUpdate,_p2._0,model);
-            } else {
-               return model;
-            }
-      });
-      var actions = $Signal.mailbox($Maybe.Nothing);
-      var merged = $Signal.mergeMany(_U.list([A2($Signal.map,ConfigAction,actions.signal),A2($Signal.map,$Basics.always(Init),config.init)]));
-      var model = A3($Signal.foldp,update,config.model,merged);
-      var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
-      return A2($Signal.map,$ReactNative$ReactNative.encode,A2($Signal.map,config.view(address),model));
-   };
-   return _elm.ReactNative.NativeApp.values = {_op: _op,start: start};
-};
+       "use strict";
+       _elm.ReactNative = _elm.ReactNative || {};
+       _elm.ReactNative.NativeApp = _elm.ReactNative.NativeApp || {};
+       if (_elm.ReactNative.NativeApp.values)
+          return _elm.ReactNative.NativeApp.values;
+       var _U = Elm.Native.Utils.make(_elm),
+       $Basics = Elm.Basics.make(_elm),
+       $Debug = Elm.Debug.make(_elm),
+       $List = Elm.List.make(_elm),
+       $Maybe = Elm.Maybe.make(_elm),
+       $ReactNative$ReactNative =
+       Elm.ReactNative.ReactNative.make(_elm),
+       $Result = Elm.Result.make(_elm),
+       $Signal = Elm.Signal.make(_elm);
+       var _op = {};
+       var Config = F3(function (a,b,c) {
+                       return {model: a,view: b,update: c};
+                    });
+       var ConfigAction = function (a) {
+          return {ctor: "ConfigAction",_0: a};
+       };
+       var start = function (config) {
+          var normalUpdate = F2(function (maybeAction,model) {
+                                var _p0 = maybeAction;
+                                if (_p0.ctor === "Just") {
+                                   return A2(config.update,_p0._0,model);
+                                } else {
+                                   return _U.crashCase("ReactNative.NativeApp"
+                                                      ,{start: {line: 39,column: 7},end: {line: 44,column: 52}}
+                                                      ,_p0)("This should never happen.");
+                                }
+                             });
+          var update = F2(function (action,model) {
+                          var _p2 = action;
+                          if (_p2.ctor === "ConfigAction") {
+                             return A2(normalUpdate,_p2._0,model);
+                          } else {
+                             return model;
+                          }
+                       });
+          var actions = $Signal.mailbox($Maybe.Nothing);
+          var merged = $Signal.mergeMany(_U.list([A2($Signal.map
+                                                    ,ConfigAction
+                                                    ,actions.signal)]));
+          var model = A3($Signal.foldp,update,config.model,merged);
+          var address = A2($Signal.forwardTo,actions.address,$Maybe.Just);
+          return A2($Signal.map,config.view(address),model);
+       };
+       var Init = {ctor: "Init"};
+       return _elm.ReactNative.NativeApp.values = {_op: _op
+                                                  ,start: start};
+    };
 Elm.Main = Elm.Main || {};
 Elm.Main.make = function (_elm) {
-   "use strict";
-   _elm.Main = _elm.Main || {};
-   if (_elm.Main.values) return _elm.Main.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Json$Encode = Elm.Json.Encode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $ReactNative$NativeApp = Elm.ReactNative.NativeApp.make(_elm),
-   $ReactNative$ReactNative = Elm.ReactNative.ReactNative.make(_elm),
-   $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var init = Elm.Native.Port.make(_elm).inboundSignal("init",
-   "()",
-   function (v) {
-      return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple0"} : _U.badPort("an array",v);
-   });
-   var button = F4(function (address,action,color,content) {
-      return A3($ReactNative$ReactNative.text,
-      _U.list([$ReactNative$Style.color("white")
-              ,$ReactNative$Style.textAlign("center")
-              ,$ReactNative$Style.backgroundColor(color)
-              ,$ReactNative$Style.paddingTop(5)
-              ,$ReactNative$Style.paddingBottom(5)
-              ,$ReactNative$Style.width(30)
-              ,$ReactNative$Style.fontWeight("bold")
-              ,$ReactNative$Style.shadowColor("#000")
-              ,$ReactNative$Style.shadowOpacity(0.25)
-              ,A2($ReactNative$Style.shadowOffset,1,1)
-              ,$ReactNative$Style.shadowRadius(5)
-              ,$ReactNative$Style.transform(_U.update($ReactNative$Style.defaultTransform,{rotate: $Maybe.Just("10deg")}))]),
-      $Maybe.Just(A2($ReactNative$ReactNative.onPress,address,action)),
-      content);
-   });
-   var update = F2(function (action,model) {    var _p0 = action;if (_p0.ctor === "Increment") {    return model + 1;} else {    return model - 1;}});
-   var Decrement = {ctor: "Decrement"};
-   var Increment = {ctor: "Increment"};
-   var view = F2(function (address,count) {
-      return A2($ReactNative$ReactNative.view,
-      _U.list([$ReactNative$Style.alignItems("center")]),
-      _U.list([A2($ReactNative$ReactNative.image,
-              _U.list([$ReactNative$Style.height(64),$ReactNative$Style.width(64),$ReactNative$Style.marginBottom(30)]),
-              "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png")
-              ,A3($ReactNative$ReactNative.text,
-              _U.list([$ReactNative$Style.textAlign("center"),$ReactNative$Style.marginBottom(30)]),
-              $Maybe.Nothing,
-              A2($Basics._op["++"],"Counter: ",$Basics.toString(count)))
-              ,A2($ReactNative$ReactNative.view,
-              _U.list([$ReactNative$Style.width(80),$ReactNative$Style.flexDirection("row"),$ReactNative$Style.justifyContent("space-between")]),
-              _U.list([A4(button,address,Decrement,"#d33","-"),A4(button,address,Increment,"#3d3","+")]))]));
-   });
-   var model = 9000;
-   var viewTree = Elm.Native.Port.make(_elm).outboundSignal("viewTree",
-   function (v) {
-      return v;
-   },
-   $ReactNative$NativeApp.start({model: model,view: view,update: update,init: init}));
-   return _elm.Main.values = {_op: _op,model: model,view: view,Increment: Increment,Decrement: Decrement,update: update,button: button};
-};
+       "use strict";
+       _elm.Main = _elm.Main || {};
+       if (_elm.Main.values)    return _elm.Main.values;
+       var _U = Elm.Native.Utils.make(_elm),
+       $Basics = Elm.Basics.make(_elm),
+       $Debug = Elm.Debug.make(_elm),
+       $List = Elm.List.make(_elm),
+       $Maybe = Elm.Maybe.make(_elm),
+       $ReactNative$NativeApp = Elm.ReactNative.NativeApp.make(_elm),
+       $ReactNative$ReactNative =
+       Elm.ReactNative.ReactNative.make(_elm),
+       $ReactNative$Style = Elm.ReactNative.Style.make(_elm),
+       $Result = Elm.Result.make(_elm),
+       $Signal = Elm.Signal.make(_elm);
+       var _op = {};
+       var button = F4(function (address,action,color,content) {
+                       return A2($ReactNative$ReactNative.text
+                                ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.color("white")
+                                                                                 ,$ReactNative$Style.textAlign("center")
+                                                                                 ,$ReactNative$Style.backgroundColor(color)
+                                                                                 ,$ReactNative$Style.paddingTop(5)
+                                                                                 ,$ReactNative$Style.paddingBottom(5)
+                                                                                 ,$ReactNative$Style.width(30)
+                                                                                 ,$ReactNative$Style.fontWeight("bold")
+                                                                                 ,$ReactNative$Style.shadowColor("#000")
+                                                                                 ,$ReactNative$Style.shadowOpacity(0.25)
+                                                                                 ,A2($ReactNative$Style.shadowOffset,1,1)
+                                                                                 ,$ReactNative$Style.shadowRadius(5)
+                                                                                 ,$ReactNative$Style.transform(_U.update($ReactNative$Style.defaultTransform
+                                                                                                                        ,{rotate: $Maybe.Just("10deg")}))]))
+                                         ,A2($ReactNative$ReactNative.onPress,address,action)])
+                                ,_U.list([$ReactNative$ReactNative.string(content)]));
+                    });
+       var update = F2(function (action,model) {
+                       var _p0 = action;
+                       if (_p0.ctor === "Increment") {
+                          return model + 1;
+                       } else {
+                          return model - 1;
+                       }
+                    });
+       var Decrement = {ctor: "Decrement"};
+       var Increment = {ctor: "Increment"};
+       var view = F2(function (address,count) {
+                     return A2($ReactNative$ReactNative.view
+                              ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.alignItems("center")]))])
+                              ,_U.list([A2($ReactNative$ReactNative.image
+                                          ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.height(64)
+                                                                                           ,$ReactNative$Style.width(64)
+                                                                                           ,$ReactNative$Style.marginBottom(30)]))
+                                                   ,$ReactNative$ReactNative.imageSource("https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png")])
+                                          ,_U.list([]))
+                                       ,A2($ReactNative$ReactNative.text
+                                          ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.textAlign("center")
+                                                                                           ,$ReactNative$Style.marginBottom(30)]))])
+                                          ,_U.list([$ReactNative$ReactNative.string(A2($Basics._op["++"]
+                                                                                      ,"Counter: "
+                                                                                      ,$Basics.toString(count)))]))
+                                       ,A2($ReactNative$ReactNative.view
+                                          ,_U.list([$ReactNative$ReactNative.style(_U.list([$ReactNative$Style.width(80)
+                                                                                           ,$ReactNative$Style.flexDirection("row")
+                                                                                           ,$ReactNative$Style.justifyContent("space-between")]))])
+                                          ,_U.list([A4(button,address,Decrement,"#d33","-")
+                                                   ,A4(button,address,Increment,"#3d3","+")]))]));
+                  });
+       var model = 9000;
+       var app = $ReactNative$NativeApp.start({model: model
+                                              ,view: view
+                                              ,update: update});
+       var main = app;
+       return _elm.Main.values = {_op: _op
+                                 ,app: app
+                                 ,main: main
+                                 ,model: model
+                                 ,view: view
+                                 ,Increment: Increment
+                                 ,Decrement: Decrement
+                                 ,update: update
+                                 ,button: button};
+    };
 module.exports = Elm;

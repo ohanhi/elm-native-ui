@@ -1,7 +1,7 @@
 module ReactNative.ReactNative
     ( VTree
-    , node, view, text, image
-    , encode
+    , node, string, view, text, image
+    , style, imageSource
     , onPress
     ) where
 
@@ -13,74 +13,169 @@ import ReactNative.Style as RnStyle
 import Native.ElmFunctions
 import Native.ReactNative
 
-
-type alias EventHandlerRef = Int
-
-
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type VTree
-  = VNode String (List RnStyle.Style) (List VTree)
-  | VText (List RnStyle.Style) (Maybe (String, EventHandlerRef)) String
-  | VImage (List RnStyle.Style) String
+  = VNode String (List Property) (List VTree)
+  | VString String
 
 
-node : String -> List RnStyle.Style -> List VTree -> VTree
-node tagName styles children =
-  VNode tagName styles children
+{-| `VTree` nodes take a List of Properties (or "props") to specify their behavior and presentation.
+Most Properties can be represented as Json values, and you should always try to do so if possible.
+If you must use a property that can't be encoded as Json, the NativeProperty tag can be used
+to attach an opaque `NativeValue`.
+-}
+type Property
+  = JsonProperty String Json.Decode.Value
+  | NativeProperty String NativeValue
 
 
-view : List RnStyle.Style -> List VTree -> VTree
-view styles children =
-  VNode "View" styles children
+{-| An opaque value that is backed by a Native javascript value.
+This is used to attach event handlers to `VTree` nodes, since functions can't be encoded
+as Json values.
+
+Try not to use `NativeValue` if you can avoid it, since the compiler can't help you
+catch any mistakes that might lead to runtime errors.
+-}
+type NativeValue = NativeValue
 
 
-text : List RnStyle.Style -> Maybe (String, EventHandlerRef) -> String -> VTree
-text styles handler textContent =
-  VText styles handler textContent
+{-| Create a `VTree` node with the given `tagName`, a list of properties,
+and a list of child `VTree` nodes.
+
+The `tagName` will be used to look up a React Component class with the same name,
+so e.g. `node "View"` will render a React Native `View` component.
+-}
+node : String -> List Property -> List VTree -> VTree
+node tagName props children =
+  VNode tagName props children
 
 
-image : List RnStyle.Style -> String -> VTree
-image styles source =
-  VImage styles source
+{-| Just turn a plain text string into a `VTree` node, so that you can add it
+as a child of another node.
+
+    text
+      [ style
+        [ Style.fontSize 20
+        , Style.color "blue"
+        ]
+      ]
+      [ string "Hello World!" ]
+-}
+string : String -> VTree
+string =
+  VString
 
 
-on : Json.Decode.Decoder a -> (a -> Signal.Message) -> EventHandlerRef
-on decoder toMessage =
-  Native.ReactNative.on decoder toMessage
+{-| Create a React Native `View` element with the given properties and children.
+
+`View` is the fundamental building block of React Native's UI component system.
+It represents a rectangle on the screen, and is commonly used as a container for
+other UI elements, similar to a `div` in HTML.
+-}
+view : List Property -> List VTree -> VTree
+view =
+  VNode "View"
 
 
-onPress : Signal.Address a -> a -> (String, EventHandlerRef)
+{-| Create a React Native `Text` element.
+
+`Text` elements let you add styles, event handlers, and other React Native properties to
+text strings.  They can be nested, for example, if you want part of a string to be bold:
+
+    text
+      [ onPress address SayHello ]
+      [ string "This text has default styling, but "
+      , text
+          [ style [ Style.fontWeight "bold" ] ]
+          [ string "this is BOLD!" ]
+      ]
+
+Since the `onPress` handler is attached to the outer `text` element, you can press on
+either the bold or unstyled text to `SayHello`.
+-}
+text : List Property -> List VTree -> VTree
+text =
+  VNode "Text"
+
+{-| Create a React Native `Image` element.
+
+Use these for displaying images from the web, or (soon!) images that are bundled
+in with your app.
+
+To tell the image element what to render, you need to give it an `imageSource` property
+with the URI of the image.
+
+Unlike the HTML `image` tag, a React Native `Image` element will not resize to fit its contents,
+so you must provide some way for the layout engine to determine the size,
+or else it won't show up onscreen.  You can either set an explicit `width` and `height` in the
+`style` property, or you can use flexbox to have the image size itself proportionally to its
+container.
+
+An image element can have children, in which case it acts similarly to the `background-image`
+CSS property on the web:
+
+    image
+      [ imageSource "http://example.com/fuzzy_kitten.png"
+      , style
+        [ Style.width 100
+        , Style.height 100
+        , Style.alignItems "center"
+        ]
+      ]
+      [ text
+          [ style [ Style.fontSize 30 ] ]
+          [ string "This text will be rendered inside the image.  It's meme time!" ]
+      ]
+-}
+image : List Property -> List VTree -> VTree
+image =
+  VNode "Image"
+
+
+-- Properties
+
+{-| Attach arbitrary properties to `VTree` nodes.
+
+Use this for properties that can be represented as Json values.
+-}
+property : String -> Json.Decode.Value -> Property
+property name value =
+  JsonProperty name value
+
+{-| Turns a String URI into the "source" property for an image element.
+-}
+imageSource : String -> Property
+imageSource uri =
+  Json.Encode.object [ ("uri", Json.Encode.string uri) ]
+    |> property "source"
+
+
+{-| Turns a list of `Style`s into a property you can attach to a `VTree` node.
+-}
+style : List RnStyle.Style -> Property
+style styles =
+  RnStyle.encode styles
+    |> property "style"
+
+
+-- Events
+
+
+nativeEventHandler : Json.Decode.Decoder a -> (a -> Signal.Message) -> NativeValue
+nativeEventHandler =
+  Native.ReactNative.nativeEventHandler
+
+
+on : String -> Json.Decode.Decoder a -> (a -> Signal.Message) -> Property
+on name decoder toMessage =
+  let
+    fullName = "on" ++ name
+    handler = nativeEventHandler decoder toMessage
+  in
+    NativeProperty fullName handler
+
+
+onPress : Signal.Address a -> a -> Property
 onPress address msg =
-  ("onPress", on Json.Decode.value (\_ -> Signal.message address msg))
-
-
-encode : VTree -> Json.Encode.Value
-encode vtree =
-  case vtree of
-    VNode tagName styles children ->
-      Json.Encode.object
-        [ ("tagName", Json.Encode.string tagName)
-        , ("style", RnStyle.encode styles)
-        , ("children", Json.Encode.list (List.map encode children))
-        ]
-    VText styles handler textContent ->
-      Json.Encode.object <|
-        (maybeEncodeHandler handler) ++
-        [ ("tagName", Json.Encode.string "Text")
-        , ("style", RnStyle.encode styles)
-        , ("children", Json.Encode.list [Json.Encode.string textContent])
-        ]
-    VImage styles source ->
-      Json.Encode.object
-        [ ("tagName", Json.Encode.string "Image")
-        , ("style", RnStyle.encode styles)
-        , ("source", Json.Encode.string source)
-        ]
-
-
-maybeEncodeHandler : Maybe (String, EventHandlerRef) -> List (String, Json.Encode.Value)
-maybeEncodeHandler handler =
-  case handler of
-    Just (handlerName, handlerRef) ->
-      (handlerName, Json.Encode.int handlerRef) :: []
-    Nothing ->
-      []
+  on "Press" Json.Decode.value (\_ -> Signal.message address msg)

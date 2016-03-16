@@ -10,11 +10,10 @@ type alias Config model action =
   { model : model
   , view : Signal.Address action -> model -> RN.VTree
   , update : action -> model -> model
-  , init : Signal ()
   }
 
 
-start : Config model action -> Signal Json.Encode.Value
+start : Config model action -> Signal RN.VTree
 start config =
   let
     actions =
@@ -23,7 +22,6 @@ start config =
     merged =
       Signal.mergeMany
         [ Signal.map ConfigAction actions.signal
-        , Signal.map (always Init) config.init
         ]
 
     address =
@@ -50,4 +48,3 @@ start config =
   in
     model
     |> Signal.map (config.view address)
-    |> Signal.map RN.encode
