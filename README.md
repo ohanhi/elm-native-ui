@@ -64,13 +64,6 @@ $ npm start
 For more insight, read this blog post: [Elm Native UI: Writing a React Native app in Elm](http://ohanhi.github.io/elm-native-ui.html)
 
 
-## Major blockers
-
-The "traditional" [Navigator](https://facebook.github.io/react-native/docs/navigator.html#content) in React Native is tricky. It manages state, and expects callback functions for several different things. It also has methods that [mutate the state](https://facebook.github.io/react-native/docs/navigator.html#navigator-methods).
-
-Elm Native UI was just updated to use React Native 0.21.0, which brings a more functional navigation model: [NavigationExperimental](https://github.com/facebook/react-native/commit/a3085464f6ea36fc6b53cd0c711c048ffb1516f9). We'll see how that works for us.
-
-
 ## Screenshots
 
 iOS | Android
@@ -83,17 +76,17 @@ iOS | Android
   - [x] Show something from Elm
   - [x] Make basic VTree work
   - [x] Add some kind of event handlers
-- [ ] Library
-  - [ ] Make `main` support our VTree ([see this suggestion](https://github.com/ohanhi/elm-native/commit/0a35edeb0c21985394b6f3b296140da431aa936c#commitcomment-14303291))
+- [x] Library
+  - [x] Make `main` support our VTree ([see this suggestion](https://github.com/ohanhi/elm-native/commit/0a35edeb0c21985394b6f3b296140da431aa936c#commitcomment-14303291))
 - [ ] Styles
   - [x] Basic types for styles
   - [x] Support object type styles - _transform styles and `shadowOffset`_
   - [ ] Make enum type styles safer - _currently all Strings_
   - [ ] Allow the `StyleSheet.create` method for styles
 - [ ] Props
-  - [ ] Improve event handlers - _currently uses event handler ids_
+  - [x] Improve event handlers - _currently uses event handler ids_
   - [ ] Support props besides styles and event handlers
-  - [ ] Unify syntax for styles, handlers and other props
+  - [x] Unify syntax for styles, handlers and other props
 
 
 ## License
