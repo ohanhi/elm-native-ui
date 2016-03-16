@@ -13,6 +13,24 @@ No.
 
 ## Get it running
 
+
+### Caution: Experimental software!
+
+The newest version of Elm Native UI depends on
+
+- [modified Elm compiler](https://github.com/NoRedInk/elm-compiler/tree/elm-native-ui) ([ZIP](https://github.com/NoRedInk/elm-compiler/archive/elm-native-ui.zip)) &mdash; Must be on your `PATH` before the standard elm-compiler. You will need to [build the compiler from source](https://github.com/NoRedInk/elm-compiler/tree/elm-native-ui#build-from-source--contribute) yourself for now.
+
+- [modified elm-core](https://github.com/yusefnapora/core/tree/elm-native-ui) ([ZIP](https://github.com/yusefnapora/core/archive/elm-native-ui.zip)) &mdash; Must replace the `elm-stuff/packages/elm-lang/core/3.0.0` directory in your project.
+
+The modified compiler will allow our React Native "Virtual Tree", or `VTree` for short, to pass through `main`, just like `Html` from elm-html does.
+
+The modified elm-core adds a function to enable rendering for the VTree type.
+
+_If you clone the repositories yourself, make sure you checkout the elm-native-ui branch on each of them before using._
+
+
+### Actually getting it running
+
 Install React Native following [their guide](https://facebook.github.io/react-native/docs/getting-started.html#content). Check that you can create a new project with `react-native init AwesomeProject` and try running it on a real or virtual device.
 
 Once that's out of the way, clone this repository and in the directory:
