@@ -1,5 +1,5 @@
 {
-  "name": "ElmNative",
+  "name": "ElmNativeUi",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "chokidar-cli": "^1.2.0",
-    "react-native": "0.21.0-rc"
+    "react-native": "0.21.0"
   }
 }
