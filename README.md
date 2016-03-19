@@ -18,22 +18,52 @@ No.
 
 The newest version of Elm Native UI depends on
 
-- [modified Elm compiler](https://github.com/NoRedInk/elm-compiler/tree/elm-native-ui) ([ZIP](https://github.com/NoRedInk/elm-compiler/archive/elm-native-ui.zip)) &mdash; Must be on your `PATH` before the standard elm-compiler. You will need to [build the compiler from source](https://github.com/NoRedInk/elm-compiler/tree/elm-native-ui#build-from-source--contribute) yourself for now.
+- [modified Elm compiler](/elm-native-ui/elm-compiler/) &mdash; **Must be on your `PATH`** before the standard `elm-make`. There is a [pre-built `elm-make`](/elm-native-ui/elm-compiler/built/elm-make) for OS X 64-bit. For other platforms you will need to build the compiler from source yourself for now.
 
-- [modified elm-core](https://github.com/yusefnapora/core/tree/elm-native-ui) ([ZIP](https://github.com/yusefnapora/core/archive/elm-native-ui.zip)) &mdash; Must replace the `elm-stuff/packages/elm-lang/core/3.0.0` directory in your project.
+- [modified core](/elm-native-ui/core/) &mdash; Must replace the `elm-lang/core` package in your project.
 
-The modified compiler will allow our React Native "Virtual Tree", or `VTree` for short, to pass through `main`, just like `Html` from elm-html does.
-
-The modified elm-core adds a function to enable rendering for the VTree type.
-
-_If you clone the repositories yourself, make sure you checkout the elm-native-ui branch on each of them before using._
+The modified compiler will allow our `NativeUi` type to pass through `main`, and the modified core enables rendering for it.
 
 
 ### Actually getting it running
 
-Install React Native following [their guide](https://facebook.github.io/react-native/docs/getting-started.html#content). Check that you can create a new project with `react-native init AwesomeProject` and try running it on a real or virtual device.
+Install React Native following [their guide](https://facebook.github.io/react-native/docs/getting-started.html#content). Check that you can create a new project:
 
-Once that's out of the way, clone this repository and in the directory:
+```bash
+$ react-native init MyAppName
+```
+
+and try running it on a real or virtual device.
+
+Once that works, clone this repository and the [modified core](/elm-native-ui/core/) in the same directory where you ran `react-native init` in. You should have a directory structure similar to this:
+
+```
+--|
+  -- core
+  |
+  -- elm-native-ui
+  |
+  -- MyAppName
+```
+
+Go ahead and copy the files from the [`examples`](examples) in your React Native app directory now and try to compile the Elm code with
+
+```bash
+$ npm run compile
+```
+
+This will create the `elm-package.json` and `elm-stuff` for you, even though it won't compile yet. (Also, edit the `index.*.js` files' last lines in case your React Native app is not called 'MyAppName' at this point.)
+
+We will then use [elm_self_publish](https://github.com/NoRedInk/elm-ops-tooling#elm_self_publish) to publish the Elm packages into our project.
+
+```bash
+$ python elm_self_publish.py ./core ./MyAppName
+$ python elm_self_publish.py ./elm-native-ui ./MyAppName
+```
+
+Now we are ready to rock! 🤘🎸
+
+Just to list out the basics:
 
 ```bash
 # install dependencies
@@ -46,7 +76,7 @@ $ react-native run-ios
 $ react-native run-android
 ```
 
-When you make changes to the code, you only need to recompile Elm and press Cmd-R on the Simulator (iOS) or emulator (Android).
+When you make changes to the code, you only need to recompile Elm and press Cmd-R on the Simulator (iOS) or refresh the emulator (Android).
 
 If you wish, you can also start a file watcher for \*.elm files, which will recompile whenever you make a change:
 
@@ -57,11 +87,9 @@ $ npm start
 
 ## How it works
 
-* `Main.elm` is the main "app" file -- where the actual application lives.
-* The `ReactNative` directory contains the Elm module that provides the types and bindings for React Native in Elm
-* `index.ios.js` makes the bridging between the compiled-to-JS Elm code and React Native
+This section was outdated, but for an overview of the older structure, read this blog post: [Elm Native UI: Writing a React Native app in Elm](http://ohanhi.github.io/elm-native-ui.html)
 
-For more insight, read this blog post: [Elm Native UI: Writing a React Native app in Elm](http://ohanhi.github.io/elm-native-ui.html)
+You can also watch this [ElmCast Live episode](https://www.livecoding.tv/elmcast/videos/JjbOK-elmcast-live-2), where @ohanhi explains some of the differences between the old and the new versions. (You can safely skip the first 5 minutes, as we had technical issues in the beginning.)
 
 
 ## Screenshots
