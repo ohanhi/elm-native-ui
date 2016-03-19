@@ -8,7 +8,7 @@
     ],
     "exposed-modules": [
         "NativeUi",
-        "NativeApp",
+        "NativeUi.NativeApp",
         "NativeUi.Style"
     ],
     "native-modules": true,
