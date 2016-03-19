@@ -7,4 +7,4 @@
 var {AppRegistry} = require('react-native');
 var ElmAppWrapper = require('./ElmAppWrapper');
 
-AppRegistry.registerComponent('ElmNative', ElmAppWrapper);
+AppRegistry.registerComponent('MyAppName', ElmAppWrapper);
