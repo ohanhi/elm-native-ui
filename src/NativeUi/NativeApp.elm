@@ -2,7 +2,10 @@ module NativeUi.NativeApp (start) where
 
 import NativeUi as Ui
 
-type Action a = Init | ConfigAction a
+
+type Action a
+  = Init
+  | ConfigAction a
 
 
 type alias Config model action =
@@ -37,13 +40,13 @@ start config =
     normalUpdate maybeAction model =
       case maybeAction of
         Just action ->
-            config.update action model
+          config.update action model
 
         Nothing ->
-            Debug.crash "This should never happen."
+          Debug.crash "This should never happen."
 
     model =
       Signal.foldp update config.model merged
   in
     model
-    |> Signal.map (config.view address)
+      |> Signal.map (config.view address)

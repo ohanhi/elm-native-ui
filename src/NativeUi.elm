@@ -42,7 +42,8 @@ as Json values.
 Try not to use `NativeValue` if you can avoid it, since the compiler can't help you
 catch any mistakes that might lead to runtime errors.
 -}
-type NativeValue = NativeValue
+type NativeValue
+  = NativeValue
 
 
 {-| Create a `NativeUi` node with the given `tagName`, a list of properties,
@@ -103,6 +104,7 @@ text : List Property -> List NativeUi -> NativeUi
 text =
   VNode "Text"
 
+
 {-| Create a React Native `Image` element.
 
 Use these for displaying images from the web, or (soon!) images that are bundled
@@ -138,6 +140,7 @@ image =
   VNode "Image"
 
 
+
 -- Properties
 
 
@@ -149,11 +152,12 @@ property : String -> Json.Decode.Value -> Property
 property name value =
   JsonProperty name value
 
+
 {-| Turns a String URI into the "source" property for an image element.
 -}
 imageSource : String -> Property
 imageSource uri =
-  Json.Encode.object [ ("uri", Json.Encode.string uri) ]
+  Json.Encode.object [ ( "uri", Json.Encode.string uri ) ]
     |> property "source"
 
 
@@ -163,6 +167,7 @@ style : List Style.Style -> Property
 style styles =
   Style.encode styles
     |> property "style"
+
 
 
 -- Events
@@ -176,8 +181,11 @@ nativeEventHandler =
 on : String -> Json.Decode.Decoder a -> (a -> Signal.Message) -> Property
 on name decoder toMessage =
   let
-    fullName = "on" ++ name
-    handler = nativeEventHandler decoder toMessage
+    fullName =
+      "on" ++ name
+
+    handler =
+      nativeEventHandler decoder toMessage
   in
     NativeProperty fullName handler
 
