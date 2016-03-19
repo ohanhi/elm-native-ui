@@ -18,25 +18,24 @@ No.
 
 The newest version of Elm Native UI depends on
 
-- [modified Elm compiler](/elm-native-ui/elm-compiler/) &mdash; **Must be on your `PATH`** before the standard elm-make. There is a [pre-built `elm-make`](/elm-native-ui/elm-compiler/built/elm-make) for OS X 64-bit. For other platforms you will need to build the compiler from source yourself for now.
+- [modified Elm compiler](/elm-native-ui/elm-compiler/) &mdash; **Must be on your `PATH`** before the standard `elm-make`. There is a [pre-built `elm-make`](/elm-native-ui/elm-compiler/built/elm-make) for OS X 64-bit. For other platforms you will need to build the compiler from source yourself for now.
 
 - [modified core](/elm-native-ui/core/) &mdash; Must replace the `elm-lang/core` package in your project.
 
-The modified compiler will allow our `NativeUi` type to pass through `main`, just like `Html` from elm-html does.
-
-The modified core adds a function to enable rendering for the `NativeUi` type.
+The modified compiler will allow our `NativeUi` type to pass through `main`, and the modified core enables rendering for it.
 
 
 ### Actually getting it running
 
 Install React Native following [their guide](https://facebook.github.io/react-native/docs/getting-started.html#content). Check that you can create a new project:
+
 ```bash
 $ react-native init MyAppName
 ```
 
 and try running it on a real or virtual device.
 
-Once that works, clone this repository and the [modified core](/elm-native-ui/core/) in the same directory. You should have a directory structure similar to this:
+Once that works, clone this repository and the [modified core](/elm-native-ui/core/) in the same directory where you ran `react-native init` in. You should have a directory structure similar to this:
 
 ```
 --|
