@@ -4,11 +4,12 @@
     "repository": "https://github.com/elm-native-ui/elm-native-ui.git",
     "license": "BSD3",
     "source-directories": [
-        ".",
-        "ReactNative"
+        "src"
     ],
     "exposed-modules": [
-        "ReactNative"
+        "NativeUi",
+        "NativeApp",
+        "NativeUi.Style"
     ],
     "native-modules": true,
     "dependencies": {
