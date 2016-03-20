@@ -56,6 +56,8 @@ This will create the `elm-package.json` and `elm-stuff` for you, even though it 
 
 We will then use [elm_self_publish](https://github.com/NoRedInk/elm-ops-tooling#elm_self_publish) to publish the Elm packages into our project.
 
+Assuming we're in the parent directory where `core` and `elm-native-ui` reside, and that `elm_self_publish.py` is in that same directory:
+
 ```bash
 $ python elm_self_publish.py ./core ./MyAppName
 $ python elm_self_publish.py ./elm-native-ui ./MyAppName
