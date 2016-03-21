@@ -35,7 +35,7 @@ $ react-native init MyAppName
 
 and try running it on a real or virtual device.
 
-Once that works, clone this repository and the [modified core](/elm-native-ui/core/) in the same directory where you ran `react-native init` in. You should have a directory structure similar to this:
+Once that works, clone this repository and the [modified core](https://github.com/elm-native-ui/core/) in the same directory where you ran `react-native init` in. You should have a directory structure similar to this:
 
 ```
 --|
