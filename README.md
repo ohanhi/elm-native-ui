@@ -18,7 +18,7 @@ No.
 
 The newest version of Elm Native UI depends on
 
-- [modified Elm compiler](https://github.com/elm-native-ui/elm-compiler/) &mdash; **Must be on your `PATH`** before the standard `elm-make`. There is a [pre-built `elm-make`](https://github.com/elm-native-ui/elm-compiler/built/elm-make) for OS X 64-bit. For other platforms you will need to build the compiler from source yourself for now.
+- [modified Elm compiler](https://github.com/elm-native-ui/elm-compiler/) &mdash; **Must be on your `PATH`** before the standard `elm-make`. There is a [pre-built `elm-make`](https://github.com/elm-native-ui/elm-compiler/blob/master/built/elm-make?raw=true) for OS X 64-bit. For other platforms you will need to build the compiler from source yourself for now.
 
 - [modified core](https://github.com/elm-native-ui/core/) &mdash; Must replace the `elm-lang/core` package in your project.
 
