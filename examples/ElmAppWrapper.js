@@ -5,8 +5,9 @@ var {
   AppRegistry,
   StyleSheet,
   Text,
+  TextInput,
   View,
-  Image,
+  Image
 } = React;
 
 
