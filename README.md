@@ -18,9 +18,9 @@ No.
 
 The newest version of Elm Native UI depends on
 
-- [modified Elm compiler](/elm-native-ui/elm-compiler/) &mdash; **Must be on your `PATH`** before the standard `elm-make`. There is a [pre-built `elm-make`](/elm-native-ui/elm-compiler/built/elm-make) for OS X 64-bit. For other platforms you will need to build the compiler from source yourself for now.
+- [modified Elm compiler](https://github.com/elm-native-ui/elm-compiler/) &mdash; **Must be on your `PATH`** before the standard `elm-make`. There is a [pre-built `elm-make`](https://github.com/elm-native-ui/elm-compiler/blob/master/built/elm-make?raw=true) for OS X 64-bit. For other platforms you will need to build the compiler from source yourself for now.
 
-- [modified core](/elm-native-ui/core/) &mdash; Must replace the `elm-lang/core` package in your project.
+- [modified core](https://github.com/elm-native-ui/core/) &mdash; Must replace the `elm-lang/core` package in your project.
 
 The modified compiler will allow our `NativeUi` type to pass through `main`, and the modified core enables rendering for it.
 
@@ -35,7 +35,7 @@ $ react-native init MyAppName
 
 and try running it on a real or virtual device.
 
-Once that works, clone this repository and the [modified core](/elm-native-ui/core/) in the same directory where you ran `react-native init` in. You should have a directory structure similar to this:
+Once that works, clone this repository and the [modified core](https://github.com/elm-native-ui/core/) in the same directory where you ran `react-native init` in. You should have a directory structure similar to this:
 
 ```
 --|
