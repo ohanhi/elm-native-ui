@@ -177,7 +177,7 @@ style styles =
 
 value : String -> Property
 value val =
-  JsonProperty "name" (Json.Encode.string val)
+  JsonProperty "value" (Json.Encode.string val)
 
 -- Events
 
