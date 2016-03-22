@@ -1,4 +1,4 @@
-module NativeUi (NativeUi, node, string, view, text, image, style, imageSource, onPress) where
+module NativeUi (NativeUi, node, string, view, text, value, property, textInput, image, style, imageSource, onPress) where
 
 {-| Render your application as a React Native app.
 
@@ -105,6 +105,13 @@ text =
   VNode "Text"
 
 
+{-| Create a React Native `Text` element.
+-}
+textInput : List Property -> List NativeUi -> NativeUi
+textInput =
+  VNode "TextInput"
+
+
 {-| Create a React Native `Image` element.
 
 Use these for displaying images from the web, or (soon!) images that are bundled
@@ -168,7 +175,9 @@ style styles =
   Style.encode styles
     |> property "style"
 
-
+value : String -> Property
+value val =
+  JsonProperty "name" (Json.Encode.string val)
 
 -- Events
 
