@@ -1,4 +1,4 @@
-module NativeUi (NativeUi, node, string, view, text, value, placeholder, property, textInput, image, style, imageSource, onPress, onChangeText) where
+module NativeUi (NativeUi, node, string, view, text, textInput, image, style, imageSource, onPress, onChangeText, placeholder, value) where
 
 {-| Render your application as a React Native app.
 
