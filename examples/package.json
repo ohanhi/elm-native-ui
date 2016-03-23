@@ -1,15 +1,16 @@
 {
-  "name": "ElmNativeUi",
+  "name": "MyAppName",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "precompile": "rm -f elm.js",
     "compile": "elm-make Main.elm --output elm.js",
     "postcompile": "echo 'module.exports = Elm;' >> elm.js",
-    "start": "chokidar '**/*.elm' -c 'npm run compile'"
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "watch": "chokidar '**/*.elm' -c 'npm run compile'"
   },
   "dependencies": {
     "chokidar-cli": "^1.2.0",
-    "react-native": "0.21.0"
+    "react-native": "0.22.0"
   }
 }
