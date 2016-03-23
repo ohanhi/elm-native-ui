@@ -1,4 +1,4 @@
-module NativeUi (NativeUi, node, string, view, text, value, property, textInput, image, style, imageSource, onPress) where
+module NativeUi (NativeUi, node, string, view, text, value, placeholder, property, textInput, image, style, imageSource, onPress, onChangeText) where
 
 {-| Render your application as a React Native app.
 
@@ -105,7 +105,23 @@ text =
   VNode "Text"
 
 
-{-| Create a React Native `Text` element.
+{-| Create a React Native `TextInput` element.
+
+A foundational component for inputting text into the app via a
+keyboard. Props provide configurability for several features, such as
+auto-correction, auto-capitalization, placeholder text, and different keyboard
+types, such as a numeric keypad.
+The simplest use case is to plop down a `TextInput` and subscribe to the
+`onChangeText` events to read the user input:
+
+  textInput
+    [ Ui.value "current value"
+    , Ui.onChangeText address (\s -> TextChanged s)
+    ]
+    []
+
+Children must be empty unless multiline is set to true.
+
 -}
 textInput : List Property -> List NativeUi -> NativeUi
 textInput =
@@ -175,9 +191,17 @@ style styles =
   Style.encode styles
     |> property "style"
 
+
 value : String -> Property
 value val =
   JsonProperty "value" (Json.Encode.string val)
+
+
+placeholder : String -> Property
+placeholder val =
+  JsonProperty "placeholder" (Json.Encode.string val)
+
+
 
 -- Events
 
@@ -204,3 +228,10 @@ on name decoder toMessage =
 onPress : Signal.Address a -> a -> Property
 onPress address msg =
   on "Press" Json.Decode.value (\_ -> Signal.message address msg)
+
+
+{-| Binds an event handler into the `onChangeText` event.
+-}
+onChangeText : Signal.Address a -> (String -> a) -> Property
+onChangeText address textToAction =
+  on "ChangeText" Json.Decode.string (\text -> Signal.message address (textToAction text))
