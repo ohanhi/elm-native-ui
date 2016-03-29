@@ -2,7 +2,7 @@ module NativeUi.Elements (..) where
 
 {-| elm-native-ui Elements
 
-@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar
+@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, view
 -}
 
 import NativeUi exposing (Property, NativeUi, node)
@@ -86,3 +86,8 @@ textInput =
 toolbar : List Property -> List NativeUi -> NativeUi
 toolbar =
   node "Toolbar"
+
+
+view : List Property -> List NativeUi -> NativeUi
+view =
+  node "View"

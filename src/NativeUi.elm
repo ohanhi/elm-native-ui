@@ -1,13 +1,13 @@
-module NativeUi (NativeUi, node, string, view, text, image, style, imageSource, on, onPress, Property, jsonProperty, nativeProperty) where
+module NativeUi (NativeUi, node, string, style, on, Property, property) where
 
 {-| Render your application as a React Native app.
 
 # Types
 @docs NativeUi
 # Common Helpers
-@docs node, string, view, text, image, style, imageSource, jsonProperty, nativeProperty
+@docs node, string, style, property
 # Events
-@docs on, onPress
+@docs on
 # Types
 @docs Property
 -}
@@ -35,18 +35,6 @@ to attach an opaque `NativeValue`.
 type Property
   = JsonProperty String Json.Decode.Value
   | NativeProperty String NativeValue
-
-
-{-| -}
-jsonProperty : String -> Json.Decode.Value -> Property
-jsonProperty name decodeValue =
-  JsonProperty name decodeValue
-
-
-{-| -}
-nativeProperty : String -> NativeValue -> Property
-nativeProperty name nativeValue =
-  NativeProperty name nativeValue
 
 
 {-| An opaque value that is backed by a Native javascript value.
@@ -87,73 +75,6 @@ string =
   VString
 
 
-{-| Create a React Native `View` element with the given properties and children.
-
-`View` is the fundamental building block of React Native's UI component system.
-It represents a rectangle on the screen, and is commonly used as a container for
-other UI elements, similar to a `div` in HTML.
--}
-view : List Property -> List NativeUi -> NativeUi
-view =
-  VNode "View"
-
-
-{-| Create a React Native `Text` element.
-
-`Text` elements let you add styles, event handlers, and other React Native properties to
-text strings.  They can be nested, for example, if you want part of a string to be bold:
-
-    text
-      [ onPress address SayHello ]
-      [ string "This text has default styling, but "
-      , text
-          [ style [ Style.fontWeight "bold" ] ]
-          [ string "this is BOLD!" ]
-      ]
-
-Since the `onPress` handler is attached to the outer `text` element, you can press on
-either the bold or unstyled text to `SayHello`.
--}
-text : List Property -> List NativeUi -> NativeUi
-text =
-  VNode "Text"
-
-
-{-| Create a React Native `Image` element.
-
-Use these for displaying images from the web, or (soon!) images that are bundled
-in with your app.
-
-To tell the image element what to render, you need to give it an `imageSource` property
-with the URI of the image.
-
-Unlike the HTML `image` tag, a React Native `Image` element will not resize to fit its contents,
-so you must provide some way for the layout engine to determine the size,
-or else it won't show up onscreen.  You can either set an explicit `width` and `height` in the
-`style` property, or you can use flexbox to have the image size itself proportionally to its
-container.
-
-An image element can have children, in which case it acts similarly to the `background-image`
-CSS property on the web:
-
-    image
-      [ imageSource "http://example.com/fuzzy_kitten.png"
-      , style
-        [ Style.width 100
-        , Style.height 100
-        , Style.alignItems "center"
-        ]
-      ]
-      [ text
-          [ style [ Style.fontSize 30 ] ]
-          [ string "This text will be rendered inside the image.  It's meme time!" ]
-      ]
--}
-image : List Property -> List NativeUi -> NativeUi
-image =
-  VNode "Image"
-
-
 
 -- Properties
 
@@ -165,14 +86,6 @@ Use this for properties that can be represented as Json values.
 property : String -> Json.Decode.Value -> Property
 property name value =
   JsonProperty name value
-
-
-{-| Turns a String URI into the "source" property for an image element.
--}
-imageSource : String -> Property
-imageSource uri =
-  Json.Encode.object [ ( "uri", Json.Encode.string uri ) ]
-    |> property "source"
 
 
 {-| Turns a list of `Style`s into a property you can attach to a `NativeUi` node.
@@ -203,10 +116,3 @@ on name decoder toMessage =
       nativeEventHandler decoder toMessage
   in
     NativeProperty fullName handler
-
-
-{-| Binds an event handler into the `onPress` event.
--}
-onPress : Signal.Address a -> a -> Property
-onPress address msg =
-  on "Press" Json.Decode.value (\_ -> Signal.message address msg)

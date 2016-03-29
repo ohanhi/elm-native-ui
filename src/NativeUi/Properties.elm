@@ -2,7 +2,7 @@ module NativeUi.Properties (..) where
 
 {-| elm-native-ui Properties
 
-  @docs numberOfLines, suppressHighlighting, testID, allowFontScaling, source, defaultSource, accessible, accessibilityLabel, resizeMode, animating, color, hidesWhenStopped, size, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, progress, progressViewStyle, progressTintColor, trackTintColor, refreshing, title, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, sendMomentumEvents, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, selectedIndex, tintColor, momentary, sliderValue, step, minimumValue, maximumValue, minimumTrackTintColor, maximumTrackTintColor, disabled, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, autoCapitalize, autoCorrect, autoFocus, editable, keyboardType, keyboardAppearance, returnKeyType, maxLength, enablesReturnKeyAutomatically, multiline, placeholder, placeholderTextColor, secureTextEntry, selectionColor, value, defaultValue, clearButtonMode, clearTextOnFocus, selectTextOnFocus, blurOnSubmit, underlineColorAndroid, subtitle, contentInsetStart, contentInsetEnd, rtl
+  @docs numberOfLines, suppressHighlighting, testID, allowFontScaling, source, defaultSource, accessible, accessibilityLabel, resizeMode, animating, color, hidesWhenStopped, size, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, progress, progressViewStyle, progressTintColor, trackTintColor, refreshing, title, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, sendMomentumEvents, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, selectedIndex, tintColor, momentary, sliderValue, step, minimumValue, maximumValue, minimumTrackTintColor, maximumTrackTintColor, disabled, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, autoCapitalize, autoCorrect, autoFocus, editable, keyboardType, keyboardAppearance, returnKeyType, maxLength, enablesReturnKeyAutomatically, multiline, placeholder, placeholderTextColor, secureTextEntry, selectionColor, value, defaultValue, clearButtonMode, clearTextOnFocus, selectTextOnFocus, blurOnSubmit, underlineColorAndroid, subtitle, contentInsetStart, contentInsetEnd, rtl, accessibilityLiveRegion, importantForAccessibility, pointerEvents, renderToHardwareTextureAndroid, shouldRasterizeIOS, collapsable, needsOffscreenAlphaCompositing
 -}
 
 import Json.Encode
@@ -11,42 +11,42 @@ import NativeUi exposing (Property, jsonProperty)
 
 numberOfLines : Float -> Property
 numberOfLines val =
-  jsonProperty "numberOfLines" (Json.Encode.float val)
+  property "numberOfLines" (Json.Encode.float val)
 
 
 suppressHighlighting : Bool -> Property
 suppressHighlighting val =
-  jsonProperty "suppressHighlighting" (Json.Encode.bool val)
+  property "suppressHighlighting" (Json.Encode.bool val)
 
 
 testID : String -> Property
 testID val =
-  jsonProperty "testID" (Json.Encode.string val)
+  property "testID" (Json.Encode.string val)
 
 
 allowFontScaling : Bool -> Property
 allowFontScaling val =
-  jsonProperty "allowFontScaling" (Json.Encode.bool val)
+  property "allowFontScaling" (Json.Encode.bool val)
 
 
 source : String -> Property
 source uri =
-  jsonProperty "source" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
+  property "source" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
 
 
 defaultSource : String -> Property
 defaultSource uri =
-  jsonProperty "defaultSource" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
+  property "defaultSource" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
 
 
 accessible : Bool -> Property
 accessible val =
-  jsonProperty "accessible" (Json.Encode.bool val)
+  property "accessible" (Json.Encode.bool val)
 
 
 accessibilityLabel : String -> Property
 accessibilityLabel val =
-  jsonProperty "accessibilityLabel" (Json.Encode.string val)
+  property "accessibilityLabel" (Json.Encode.string val)
 
 
 type ImageResizeMode
@@ -72,22 +72,22 @@ resizeMode val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "resizeMode" jsonValue
+    property "resizeMode" jsonValue
 
 
 animating : Bool -> Property
 animating val =
-  jsonProperty "animating" (Json.Encode.bool val)
+  property "animating" (Json.Encode.bool val)
 
 
 color : String -> Property
 color val =
-  jsonProperty "color" (Json.Encode.string val)
+  property "color" (Json.Encode.string val)
 
 
 hidesWhenStopped : Bool -> Property
 hidesWhenStopped val =
-  jsonProperty "hidesWhenStopped" (Json.Encode.bool val)
+  property "hidesWhenStopped" (Json.Encode.bool val)
 
 
 type ActivityIndicatorSize
@@ -109,47 +109,47 @@ size val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "size" jsonValue
+    property "size" jsonValue
 
 
 showsUserLocation : Bool -> Property
 showsUserLocation val =
-  jsonProperty "showsUserLocation" (Json.Encode.bool val)
+  property "showsUserLocation" (Json.Encode.bool val)
 
 
 followUserLocation : Bool -> Property
 followUserLocation val =
-  jsonProperty "followUserLocation" (Json.Encode.bool val)
+  property "followUserLocation" (Json.Encode.bool val)
 
 
 showsPointsOfInterest : Bool -> Property
 showsPointsOfInterest val =
-  jsonProperty "showsPointsOfInterest" (Json.Encode.bool val)
+  property "showsPointsOfInterest" (Json.Encode.bool val)
 
 
 showsCompass : Bool -> Property
 showsCompass val =
-  jsonProperty "showsCompass" (Json.Encode.bool val)
+  property "showsCompass" (Json.Encode.bool val)
 
 
 zoomEnabled : Bool -> Property
 zoomEnabled val =
-  jsonProperty "zoomEnabled" (Json.Encode.bool val)
+  property "zoomEnabled" (Json.Encode.bool val)
 
 
 rotateEnabled : Bool -> Property
 rotateEnabled val =
-  jsonProperty "rotateEnabled" (Json.Encode.bool val)
+  property "rotateEnabled" (Json.Encode.bool val)
 
 
 pitchEnabled : Bool -> Property
 pitchEnabled val =
-  jsonProperty "pitchEnabled" (Json.Encode.bool val)
+  property "pitchEnabled" (Json.Encode.bool val)
 
 
 scrollEnabled : Bool -> Property
 scrollEnabled val =
-  jsonProperty "scrollEnabled" (Json.Encode.bool val)
+  property "scrollEnabled" (Json.Encode.bool val)
 
 
 type MapViewMapType
@@ -175,27 +175,27 @@ mapType val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "mapType" jsonValue
+    property "mapType" jsonValue
 
 
 maxDelta : Float -> Property
 maxDelta val =
-  jsonProperty "maxDelta" (Json.Encode.float val)
+  property "maxDelta" (Json.Encode.float val)
 
 
 minDelta : Float -> Property
 minDelta val =
-  jsonProperty "minDelta" (Json.Encode.float val)
+  property "minDelta" (Json.Encode.float val)
 
 
 active : Bool -> Property
 active val =
-  jsonProperty "active" (Json.Encode.bool val)
+  property "active" (Json.Encode.bool val)
 
 
 enabled : Bool -> Property
 enabled val =
-  jsonProperty "enabled" (Json.Encode.bool val)
+  property "enabled" (Json.Encode.bool val)
 
 
 type PickerMode
@@ -217,17 +217,17 @@ mode val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "mode" jsonValue
+    property "mode" jsonValue
 
 
 prompt : String -> Property
 prompt val =
-  jsonProperty "prompt" (Json.Encode.string val)
+  property "prompt" (Json.Encode.string val)
 
 
 progress : Float -> Property
 progress val =
-  jsonProperty "progress" (Json.Encode.float val)
+  property "progress" (Json.Encode.float val)
 
 
 type ProgressViewProgressViewStyle
@@ -249,62 +249,62 @@ progressViewStyle val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "progressViewStyle" jsonValue
+    property "progressViewStyle" jsonValue
 
 
 progressTintColor : String -> Property
 progressTintColor val =
-  jsonProperty "progressTintColor" (Json.Encode.string val)
+  property "progressTintColor" (Json.Encode.string val)
 
 
 trackTintColor : String -> Property
 trackTintColor val =
-  jsonProperty "trackTintColor" (Json.Encode.string val)
+  property "trackTintColor" (Json.Encode.string val)
 
 
 refreshing : Bool -> Property
 refreshing val =
-  jsonProperty "refreshing" (Json.Encode.bool val)
+  property "refreshing" (Json.Encode.bool val)
 
 
 title : String -> Property
 title val =
-  jsonProperty "title" (Json.Encode.string val)
+  property "title" (Json.Encode.string val)
 
 
 automaticallyAdjustContentInsets : Bool -> Property
 automaticallyAdjustContentInsets val =
-  jsonProperty "automaticallyAdjustContentInsets" (Json.Encode.bool val)
+  property "automaticallyAdjustContentInsets" (Json.Encode.bool val)
 
 
 bounces : Bool -> Property
 bounces val =
-  jsonProperty "bounces" (Json.Encode.bool val)
+  property "bounces" (Json.Encode.bool val)
 
 
 bouncesZoom : Bool -> Property
 bouncesZoom val =
-  jsonProperty "bouncesZoom" (Json.Encode.bool val)
+  property "bouncesZoom" (Json.Encode.bool val)
 
 
 alwaysBounceHorizontal : Bool -> Property
 alwaysBounceHorizontal val =
-  jsonProperty "alwaysBounceHorizontal" (Json.Encode.bool val)
+  property "alwaysBounceHorizontal" (Json.Encode.bool val)
 
 
 alwaysBounceVertical : Bool -> Property
 alwaysBounceVertical val =
-  jsonProperty "alwaysBounceVertical" (Json.Encode.bool val)
+  property "alwaysBounceVertical" (Json.Encode.bool val)
 
 
 centerContent : Bool -> Property
 centerContent val =
-  jsonProperty "centerContent" (Json.Encode.bool val)
+  property "centerContent" (Json.Encode.bool val)
 
 
 horizontal : Bool -> Property
 horizontal val =
-  jsonProperty "horizontal" (Json.Encode.bool val)
+  property "horizontal" (Json.Encode.bool val)
 
 
 type ScrollViewIndicatorStyle
@@ -330,17 +330,17 @@ indicatorStyle val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "indicatorStyle" jsonValue
+    property "indicatorStyle" jsonValue
 
 
 directionalLockEnabled : Bool -> Property
 directionalLockEnabled val =
-  jsonProperty "directionalLockEnabled" (Json.Encode.bool val)
+  property "directionalLockEnabled" (Json.Encode.bool val)
 
 
 canCancelContentTouches : Bool -> Property
 canCancelContentTouches val =
-  jsonProperty "canCancelContentTouches" (Json.Encode.bool val)
+  property "canCancelContentTouches" (Json.Encode.bool val)
 
 
 type ScrollViewKeyboardDismissMode
@@ -366,57 +366,57 @@ keyboardDismissMode val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "keyboardDismissMode" jsonValue
+    property "keyboardDismissMode" jsonValue
 
 
 keyboardShouldPersistTaps : Bool -> Property
 keyboardShouldPersistTaps val =
-  jsonProperty "keyboardShouldPersistTaps" (Json.Encode.bool val)
+  property "keyboardShouldPersistTaps" (Json.Encode.bool val)
 
 
 maximumZoomScale : Float -> Property
 maximumZoomScale val =
-  jsonProperty "maximumZoomScale" (Json.Encode.float val)
+  property "maximumZoomScale" (Json.Encode.float val)
 
 
 minimumZoomScale : Float -> Property
 minimumZoomScale val =
-  jsonProperty "minimumZoomScale" (Json.Encode.float val)
+  property "minimumZoomScale" (Json.Encode.float val)
 
 
 pagingEnabled : Bool -> Property
 pagingEnabled val =
-  jsonProperty "pagingEnabled" (Json.Encode.bool val)
+  property "pagingEnabled" (Json.Encode.bool val)
 
 
 scrollEventThrottle : Float -> Property
 scrollEventThrottle val =
-  jsonProperty "scrollEventThrottle" (Json.Encode.float val)
+  property "scrollEventThrottle" (Json.Encode.float val)
 
 
 scrollsToTop : Bool -> Property
 scrollsToTop val =
-  jsonProperty "scrollsToTop" (Json.Encode.bool val)
+  property "scrollsToTop" (Json.Encode.bool val)
 
 
 sendMomentumEvents : Bool -> Property
 sendMomentumEvents val =
-  jsonProperty "sendMomentumEvents" (Json.Encode.bool val)
+  property "sendMomentumEvents" (Json.Encode.bool val)
 
 
 showsHorizontalScrollIndicator : Bool -> Property
 showsHorizontalScrollIndicator val =
-  jsonProperty "showsHorizontalScrollIndicator" (Json.Encode.bool val)
+  property "showsHorizontalScrollIndicator" (Json.Encode.bool val)
 
 
 showsVerticalScrollIndicator : Bool -> Property
 showsVerticalScrollIndicator val =
-  jsonProperty "showsVerticalScrollIndicator" (Json.Encode.bool val)
+  property "showsVerticalScrollIndicator" (Json.Encode.bool val)
 
 
 snapToInterval : Float -> Property
 snapToInterval val =
-  jsonProperty "snapToInterval" (Json.Encode.float val)
+  property "snapToInterval" (Json.Encode.float val)
 
 
 type ScrollViewSnapToAlignment
@@ -442,82 +442,82 @@ snapToAlignment val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "snapToAlignment" jsonValue
+    property "snapToAlignment" jsonValue
 
 
 removeClippedSubviews : Bool -> Property
 removeClippedSubviews val =
-  jsonProperty "removeClippedSubviews" (Json.Encode.bool val)
+  property "removeClippedSubviews" (Json.Encode.bool val)
 
 
 zoomScale : Float -> Property
 zoomScale val =
-  jsonProperty "zoomScale" (Json.Encode.float val)
+  property "zoomScale" (Json.Encode.float val)
 
 
 selectedIndex : Float -> Property
 selectedIndex val =
-  jsonProperty "selectedIndex" (Json.Encode.float val)
+  property "selectedIndex" (Json.Encode.float val)
 
 
 tintColor : String -> Property
 tintColor val =
-  jsonProperty "tintColor" (Json.Encode.string val)
+  property "tintColor" (Json.Encode.string val)
 
 
 momentary : Bool -> Property
 momentary val =
-  jsonProperty "momentary" (Json.Encode.bool val)
+  property "momentary" (Json.Encode.bool val)
 
 
 sliderValue : Float -> Property
 sliderValue val =
-  jsonProperty "sliderValue" (Json.Encode.float val)
+  property "sliderValue" (Json.Encode.float val)
 
 
 step : Float -> Property
 step val =
-  jsonProperty "step" (Json.Encode.float val)
+  property "step" (Json.Encode.float val)
 
 
 minimumValue : Float -> Property
 minimumValue val =
-  jsonProperty "minimumValue" (Json.Encode.float val)
+  property "minimumValue" (Json.Encode.float val)
 
 
 maximumValue : Float -> Property
 maximumValue val =
-  jsonProperty "maximumValue" (Json.Encode.float val)
+  property "maximumValue" (Json.Encode.float val)
 
 
 minimumTrackTintColor : String -> Property
 minimumTrackTintColor val =
-  jsonProperty "minimumTrackTintColor" (Json.Encode.string val)
+  property "minimumTrackTintColor" (Json.Encode.string val)
 
 
 maximumTrackTintColor : String -> Property
 maximumTrackTintColor val =
-  jsonProperty "maximumTrackTintColor" (Json.Encode.string val)
+  property "maximumTrackTintColor" (Json.Encode.string val)
 
 
 disabled : Bool -> Property
 disabled val =
-  jsonProperty "disabled" (Json.Encode.bool val)
+  property "disabled" (Json.Encode.bool val)
 
 
 hidden : Bool -> Property
 hidden val =
-  jsonProperty "hidden" (Json.Encode.bool val)
+  property "hidden" (Json.Encode.bool val)
 
 
 animated : Bool -> Property
 animated val =
-  jsonProperty "animated" (Json.Encode.bool val)
+  property "animated" (Json.Encode.bool val)
 
 
 translucent : Bool -> Property
 translucent val =
-  jsonProperty "translucent" (Json.Encode.bool val)
+  property "translucent" (Json.Encode.bool val)
 
 
 type StatusBarBarStyle
@@ -539,12 +539,12 @@ barStyle val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "barStyle" jsonValue
+    property "barStyle" jsonValue
 
 
 networkActivityIndicatorVisible : Bool -> Property
 networkActivityIndicatorVisible val =
-  jsonProperty "networkActivityIndicatorVisible" (Json.Encode.bool val)
+  property "networkActivityIndicatorVisible" (Json.Encode.bool val)
 
 
 type StatusBarShowHideTransition
@@ -566,7 +566,7 @@ showHideTransition val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "showHideTransition" jsonValue
+    property "showHideTransition" jsonValue
 
 
 type TextInputAutoCapitalize
@@ -596,22 +596,22 @@ autoCapitalize val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "autoCapitalize" jsonValue
+    property "autoCapitalize" jsonValue
 
 
 autoCorrect : Bool -> Property
 autoCorrect val =
-  jsonProperty "autoCorrect" (Json.Encode.bool val)
+  property "autoCorrect" (Json.Encode.bool val)
 
 
 autoFocus : Bool -> Property
 autoFocus val =
-  jsonProperty "autoFocus" (Json.Encode.bool val)
+  property "autoFocus" (Json.Encode.bool val)
 
 
 editable : Bool -> Property
 editable val =
-  jsonProperty "editable" (Json.Encode.bool val)
+  property "editable" (Json.Encode.bool val)
 
 
 type TextInputKeyboardType
@@ -673,7 +673,7 @@ keyboardType val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "keyboardType" jsonValue
+    property "keyboardType" jsonValue
 
 
 type TextInputKeyboardAppearance
@@ -699,7 +699,7 @@ keyboardAppearance val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "keyboardAppearance" jsonValue
+    property "keyboardAppearance" jsonValue
 
 
 type TextInputReturnKeyType
@@ -757,52 +757,52 @@ returnKeyType val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "returnKeyType" jsonValue
+    property "returnKeyType" jsonValue
 
 
 maxLength : Float -> Property
 maxLength val =
-  jsonProperty "maxLength" (Json.Encode.float val)
+  property "maxLength" (Json.Encode.float val)
 
 
 enablesReturnKeyAutomatically : Bool -> Property
 enablesReturnKeyAutomatically val =
-  jsonProperty "enablesReturnKeyAutomatically" (Json.Encode.bool val)
+  property "enablesReturnKeyAutomatically" (Json.Encode.bool val)
 
 
 multiline : Bool -> Property
 multiline val =
-  jsonProperty "multiline" (Json.Encode.bool val)
+  property "multiline" (Json.Encode.bool val)
 
 
 placeholder : String -> Property
 placeholder val =
-  jsonProperty "placeholder" (Json.Encode.string val)
+  property "placeholder" (Json.Encode.string val)
 
 
 placeholderTextColor : String -> Property
 placeholderTextColor val =
-  jsonProperty "placeholderTextColor" (Json.Encode.string val)
+  property "placeholderTextColor" (Json.Encode.string val)
 
 
 secureTextEntry : Bool -> Property
 secureTextEntry val =
-  jsonProperty "secureTextEntry" (Json.Encode.bool val)
+  property "secureTextEntry" (Json.Encode.bool val)
 
 
 selectionColor : String -> Property
 selectionColor val =
-  jsonProperty "selectionColor" (Json.Encode.string val)
+  property "selectionColor" (Json.Encode.string val)
 
 
 value : String -> Property
 value val =
-  jsonProperty "value" (Json.Encode.string val)
+  property "value" (Json.Encode.string val)
 
 
 defaultValue : String -> Property
 defaultValue val =
-  jsonProperty "defaultValue" (Json.Encode.string val)
+  property "defaultValue" (Json.Encode.string val)
 
 
 type TextInputClearButtonMode
@@ -832,44 +832,150 @@ clearButtonMode val =
     jsonValue =
       Json.Encode.string stringValue
   in
-    jsonProperty "clearButtonMode" jsonValue
+    property "clearButtonMode" jsonValue
 
 
 clearTextOnFocus : Bool -> Property
 clearTextOnFocus val =
-  jsonProperty "clearTextOnFocus" (Json.Encode.bool val)
+  property "clearTextOnFocus" (Json.Encode.bool val)
 
 
 selectTextOnFocus : Bool -> Property
 selectTextOnFocus val =
-  jsonProperty "selectTextOnFocus" (Json.Encode.bool val)
+  property "selectTextOnFocus" (Json.Encode.bool val)
 
 
 blurOnSubmit : Bool -> Property
 blurOnSubmit val =
-  jsonProperty "blurOnSubmit" (Json.Encode.bool val)
+  property "blurOnSubmit" (Json.Encode.bool val)
 
 
 underlineColorAndroid : String -> Property
 underlineColorAndroid val =
-  jsonProperty "underlineColorAndroid" (Json.Encode.string val)
+  property "underlineColorAndroid" (Json.Encode.string val)
 
 
 subtitle : String -> Property
 subtitle val =
-  jsonProperty "subtitle" (Json.Encode.string val)
+  property "subtitle" (Json.Encode.string val)
 
 
 contentInsetStart : Float -> Property
 contentInsetStart val =
-  jsonProperty "contentInsetStart" (Json.Encode.float val)
+  property "contentInsetStart" (Json.Encode.float val)
 
 
 contentInsetEnd : Float -> Property
 contentInsetEnd val =
-  jsonProperty "contentInsetEnd" (Json.Encode.float val)
+  property "contentInsetEnd" (Json.Encode.float val)
 
 
 rtl : Bool -> Property
 rtl val =
-  jsonProperty "rtl" (Json.Encode.bool val)
+  property "rtl" (Json.Encode.bool val)
+
+
+type ViewAccessibilityLiveRegion
+  = ViewAccessibilityLiveRegionNone
+  | ViewAccessibilityLiveRegionPolite
+  | ViewAccessibilityLiveRegionAssertive
+
+
+accessibilityLiveRegion : ViewAccessibilityLiveRegion -> Property
+accessibilityLiveRegion val =
+  let
+    stringValue =
+      case val of
+        ViewAccessibilityLiveRegionNone ->
+          "none"
+
+        ViewAccessibilityLiveRegionPolite ->
+          "polite"
+
+        ViewAccessibilityLiveRegionAssertive ->
+          "assertive"
+
+    jsonValue =
+      Json.Encode.string stringValue
+  in
+    property "accessibilityLiveRegion" jsonValue
+
+
+type ViewImportantForAccessibility
+  = ViewImportantForAccessibilityAuto
+  | ViewImportantForAccessibilityYes
+  | ViewImportantForAccessibilityNo
+  | ViewImportantForAccessibilityNoHideDescendants
+
+
+importantForAccessibility : ViewImportantForAccessibility -> Property
+importantForAccessibility val =
+  let
+    stringValue =
+      case val of
+        ViewImportantForAccessibilityAuto ->
+          "auto"
+
+        ViewImportantForAccessibilityYes ->
+          "yes"
+
+        ViewImportantForAccessibilityNo ->
+          "no"
+
+        ViewImportantForAccessibilityNoHideDescendants ->
+          "no-hide-descendants"
+
+    jsonValue =
+      Json.Encode.string stringValue
+  in
+    property "importantForAccessibility" jsonValue
+
+
+type ViewPointerEvents
+  = ViewPointerEventsBoxNone
+  | ViewPointerEventsNone
+  | ViewPointerEventsBoxOnly
+  | ViewPointerEventsAuto
+
+
+pointerEvents : ViewPointerEvents -> Property
+pointerEvents val =
+  let
+    stringValue =
+      case val of
+        ViewPointerEventsBoxNone ->
+          "box-none"
+
+        ViewPointerEventsNone ->
+          "none"
+
+        ViewPointerEventsBoxOnly ->
+          "box-only"
+
+        ViewPointerEventsAuto ->
+          "auto"
+
+    jsonValue =
+      Json.Encode.string stringValue
+  in
+    property "pointerEvents" jsonValue
+
+
+renderToHardwareTextureAndroid : Bool -> Property
+renderToHardwareTextureAndroid val =
+  property "renderToHardwareTextureAndroid" (Json.Encode.bool val)
+
+
+shouldRasterizeIOS : Bool -> Property
+shouldRasterizeIOS val =
+  property "shouldRasterizeIOS" (Json.Encode.bool val)
+
+
+collapsable : Bool -> Property
+collapsable val =
+  property "collapsable" (Json.Encode.bool val)
+
+
+needsOffscreenAlphaCompositing : Bool -> Property
+needsOffscreenAlphaCompositing val =
+  property "needsOffscreenAlphaCompositing" (Json.Encode.bool val)

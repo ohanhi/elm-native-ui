@@ -8,4 +8,4 @@ type <%- unionTypeName %>
       <%- valueToStringCaseBody %>
     jsonValue = Json.Encode.string stringValue
   in
-    jsonProperty "<%- propName %>" jsonValue
+    property "<%- propName %>" jsonValue
