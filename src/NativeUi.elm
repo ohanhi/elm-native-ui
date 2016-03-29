@@ -1,11 +1,11 @@
-module NativeUi (NativeUi, node, string, view, text, image, style, imageSource, on, onPress, Property) where
+module NativeUi (NativeUi, node, string, view, text, image, style, imageSource, on, onPress, Property, jsonProperty, nativeProperty) where
 
 {-| Render your application as a React Native app.
 
 # Types
 @docs NativeUi
 # Common Helpers
-@docs node, string, view, text, image, style, imageSource
+@docs node, string, view, text, image, style, imageSource, jsonProperty, nativeProperty
 # Events
 @docs on, onPress
 # Types
@@ -35,6 +35,18 @@ to attach an opaque `NativeValue`.
 type Property
   = JsonProperty String Json.Decode.Value
   | NativeProperty String NativeValue
+
+
+{-| -}
+jsonProperty : String -> Json.Decode.Value -> Property
+jsonProperty name decodeValue =
+  JsonProperty name decodeValue
+
+
+{-| -}
+nativeProperty : String -> NativeValue -> Property
+nativeProperty name nativeValue =
+  NativeProperty name nativeValue
 
 
 {-| An opaque value that is backed by a Native javascript value.
@@ -180,6 +192,7 @@ nativeEventHandler =
   Native.NativeUi.nativeEventHandler
 
 
+{-| -}
 on : String -> Json.Decode.Decoder a -> (a -> Signal.Message) -> Property
 on name decoder toMessage =
   let
