@@ -247,7 +247,7 @@ function generateRNModuleSpec(moduleJson) {
         rnModulesJson[moduleName] = json;
       }
     } catch (e) {
-      console.log(e);
+      console.log(moduleName + " – " + e);
     }
   });
   if (Object.keys(rnModulesJson).length > 0) {
