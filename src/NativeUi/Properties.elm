@@ -2,11 +2,67 @@ module NativeUi.Properties (..) where
 
 {-| elm-native-ui Properties
 
-  @docs animating, color, hidesWhenStopped, size, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, testID, progress, progressViewStyle, progressTintColor, trackTintColor, refreshing, title, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, sendMomentumEvents, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, selectedIndex, tintColor, momentary, sliderValue, step, minimumValue, maximumValue, minimumTrackTintColor, maximumTrackTintColor, disabled, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, numberOfLines, suppressHighlighting, allowFontScaling, autoCapitalize, autoCorrect, autoFocus, editable, keyboardType, keyboardAppearance, returnKeyType, maxLength, enablesReturnKeyAutomatically, multiline, placeholder, placeholderTextColor, secureTextEntry, selectionColor, value, defaultValue, clearButtonMode, clearTextOnFocus, selectTextOnFocus, blurOnSubmit, underlineColorAndroid, subtitle, contentInsetStart, contentInsetEnd, rtl, accessible, accessibilityLabel, accessibilityLiveRegion, importantForAccessibility, pointerEvents, renderToHardwareTextureAndroid, shouldRasterizeIOS, collapsable, needsOffscreenAlphaCompositing
+  @docs numberOfLines, suppressHighlighting, testID, allowFontScaling, accessible, accessibilityLabel, resizeMode, animating, color, hidesWhenStopped, size, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, progress, progressViewStyle, progressTintColor, trackTintColor, refreshing, title, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, sendMomentumEvents, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, selectedIndex, tintColor, momentary, sliderValue, step, minimumValue, maximumValue, minimumTrackTintColor, maximumTrackTintColor, disabled, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, autoCapitalize, autoCorrect, autoFocus, editable, keyboardType, keyboardAppearance, returnKeyType, maxLength, enablesReturnKeyAutomatically, multiline, placeholder, placeholderTextColor, secureTextEntry, selectionColor, value, defaultValue, clearButtonMode, clearTextOnFocus, selectTextOnFocus, blurOnSubmit, underlineColorAndroid, subtitle, contentInsetStart, contentInsetEnd, rtl
 -}
 
 import Json.Encode
 import NativeUi exposing (Property, jsonProperty)
+
+
+numberOfLines : Float -> Property
+numberOfLines val =
+  jsonProperty "numberOfLines" (Json.Encode.float val)
+
+
+suppressHighlighting : Bool -> Property
+suppressHighlighting val =
+  jsonProperty "suppressHighlighting" (Json.Encode.bool val)
+
+
+testID : String -> Property
+testID val =
+  jsonProperty "testID" (Json.Encode.string val)
+
+
+allowFontScaling : Bool -> Property
+allowFontScaling val =
+  jsonProperty "allowFontScaling" (Json.Encode.bool val)
+
+
+accessible : Bool -> Property
+accessible val =
+  jsonProperty "accessible" (Json.Encode.bool val)
+
+
+accessibilityLabel : String -> Property
+accessibilityLabel val =
+  jsonProperty "accessibilityLabel" (Json.Encode.string val)
+
+
+type ImageResizeMode
+  = ImageResizeModeCover
+  | ImageResizeModeContain
+  | ImageResizeModeStretch
+
+
+resizeMode : ImageResizeMode -> Property
+resizeMode val =
+  let
+    stringValue =
+      case val of
+        ImageResizeModeCover ->
+          "cover"
+
+        ImageResizeModeContain ->
+          "contain"
+
+        ImageResizeModeStretch ->
+          "stretch"
+
+    jsonValue =
+      Json.Encode.string stringValue
+  in
+    jsonProperty "resizeMode" jsonValue
 
 
 animating : Bool -> Property
@@ -157,11 +213,6 @@ mode val =
 prompt : String -> Property
 prompt val =
   jsonProperty "prompt" (Json.Encode.string val)
-
-
-testID : String -> Property
-testID val =
-  jsonProperty "testID" (Json.Encode.string val)
 
 
 progress : Float -> Property
@@ -508,21 +559,6 @@ showHideTransition val =
     jsonProperty "showHideTransition" jsonValue
 
 
-numberOfLines : Float -> Property
-numberOfLines val =
-  jsonProperty "numberOfLines" (Json.Encode.float val)
-
-
-suppressHighlighting : Bool -> Property
-suppressHighlighting val =
-  jsonProperty "suppressHighlighting" (Json.Encode.bool val)
-
-
-allowFontScaling : Bool -> Property
-allowFontScaling val =
-  jsonProperty "allowFontScaling" (Json.Encode.bool val)
-
-
 type TextInputAutoCapitalize
   = TextInputAutoCapitalizeNone
   | TextInputAutoCapitalizeSentences
@@ -827,119 +863,3 @@ contentInsetEnd val =
 rtl : Bool -> Property
 rtl val =
   jsonProperty "rtl" (Json.Encode.bool val)
-
-
-accessible : Bool -> Property
-accessible val =
-  jsonProperty "accessible" (Json.Encode.bool val)
-
-
-accessibilityLabel : String -> Property
-accessibilityLabel val =
-  jsonProperty "accessibilityLabel" (Json.Encode.string val)
-
-
-type ViewAccessibilityLiveRegion
-  = ViewAccessibilityLiveRegionNone
-  | ViewAccessibilityLiveRegionPolite
-  | ViewAccessibilityLiveRegionAssertive
-
-
-accessibilityLiveRegion : ViewAccessibilityLiveRegion -> Property
-accessibilityLiveRegion val =
-  let
-    stringValue =
-      case val of
-        ViewAccessibilityLiveRegionNone ->
-          "none"
-
-        ViewAccessibilityLiveRegionPolite ->
-          "polite"
-
-        ViewAccessibilityLiveRegionAssertive ->
-          "assertive"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    jsonProperty "accessibilityLiveRegion" jsonValue
-
-
-type ViewImportantForAccessibility
-  = ViewImportantForAccessibilityAuto
-  | ViewImportantForAccessibilityYes
-  | ViewImportantForAccessibilityNo
-  | ViewImportantForAccessibilityNoHideDescendants
-
-
-importantForAccessibility : ViewImportantForAccessibility -> Property
-importantForAccessibility val =
-  let
-    stringValue =
-      case val of
-        ViewImportantForAccessibilityAuto ->
-          "auto"
-
-        ViewImportantForAccessibilityYes ->
-          "yes"
-
-        ViewImportantForAccessibilityNo ->
-          "no"
-
-        ViewImportantForAccessibilityNoHideDescendants ->
-          "no-hide-descendants"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    jsonProperty "importantForAccessibility" jsonValue
-
-
-type ViewPointerEvents
-  = ViewPointerEventsBoxNone
-  | ViewPointerEventsNone
-  | ViewPointerEventsBoxOnly
-  | ViewPointerEventsAuto
-
-
-pointerEvents : ViewPointerEvents -> Property
-pointerEvents val =
-  let
-    stringValue =
-      case val of
-        ViewPointerEventsBoxNone ->
-          "box-none"
-
-        ViewPointerEventsNone ->
-          "none"
-
-        ViewPointerEventsBoxOnly ->
-          "box-only"
-
-        ViewPointerEventsAuto ->
-          "auto"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    jsonProperty "pointerEvents" jsonValue
-
-
-renderToHardwareTextureAndroid : Bool -> Property
-renderToHardwareTextureAndroid val =
-  jsonProperty "renderToHardwareTextureAndroid" (Json.Encode.bool val)
-
-
-shouldRasterizeIOS : Bool -> Property
-shouldRasterizeIOS val =
-  jsonProperty "shouldRasterizeIOS" (Json.Encode.bool val)
-
-
-collapsable : Bool -> Property
-collapsable val =
-  jsonProperty "collapsable" (Json.Encode.bool val)
-
-
-needsOffscreenAlphaCompositing : Bool -> Property
-needsOffscreenAlphaCompositing val =
-  jsonProperty "needsOffscreenAlphaCompositing" (Json.Encode.bool val)

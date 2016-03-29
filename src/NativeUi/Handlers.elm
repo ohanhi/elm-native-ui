@@ -2,7 +2,7 @@ module NativeUi.Handlers (..) where
 
 {-| elm-native-ui Handlers
 
-  @docs onLayout, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onSegmentedControlValueChange, onChange, onSliderValueChange, onSlidingComplete, onSwitchValueChange, onPress, onBlur, onFocus, onChangeText, onEndEditing, onSelectionChange, onSubmitEditing, onKeyPress, onActionSelected, onIconClicked, onAccessibilityTap, onMagicTap, onResponderGrant, onResponderMove, onResponderReject, onResponderRelease, onResponderTerminate, onResponderTerminationRequest, onStartShouldSetResponder, onStartShouldSetResponderCapture, onMoveShouldSetResponder, onMoveShouldSetResponderCapture
+  @docs onLayout, onPress, onLoadStart, onProgress, onError, onLoad, onLoadEnd, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onSegmentedControlValueChange, onChange, onSliderValueChange, onSlidingComplete, onSwitchValueChange, onBlur, onFocus, onChangeText, onEndEditing, onSelectionChange, onSubmitEditing, onKeyPress, onActionSelected, onIconClicked
 -}
 
 import Json.Decode
@@ -12,6 +12,36 @@ import NativeUi exposing (Property, on)
 onLayout : Signal.Address a -> a -> Property
 onLayout address action =
   on "Layout" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onPress : Signal.Address a -> a -> Property
+onPress address action =
+  on "Press" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onLoadStart : Signal.Address a -> a -> Property
+onLoadStart address action =
+  on "LoadStart" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onProgress : Signal.Address a -> a -> Property
+onProgress address action =
+  on "Progress" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onError : Signal.Address a -> a -> Property
+onError address action =
+  on "Error" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onLoad : Signal.Address a -> a -> Property
+onLoad address action =
+  on "Load" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onLoadEnd : Signal.Address a -> a -> Property
+onLoadEnd address action =
+  on "LoadEnd" Json.Decode.value (\_ -> Signal.message address action)
 
 
 onRegionChange : Signal.Address a -> a -> Property
@@ -79,11 +109,6 @@ onSwitchValueChange address intToAction =
   on "SwitchValueChange" Json.Decode.int (\value -> Signal.message address (intToAction value))
 
 
-onPress : Signal.Address a -> a -> Property
-onPress address action =
-  on "Press" Json.Decode.value (\_ -> Signal.message address action)
-
-
 onBlur : Signal.Address a -> a -> Property
 onBlur address action =
   on "Blur" Json.Decode.value (\_ -> Signal.message address action)
@@ -127,63 +152,3 @@ onActionSelected address action =
 onIconClicked : Signal.Address a -> a -> Property
 onIconClicked address action =
   on "IconClicked" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onAccessibilityTap : Signal.Address a -> a -> Property
-onAccessibilityTap address action =
-  on "AccessibilityTap" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onMagicTap : Signal.Address a -> a -> Property
-onMagicTap address action =
-  on "MagicTap" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onResponderGrant : Signal.Address a -> a -> Property
-onResponderGrant address action =
-  on "ResponderGrant" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onResponderMove : Signal.Address a -> a -> Property
-onResponderMove address action =
-  on "ResponderMove" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onResponderReject : Signal.Address a -> a -> Property
-onResponderReject address action =
-  on "ResponderReject" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onResponderRelease : Signal.Address a -> a -> Property
-onResponderRelease address action =
-  on "ResponderRelease" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onResponderTerminate : Signal.Address a -> a -> Property
-onResponderTerminate address action =
-  on "ResponderTerminate" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onResponderTerminationRequest : Signal.Address a -> a -> Property
-onResponderTerminationRequest address action =
-  on "ResponderTerminationRequest" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onStartShouldSetResponder : Signal.Address a -> a -> Property
-onStartShouldSetResponder address action =
-  on "StartShouldSetResponder" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onStartShouldSetResponderCapture : Signal.Address a -> a -> Property
-onStartShouldSetResponderCapture address action =
-  on "StartShouldSetResponderCapture" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onMoveShouldSetResponder : Signal.Address a -> a -> Property
-onMoveShouldSetResponder address action =
-  on "MoveShouldSetResponder" Json.Decode.value (\_ -> Signal.message address action)
-
-
-onMoveShouldSetResponderCapture : Signal.Address a -> a -> Property
-onMoveShouldSetResponderCapture address action =
-  on "MoveShouldSetResponderCapture" Json.Decode.value (\_ -> Signal.message address action)

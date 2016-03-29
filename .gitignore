@@ -35,3 +35,6 @@ npm-debug.log
 
 # elm
 elm-stuff/
+
+# generator
+rn-modules.json
