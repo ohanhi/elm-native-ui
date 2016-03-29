@@ -22,7 +22,6 @@ const rnModuleFiles = [
   "Text/Text.js",
   "Image/Image.ios.js",
   "Components/ActivityIndicatorIOS/ActivityIndicatorIOS.ios.js",
-  "Components/Clipboard/Clipboard.js",
   "Components/DatePickerAndroid/DatePickerAndroid.android.js",
   "Components/MapView/MapView.js",
   "Components/Picker/Picker.js",
