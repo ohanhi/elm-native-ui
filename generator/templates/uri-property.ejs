@@ -1,0 +1,3 @@
+<%- propName %> : String -> Property
+<%- propName %> uri =
+  jsonProperty "<%- propName %>" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])

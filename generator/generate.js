@@ -197,6 +197,14 @@ function generateElm(moduleJson) {
               );
             }
           }
+        } else {
+          if (moduleName === "Image") {
+            if (propName === "source" || propName === "defaultSource") {
+              if (!properties[propName]) {
+                properties[propName] = elmTransformer.uriProperty(propName);
+              }
+            }
+          }
         }
       }
     });
