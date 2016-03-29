@@ -9,7 +9,10 @@
     "exposed-modules": [
         "NativeUi",
         "NativeUi.NativeApp",
-        "NativeUi.Style"
+        "NativeUi.Style",
+        "NativeUi.Elements",
+        "NativeUi.Properties",
+        "NativeUi.Handlers"
     ],
     "native-modules": true,
     "dependencies": {
