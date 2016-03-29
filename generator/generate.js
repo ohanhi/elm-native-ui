@@ -22,7 +22,6 @@ const rnModuleFiles = [
   "Text/Text.js",
   "Image/Image.ios.js",
   "Components/ActivityIndicatorIOS/ActivityIndicatorIOS.ios.js",
-  "Components/DatePickerAndroid/DatePickerAndroid.android.js",
   "Components/MapView/MapView.js",
   "Components/Picker/Picker.js",
   "Components/ProgressBarAndroid/ProgressBarAndroid.android.js",
@@ -38,10 +37,7 @@ const rnModuleFiles = [
   "Components/TabBarIOS/TabBarIOS.ios.js",
   "Components/ActivityIndicatorIOS/ActivityIndicatorIOS.ios.js",
   "Components/TextInput/TextInput.js",
-  "Components/TimePickerAndroid/TimePickerAndroid.android.js",
-  "Components/ToastAndroid/ToastAndroid.android.js",
   "Components/ToolbarAndroid/ToolbarAndroid.android.js",
-  "Components/Touchable/Touchable.js",
   "Components/View/View.js"
 ];
 const exceptions = {
