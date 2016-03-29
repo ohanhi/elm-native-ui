@@ -237,6 +237,13 @@ function generateRNModuleSpec(moduleJson) {
     var source = fs.readFileSync(rnLibPath + file, 'utf8');
     let moduleName = rnModuleName(file);
 
+    // View.js doesn’t export it’s class in a way that react-docgen can parse it.
+    // Reset export to fix this.
+    source = source.replace(
+      "module.exports = ViewToExport;",
+      "module.exports = " + moduleName + ";"
+    );
+
     try {
       let json = reactDocs.parse(source);
       if (json) {
