@@ -1,4 +1,4 @@
-module NativeUi (NativeUi, node, string, view, text, image, style, imageSource, onPress) where
+module NativeUi (NativeUi, node, string, view, text, image, style, imageSource, on, onPress, Property) where
 
 {-| Render your application as a React Native app.
 
@@ -7,7 +7,9 @@ module NativeUi (NativeUi, node, string, view, text, image, style, imageSource, 
 # Common Helpers
 @docs node, string, view, text, image, style, imageSource
 # Events
-@docs onPress
+@docs on, onPress
+# Types
+@docs Property
 -}
 
 import Json.Encode
