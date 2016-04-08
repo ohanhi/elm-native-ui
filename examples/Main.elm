@@ -2,8 +2,12 @@ module Main (..) where
 
 import Signal
 import NativeUi as Ui
+import NativeUi as Ui
 import NativeUi.NativeApp as NativeApp
 import NativeUi.Style as Style exposing (defaultTransform)
+import NativeUi.Elements exposing (..)
+import NativeUi.Properties exposing (..)
+import NativeUi.Handlers exposing (..)
 
 
 app : Signal Ui.NativeUi
@@ -27,19 +31,19 @@ model =
 
 view : Signal.Address Action -> Model -> Ui.NativeUi
 view address count =
-  Ui.view
+  NativeUi.Elements.view
     [ Ui.style [ Style.alignItems "center" ]
     ]
-    [ Ui.image
+    [ image
         [ Ui.style
             [ Style.height 64
             , Style.width 64
             , Style.marginBottom 30
             ]
-        , Ui.imageSource "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png"
+        , source "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png"
         ]
         []
-    , Ui.text
+    , text
         [ Ui.style
             [ Style.textAlign "center"
             , Style.marginBottom 30
@@ -47,7 +51,7 @@ view address count =
         ]
         [ Ui.string ("Counter: " ++ toString count)
         ]
-    , Ui.view
+    , NativeUi.Elements.view
         [ Ui.style
             [ Style.width 80
             , Style.flexDirection "row"
@@ -77,7 +81,7 @@ update action model =
 
 button : Signal.Address Action -> Action -> String -> String -> Ui.NativeUi
 button address action color content =
-  Ui.text
+  text
     [ Ui.style
         [ Style.color "white"
         , Style.textAlign "center"
@@ -92,6 +96,6 @@ button address action color content =
         , Style.shadowRadius 5
         , Style.transform { defaultTransform | rotate = Just "10deg" }
         ]
-    , Ui.onPress address action
+    , onPress address action
     ]
     [ Ui.string content ]
