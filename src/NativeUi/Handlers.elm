@@ -233,6 +233,7 @@ onDrawerClose : Signal.Address a -> a -> Property
 onDrawerClose address action =
   on "DrawerClose" Json.Decode.value (\_ -> Signal.message address action)
 
+
 onDrawerOpen : Signal.Address a -> a -> Property
 onDrawerOpen address action =
   on "DrawerOpen" Json.Decode.value (\_ -> Signal.message address action)
@@ -242,28 +243,97 @@ onDrawerSlide : Signal.Address a -> a -> Property
 onDrawerSlide address action =
   on "DrawerSlide" Json.Decode.value (\_ -> Signal.message address action)
 
+
 onDrawerStateChanged : Signal.Address a -> a -> Property
 onDrawerStateChanged address action =
   on "DrawerStateChanged" Json.Decode.value (\_ -> Signal.message address action)
+
 
 onChangeVisibleRows : Signal.Address a -> a -> Property
 onChangeVisibleRows address action =
   on "ChangeVisibleRows" Json.Decode.value (\_ -> Signal.message address action)
 
-onEndReached
-onRequestClose
-onShow
-onDidFocus
-onWillFocus
-onValueChange
-onTintColor
-onHideUnderlay
-onShowUnderlay
-onLongPress
-onPressIn
-onPressOut
-onPageScroll
-onPageScrollStateChanged
-onPageSelected
-onNavigationStateChange
-onShouldStartLoadWithRequest
+
+onEndReached : Signal.Address a -> a -> Property
+onEndReached address action =
+  on "EndReached" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onRequestClose : Signal.Address a -> a -> Property
+onRequestClose address action =
+  on "RequestClose" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onShow : Signal.Address a -> a -> Property
+onShow address action =
+  on "Show" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onDidFocus : Signal.Address a -> a -> Property
+onDidFocus address action =
+  on "DidFocus" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onWillFocus : Signal.Address a -> a -> Property
+onWillFocus address action =
+  on "WillFocus" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onValueChange : Signal.Address a -> a -> Property
+onValueChange address action =
+  on "ValueChange" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onTintColor : Signal.Address a -> a -> Property
+onTintColor address action =
+  on "TintColor" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onHideUnderlay : Signal.Address a -> a -> Property
+onHideUnderlay address action =
+  on "HideUnderlay" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onShowUnderlay : Signal.Address a -> a -> Property
+onShowUnderlay address action =
+  on "ShowUnderlay" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onLongPress : Signal.Address a -> a -> Property
+onLongPress address action =
+  on "LongPress" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onPressIn : Signal.Address a -> a -> Property
+onPressIn address action =
+  on "PressIn" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onPressOut : Signal.Address a -> a -> Property
+onPressOut address action =
+  on "PressOut" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onPageScroll : Signal.Address a -> a -> Property
+onPageScroll address action =
+  on "PageScroll" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onPageScrollStateChanged : Signal.Address a -> a -> Property
+onPageScrollStateChanged address action =
+  on "PageScrollStateChanged" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onPageSelected : Signal.Address a -> a -> Property
+onPageSelected address action =
+  on "PageSelected" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onNavigationStateChange : Signal.Address a -> a -> Property
+onNavigationStateChange address action =
+  on "NavigationStateChange" Json.Decode.value (\_ -> Signal.message address action)
+
+
+onShouldStartLoadWithRequest : Signal.Address a -> a -> Property
+onShouldStartLoadWithRequest address action =
+  on "ShouldStartLoadWithRequest" Json.Decode.value (\_ -> Signal.message address action)
