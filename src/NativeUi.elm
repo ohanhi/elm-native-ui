@@ -195,3 +195,192 @@ on name decoder toMessage =
 onPress : Signal.Address a -> a -> Property
 onPress address msg =
   on "Press" Json.Decode.value (\_ -> Signal.message address msg)
+
+
+
+-- Reactive Native Components
+
+
+text : List Property -> List NativeUi -> NativeUi
+text =
+  node "Text"
+
+
+image : List Property -> List NativeUi -> NativeUi
+image =
+  node "Image"
+
+
+activityIndicatorIos : List Property -> List NativeUi -> NativeUi
+activityIndicatorIos =
+  node "ActivityIndicatorIOS"
+
+
+datePickerIos : List Property -> List NativeUi -> NativeUi
+datePickerIos =
+  node "DatePickerIOS"
+
+
+drawerLayoutAndroid : List Property -> List NativeUi -> NativeUi
+drawerLayoutAndroid =
+  node "DrawerLayoutAndroid"
+
+
+mapView : List Property -> List NativeUi -> NativeUi
+mapView =
+  node "MapView"
+
+
+picker : List Property -> List NativeUi -> NativeUi
+picker =
+  node "Picker"
+
+
+progressBar : List Property -> List NativeUi -> NativeUi
+progressBar =
+  node "ProgressBar"
+
+
+progressView : List Property -> List NativeUi -> NativeUi
+progressView =
+  node "ProgressView"
+
+
+refreshControl : List Property -> List NativeUi -> NativeUi
+refreshControl =
+  node "RefreshControl"
+
+
+scrollView : List Property -> List NativeUi -> NativeUi
+scrollView =
+  node "ScrollView"
+
+
+segmentedControl : List Property -> List NativeUi -> NativeUi
+segmentedControl =
+  node "SegmentedControl"
+
+
+slider : List Property -> List NativeUi -> NativeUi
+slider =
+  node "Slider"
+
+
+statusBar : List Property -> List NativeUi -> NativeUi
+statusBar =
+  node "StatusBar"
+
+
+switch : List Property -> List NativeUi -> NativeUi
+switch =
+  node "Switch"
+
+
+tabBar : List Property -> List NativeUi -> NativeUi
+tabBar =
+  node "TabBar"
+
+
+textInput : List Property -> List NativeUi -> NativeUi
+textInput =
+  node "TextInput"
+
+
+toolbar : List Property -> List NativeUi -> NativeUi
+toolbar =
+  node "Toolbar"
+
+
+view : List Property -> List NativeUi -> NativeUi
+view =
+  node "View"
+
+
+listView : List Property -> List NativeUi -> NativeUi
+listView =
+  node "ListView"
+
+
+modal : List Property -> List NativeUi -> NativeUi
+modal =
+  node "Modal"
+
+
+navigator : List Property -> List NativeUi -> NativeUi
+navigator =
+  node "Navigator"
+
+
+navigatorIos : List Property -> List NativeUi -> NativeUi
+navigatorIos =
+  node "NavigatorIOS"
+
+
+pickerIos : List Property -> List NativeUi -> NativeUi
+pickerIos =
+  node "PickerIOS"
+
+
+progressBarAndroid : List Property -> List NativeUi -> NativeUi
+progressBarAndroid =
+  node "ProgressBarAndroid"
+
+
+progressViewIos : List Property -> List NativeUi -> NativeUi
+progressViewIos =
+  node "ProgressViewIOS"
+
+
+segmentedControlIos : List Property -> List NativeUi -> NativeUi
+segmentedControlIos =
+  node "SegmentedControlIOS"
+
+
+sliderIos : List Property -> List NativeUi -> NativeUi
+sliderIos =
+  node "SliderIOS"
+
+
+tabBarIos : List Property -> List NativeUi -> NativeUi
+tabBarIos =
+  node "TabBarIOS"
+
+
+tabBarIosItem : List Property -> List NativeUi -> NativeUi
+tabBarIosItem =
+  node "TabBarIOS.Item"
+
+
+toolbarAndroid : List Property -> List NativeUi -> NativeUi
+toolbarAndroid =
+  node "ToolbarAndroid"
+
+
+touchableHighlight : List Property -> List NativeUi -> NativeUi
+touchableHighlight =
+  node "TouchableHighlight"
+
+
+touchableNativeFeedback : List Property -> List NativeUi -> NativeUi
+touchableNativeFeedback =
+  node "TouchableNativeFeedback"
+
+
+touchableOpacity : List Property -> List NativeUi -> NativeUi
+touchableOpacity =
+  node "TouchableOpacity"
+
+
+touchableWithoutFeedback : List Property -> List NativeUi -> NativeUi
+touchableWithoutFeedback =
+  node "TouchableWithoutFeedback"
+
+
+viewPagerAndroid : List Property -> List NativeUi -> NativeUi
+viewPagerAndroid =
+  node "ViewPagerAndroid"
+
+
+webView : List Property -> List NativeUi -> NativeUi
+webView =
+  node "WebView"
