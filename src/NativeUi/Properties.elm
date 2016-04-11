@@ -120,8 +120,24 @@ propEnumInt name dc val =
     |> propInt name
 
 
+type alias Top =
+  Int
+
+
+type alias Left =
+  Int
+
+
+type alias Bottom =
+  Int
+
+
+type alias Right =
+  Int
+
+
 {-| -}
-propTlbr : String -> Int -> Int -> Int -> Int -> Property
+propTlbr : String -> Top -> Left -> Bottom -> Right -> Property
 propTlbr name top left bottom right =
   property
     name
@@ -134,16 +150,32 @@ propTlbr name top left bottom right =
     )
 
 
+type alias Latitude =
+  Float
+
+
+type alias Longitude =
+  Float
+
+
+type alias LatitudeDelta =
+  Float
+
+
+type alias LongitudeDelta =
+  Float
+
+
 {-| -}
-propLatLong : String -> Int -> Int -> Int -> Int -> Property
+propLatLong : String -> Latitude -> Longitude -> LatitudeDelta -> LongitudeDelta -> Property
 propLatLong name a b c d =
   property
     name
     (Json.Encode.object
-      [ ( "latitude", Json.Encode.int a )
-      , ( "longitude", Json.Encode.int b )
-      , ( "latitudeDelta", Json.Encode.int c )
-      , ( "longitudeDelta", Json.Encode.int d )
+      [ ( "latitude", Json.Encode.float a )
+      , ( "longitude", Json.Encode.float b )
+      , ( "latitudeDelta", Json.Encode.float c )
+      , ( "longitudeDelta", Json.Encode.float d )
       ]
     )
 
@@ -1317,7 +1349,7 @@ underlayColor =
 
 
 {-| -}
-region : Int -> Int -> Int -> Int -> Property
+region : Float -> Float -> Float -> Float -> Property
 region =
   propLatLong
     "region"
