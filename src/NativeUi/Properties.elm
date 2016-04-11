@@ -45,7 +45,8 @@ module NativeUi.Properties (..) where
 @docs suppressHighlighting, testID, thumbTintColor, timeZoneOffsetInMinutes
 @docs tintColor, title, titleColor, titleTextColor, trackTintColor, translucent
 @docs transparent, underlayColor, underlineColorAndroid, value, zoomEnabled
-@docs zoomScale, propTlbr, propLatLong, firstLower, toHyphenated
+@docs zoomScale, propTlbr, propLatLong, firstLower, toHyphenated, Bottom
+@docs Latitude, LatitudeDelta, Left, Longitude, LongitudeDelta, Right, Top
 -}
 
 import Json.Encode
@@ -120,18 +121,22 @@ propEnumInt name dc val =
     |> propInt name
 
 
+{-| -}
 type alias Top =
   Int
 
 
+{-| -}
 type alias Left =
   Int
 
 
+{-| -}
 type alias Bottom =
   Int
 
 
+{-| -}
 type alias Right =
   Int
 
@@ -150,18 +155,22 @@ propTlbr name top left bottom right =
     )
 
 
+{-| -}
 type alias Latitude =
   Float
 
 
+{-| -}
 type alias Longitude =
   Float
 
 
+{-| -}
 type alias LatitudeDelta =
   Float
 
 
+{-| -}
 type alias LongitudeDelta =
   Float
 
@@ -1485,10 +1494,7 @@ badgeString =
 --
 -- --View Component Properties
 --
--- pointerEvents enum('box-none', 'none', 'box-only', 'auto')
 -- accessibilityComponentType AccessibilityComponentType
--- accessibilityLiveRegion enum('none', 'polite', 'assertive')
--- importantForAccessibility enum('auto', 'yes', 'no', 'no-hide-descendants')
 -- accessibilityTraits AccessibilityTraits, [object Object
 --
 -- --ViewPagerAndroid Component Properties
