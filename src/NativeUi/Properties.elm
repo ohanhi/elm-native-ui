@@ -1,7 +1,7 @@
 module NativeUi.Properties (..) where
 
 {-| Properties of components
-@docs Date, DrawerLockMode, MinuteInterval, ReturnKeyType, StatusBarBarStyle, StatusBarShowHideTransition, TextInputAutoCapitalize, TextInputClearButtonMode, TextInputKeyboardAppearance, TextInputKeyboardType, ViewAccessibilityLiveRegion, ViewImportantForAccessibility, ViewPointerEvents, accessibilityLabel, accessibilityLiveRegion, accessible, active, activeOpacity, allowFontScaling, allowsInlineMediaPlayback, alwaysBounceHorizontal, alwaysBounceVertical, animated, animating, annotations, autoCapitalize, autoCorrect, autoFocus, automaticallyAdjustContentInsets, badgeString, barStyle, barTintColor, blurOnSubmit, blurRadius, bounces, bouncesZoom, canCancelContentTouches, capInsets, centerContent, clearButtonMode, clearTextOnFocus, collapsable, color, contentInset, contentInsetEnd, contentInsetStart, date, datePickerMode, defaultSource, defaultSourceNum, defaultValue, delayLongPress, delayPressIn, delayPressOut, directionalLockEnabled, disabled, domStorageEnabled, drawerLockMode, drawerPosition, drawerWidth, editable, enableEmptySections, enabled, enablesReturnKeyAutomatically, endFillColor, enumToString, followUserLocation, hidden, hidesWhenStopped, hitSlop, horizontal, importantForAccessibility, indicatorStyle, initialListSize, initialPage, initialRoute, injectedJavaScript, javaScriptEnabled, keyboardAppearance, keyboardDismissMode, keyboardShouldPersistTaps, keyboardType, legalLabelInsets, mapType, maxDelta, maxLength, maximumDate, maximumTrackTintColor, maximumValue, maximumZoomScale, mediaPlaybackRequiresUserAction, minDelta, minimumDate, minimumTrackTintColor, minimumValue, minimumZoomScale, minuteInterval, momentary, multiline, navigationBarHidden, navigator, needsOffscreenAlphaCompositing, networkActivityIndicatorVisible, numberOfLines, overlays, pageSize, pagingEnabled, pickerMode, pitchEnabled, placeholder, placeholderTextColor, pointerEvents, pressRetentionOffset, progress, progressBackgroundColor, progressTintColor, progressViewStyle, prompt, propBool, propFloat, propInt, propString, propUri, refreshing, region, removeClippedSubviews, renderError, renderFooter, renderHeader, renderLoading, renderNavigationView, renderRow, renderScene, renderScrollComponent, renderSectionHeader, renderSeparator, renderToHardwareTextureAndroid, resizeMode, returnKeyType, rotateEnabled, rtl, scalesPageToFit, scrollEnabled, scrollEventThrottle, scrollIndicatorInsets, scrollRenderAheadDistance, scrollsToTop, secureTextEntry, selectTextOnFocus, selectedIndex, selectionColor, sendMomentumEvents, shadowHidden, shouldRasterizeIOS, showHideTransition, showsCompass, showsHorizontalScrollIndicator, showsPointsOfInterest, showsUserLocation, showsVerticalScrollIndicator, size, sliderValue, snapToAlignment, snapToInterval, source, sourceNum, startInLoadingState, statusBarBackgroundColor, step, stickyHeaderIndices, subtitle, suppressHighlighting, testID, thumbTintColor, timeZoneOffsetInMinutes, tintColor, title, titleColor, titleTextColor, trackTintColor, translucent, transparent, underlayColor, underlineColorAndroid, value, zoomEnabled, zoomScale
+@docs Date, DrawerLockMode, MinuteInterval, ReturnKeyType, StatusBarBarStyle, StatusBarShowHideTransition, TextInputAutoCapitalize, TextInputClearButtonMode, TextInputKeyboardAppearance, TextInputKeyboardType, ViewAccessibilityLiveRegion, ViewImportantForAccessibility, ViewPointerEvents, accessibilityLabel, accessibilityLiveRegion, accessible, active, activeOpacity, allowFontScaling, allowsInlineMediaPlayback, alwaysBounceHorizontal, alwaysBounceVertical, animated, animating, annotations, autoCapitalize, autoCorrect, autoFocus, automaticallyAdjustContentInsets, badgeString, barStyle, barTintColor, blurOnSubmit, blurRadius, bounces, bouncesZoom, canCancelContentTouches, capInsets, centerContent, clearButtonMode, clearTextOnFocus, collapsable, color, contentInset, contentInsetEnd, contentInsetStart, date, datePickerMode, defaultSource, defaultSourceNum, defaultValue, delayLongPress, delayPressIn, delayPressOut, directionalLockEnabled, disabled, domStorageEnabled, drawerLockMode, drawerPosition, drawerWidth, editable, enableEmptySections, enabled, enablesReturnKeyAutomatically, endFillColor, enumToString, followUserLocation, hidden, hidesWhenStopped, hitSlop, horizontal, importantForAccessibility, indicatorStyle, initialListSize, initialPage, initialRoute, injectedJavaScript, javaScriptEnabled, keyboardAppearance, keyboardDismissMode, keyboardShouldPersistTaps, keyboardType, legalLabelInsets, mapType, maxDelta, maxLength, maximumDate, maximumTrackTintColor, maximumValue, maximumZoomScale, mediaPlaybackRequiresUserAction, minDelta, minimumDate, minimumTrackTintColor, minimumValue, minimumZoomScale, minuteInterval, momentary, multiline, navigationBarHidden, navigator, needsOffscreenAlphaCompositing, networkActivityIndicatorVisible, numberOfLines, overlays, pageSize, pagingEnabled, pickerMode, pitchEnabled, placeholder, placeholderTextColor, pointerEvents, pressRetentionOffset, progress, progressBackgroundColor, progressTintColor, progressViewStyle, prompt, propBool, propFloat, propInt, propString, propUri, refreshing, region, removeClippedSubviews, renderError, renderFooter, renderHeader, renderLoading, renderNavigationView, renderRow, renderScene, renderScrollComponent, renderSectionHeader, renderSeparator, renderToHardwareTextureAndroid, resizeMode, returnKeyType, rotateEnabled, rtl, scalesPageToFit, scrollEnabled, scrollEventThrottle, scrollIndicatorInsets, scrollRenderAheadDistance, scrollsToTop, secureTextEntry, selectTextOnFocus, selectedIndex, selectionColor, sendMomentumEvents, shadowHidden, shouldRasterizeIOS, showHideTransition, showsCompass, showsHorizontalScrollIndicator, showsPointsOfInterest, showsUserLocation, showsVerticalScrollIndicator, size, sliderValue, snapToAlignment, snapToInterval, source, sourceNum, startInLoadingState, statusBarBackgroundColor, step, stickyHeaderIndices, subtitle, suppressHighlighting, testID, thumbTintColor, timeZoneOffsetInMinutes, tintColor, title, titleColor, titleTextColor, trackTintColor, translucent, transparent, underlayColor, underlineColorAndroid, value, zoomEnabled, zoomScale, propTlbr, propLatLong
 -}
 
 import Json.Encode
@@ -21,6 +21,34 @@ import String exposing (toLower)
 propInt : String -> Int -> Property
 propInt name val =
   property name (Json.Encode.int val)
+
+
+{-| -}
+propTlbr : String -> Int -> Int -> Int -> Int -> Property
+propTlbr name top left bottom right =
+  property
+    name
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int top )
+      , ( "left", Json.Encode.int left )
+      , ( "bottom", Json.Encode.int bottom )
+      , ( "right", Json.Encode.int right )
+      ]
+    )
+
+
+{-| -}
+propLatLong : String -> Int -> Int -> Int -> Int -> Property
+propLatLong name a b c d =
+  property
+    name
+    (Json.Encode.object
+      [ ( "latitude", Json.Encode.int a )
+      , ( "longitude", Json.Encode.int b )
+      , ( "latitudeDelta", Json.Encode.int c )
+      , ( "longitudeDelta", Json.Encode.int d )
+      ]
+    )
 
 
 {-| -}
@@ -1267,16 +1295,9 @@ blurRadius =
 
 {-| -}
 capInsets : Int -> Int -> Int -> Int -> Property
-capInsets top left bottom right =
-  property
+capInsets =
+  propTlbr
     "capInsets"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int top )
-      , ( "left", Json.Encode.int left )
-      , ( "bottom", Json.Encode.int bottom )
-      , ( "right", Json.Encode.int right )
-      ]
-    )
 
 
 {-| -}
@@ -1455,72 +1476,37 @@ initialPage =
 
 {-| -}
 hitSlop : Int -> Int -> Int -> Int -> Property
-hitSlop top left bottom right =
-  property
+hitSlop =
+  propTlbr
     "hitSlop"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int top )
-      , ( "left", Json.Encode.int left )
-      , ( "bottom", Json.Encode.int bottom )
-      , ( "right", Json.Encode.int right )
-      ]
-    )
 
 
 {-| -}
 contentInset : Int -> Int -> Int -> Int -> Property
-contentInset top left bottom right =
-  property
+contentInset =
+  propTlbr
     "contentInset"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int top )
-      , ( "left", Json.Encode.int left )
-      , ( "bottom", Json.Encode.int bottom )
-      , ( "right", Json.Encode.int right )
-      ]
-    )
 
 
 {-| -}
 legalLabelInsets : Int -> Int -> Int -> Int -> Property
-legalLabelInsets top left bottom right =
-  property
+legalLabelInsets =
+  propTlbr
     "legalLabelInsets"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int top )
-      , ( "left", Json.Encode.int left )
-      , ( "bottom", Json.Encode.int bottom )
-      , ( "right", Json.Encode.int right )
-      ]
-    )
 
 
 {-| -}
 scrollIndicatorInsets : Int -> Int -> Int -> Int -> Property
-scrollIndicatorInsets top left bottom right =
-  property
+scrollIndicatorInsets =
+  propTlbr
     "scrollIndicatorInsets"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int top )
-      , ( "left", Json.Encode.int left )
-      , ( "bottom", Json.Encode.int bottom )
-      , ( "right", Json.Encode.int right )
-      ]
-    )
 
 
 {-| -}
 pressRetentionOffset : Int -> Int -> Int -> Int -> Property
-pressRetentionOffset top left bottom right =
-  property
+pressRetentionOffset =
+  propTlbr
     "pressRetentionOffset"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int top )
-      , ( "left", Json.Encode.int left )
-      , ( "bottom", Json.Encode.int bottom )
-      , ( "right", Json.Encode.int right )
-      ]
-    )
 
 
 {-| -}
@@ -1585,44 +1571,23 @@ underlayColor =
 
 {-| -}
 region : Int -> Int -> Int -> Int -> Property
-region latitude longitude latitudeDelta longitudeDelta =
-  property
+region =
+  propLatLong
     "region"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int latitude )
-      , ( "left", Json.Encode.int longitude )
-      , ( "bottom", Json.Encode.int latitudeDelta )
-      , ( "right", Json.Encode.int longitudeDelta )
-      ]
-    )
 
 
 {-| -}
 overlays : Int -> Int -> Int -> Int -> Property
-overlays latitude longitude latitudeDelta longitudeDelta =
-  property
+overlays =
+  propTlbr
     "overlays"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int latitude )
-      , ( "left", Json.Encode.int longitude )
-      , ( "bottom", Json.Encode.int latitudeDelta )
-      , ( "right", Json.Encode.int longitudeDelta )
-      ]
-    )
 
 
 {-| -}
 annotations : Int -> Int -> Int -> Int -> Property
-annotations latitude longitude latitudeDelta longitudeDelta =
-  property
+annotations =
+  propTlbr
     "annotations"
-    (Json.Encode.object
-      [ ( "top", Json.Encode.int latitude )
-      , ( "left", Json.Encode.int longitude )
-      , ( "bottom", Json.Encode.int latitudeDelta )
-      , ( "right", Json.Encode.int longitudeDelta )
-      ]
-    )
 
 
 {-| -}
