@@ -247,8 +247,8 @@ pickerMode val =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 prompt : String -> Property
-prompt val =
-  property "prompt" (Json.Encode.string val)
+prompt =
+  propString "prompt"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -401,8 +401,8 @@ pagingEnabled =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 scrollEventThrottle : Float -> Property
-scrollEventThrottle val =
-  property "scrollEventThrottle" (Json.Encode.float val)
+scrollEventThrottle =
+  propFloat "scrollEventThrottle"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -436,8 +436,8 @@ showsVerticalScrollIndicator =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 snapToInterval : Float -> Property
-snapToInterval val =
-  property "snapToInterval" (Json.Encode.float val)
+snapToInterval =
+  propFloat "snapToInterval"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -464,8 +464,8 @@ zoomScale =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 selectedIndex : Float -> Property
-selectedIndex val =
-  property "selectedIndex" (Json.Encode.float val)
+selectedIndex =
+  propFloat "selectedIndex"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -485,29 +485,29 @@ momentary =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 sliderValue : Float -> Property
-sliderValue val =
-  property "sliderValue" (Json.Encode.float val)
+sliderValue =
+  propFloat "sliderValue"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 step : Float -> Property
-step val =
-  property "step" (Json.Encode.float val)
+step =
+  propFloat "step"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 minimumValue : Float -> Property
-minimumValue val =
-  property "minimumValue" (Json.Encode.float val)
+minimumValue =
+  propFloat "minimumValue"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 maximumValue : Float -> Property
-maximumValue val =
-  property "maximumValue" (Json.Encode.float val)
+maximumValue =
+  propFloat "maximumValue"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -827,8 +827,8 @@ returnKeyType val =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 maxLength : Float -> Property
-maxLength val =
-  property "maxLength" (Json.Encode.float val)
+maxLength =
+  propFloat "maxLength"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -959,15 +959,15 @@ subtitle =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 contentInsetStart : Float -> Property
-contentInsetStart val =
-  property "contentInsetStart" (Json.Encode.float val)
+contentInsetStart =
+  propFloat "contentInsetStart"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 contentInsetEnd : Float -> Property
-contentInsetEnd val =
-  property "contentInsetEnd" (Json.Encode.float val)
+contentInsetEnd =
+  propFloat "contentInsetEnd"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
