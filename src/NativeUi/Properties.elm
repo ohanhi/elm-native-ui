@@ -1,7 +1,51 @@
 module NativeUi.Properties (..) where
 
 {-| Properties of components
-@docs Date, DrawerLockMode, MinuteInterval, ReturnKeyType, StatusBarBarStyle, StatusBarShowHideTransition, TextInputAutoCapitalize, TextInputClearButtonMode, TextInputKeyboardAppearance, TextInputKeyboardType, ViewAccessibilityLiveRegion, ViewImportantForAccessibility, ViewPointerEvents, accessibilityLabel, accessibilityLiveRegion, accessible, active, activeOpacity, allowFontScaling, allowsInlineMediaPlayback, alwaysBounceHorizontal, alwaysBounceVertical, animated, animating, annotations, autoCapitalize, autoCorrect, autoFocus, automaticallyAdjustContentInsets, badgeString, barStyle, barTintColor, blurOnSubmit, blurRadius, bounces, bouncesZoom, canCancelContentTouches, capInsets, centerContent, clearButtonMode, clearTextOnFocus, collapsable, color, contentInset, contentInsetEnd, contentInsetStart, date, datePickerMode, defaultSource, defaultSourceNum, defaultValue, delayLongPress, delayPressIn, delayPressOut, directionalLockEnabled, disabled, domStorageEnabled, drawerLockMode, drawerPosition, drawerWidth, editable, enableEmptySections, enabled, enablesReturnKeyAutomatically, endFillColor, enumToString, followUserLocation, hidden, hidesWhenStopped, hitSlop, horizontal, importantForAccessibility, indicatorStyle, initialListSize, initialPage, initialRoute, injectedJavaScript, javaScriptEnabled, keyboardAppearance, keyboardDismissMode, keyboardShouldPersistTaps, keyboardType, legalLabelInsets, mapType, maxDelta, maxLength, maximumDate, maximumTrackTintColor, maximumValue, maximumZoomScale, mediaPlaybackRequiresUserAction, minDelta, minimumDate, minimumTrackTintColor, minimumValue, minimumZoomScale, minuteInterval, momentary, multiline, navigationBarHidden, navigator, needsOffscreenAlphaCompositing, networkActivityIndicatorVisible, numberOfLines, overlays, pageSize, pagingEnabled, pickerMode, pitchEnabled, placeholder, placeholderTextColor, pointerEvents, pressRetentionOffset, progress, progressBackgroundColor, progressTintColor, progressViewStyle, prompt, propBool, propFloat, propInt, propString, propUri, refreshing, region, removeClippedSubviews, renderError, renderFooter, renderHeader, renderLoading, renderNavigationView, renderRow, renderScene, renderScrollComponent, renderSectionHeader, renderSeparator, renderToHardwareTextureAndroid, resizeMode, returnKeyType, rotateEnabled, rtl, scalesPageToFit, scrollEnabled, scrollEventThrottle, scrollIndicatorInsets, scrollRenderAheadDistance, scrollsToTop, secureTextEntry, selectTextOnFocus, selectedIndex, selectionColor, sendMomentumEvents, shadowHidden, shouldRasterizeIOS, showHideTransition, showsCompass, showsHorizontalScrollIndicator, showsPointsOfInterest, showsUserLocation, showsVerticalScrollIndicator, size, sliderValue, snapToAlignment, snapToInterval, source, sourceNum, startInLoadingState, statusBarBackgroundColor, step, stickyHeaderIndices, subtitle, suppressHighlighting, testID, thumbTintColor, timeZoneOffsetInMinutes, tintColor, title, titleColor, titleTextColor, trackTintColor, translucent, transparent, underlayColor, underlineColorAndroid, value, zoomEnabled, zoomScale, propTlbr, propLatLong
+@docs propEnum, Date, DrawerLockMode
+@docs accessibilityLabel, propEnumInt
+@docs accessibilityLiveRegion, accessible, active, activeOpacity
+@docs allowFontScaling, allowsInlineMediaPlayback, alwaysBounceHorizontal
+@docs alwaysBounceVertical, animated, animating, annotations, autoCapitalize
+@docs autoCorrect, autoFocus, automaticallyAdjustContentInsets, badgeString
+@docs barStyle, barTintColor, blurOnSubmit, blurRadius, bounces, bouncesZoom
+@docs canCancelContentTouches, capInsets, centerContent, clearButtonMode
+@docs clearTextOnFocus, collapsable, color, contentInset, contentInsetEnd
+@docs contentInsetStart, date, datePickerMode, defaultSource, defaultSourceNum
+@docs defaultValue, delayLongPress, delayPressIn, delayPressOut
+@docs directionalLockEnabled, disabled, domStorageEnabled, drawerLockMode
+@docs drawerPosition, drawerWidth, editable, enableEmptySections, enabled
+@docs enablesReturnKeyAutomatically, endFillColor, enumToString
+@docs followUserLocation, hidden, hidesWhenStopped, hitSlop, horizontal
+@docs importantForAccessibility, indicatorStyle, initialListSize, initialPage
+@docs initialRoute, injectedJavaScript, javaScriptEnabled, keyboardAppearance
+@docs keyboardDismissMode, keyboardShouldPersistTaps, keyboardType
+@docs legalLabelInsets, mapType, maxDelta, maxLength, maximumDate
+@docs maximumTrackTintColor, maximumValue, maximumZoomScale
+@docs mediaPlaybackRequiresUserAction, minDelta, minimumDate
+@docs minimumTrackTintColor, minimumValue, minimumZoomScale, minuteInterval
+@docs momentary, multiline, navigationBarHidden, navigator
+@docs needsOffscreenAlphaCompositing, networkActivityIndicatorVisible
+@docs numberOfLines, overlays, pageSize, pagingEnabled, pickerMode
+@docs pitchEnabled, placeholder, placeholderTextColor, pointerEvents
+@docs pressRetentionOffset, progress, progressBackgroundColor
+@docs progressTintColor, progressViewStyle, prompt, propBool, propFloat, propInt
+@docs propString, propUri, refreshing, region, removeClippedSubviews
+@docs renderError, renderFooter, renderHeader, renderLoading
+@docs renderNavigationView, renderRow, renderScene, renderScrollComponent
+@docs renderSectionHeader, renderSeparator, renderToHardwareTextureAndroid
+@docs resizeMode, returnKeyType, rotateEnabled, rtl, scalesPageToFit
+@docs scrollEnabled, scrollEventThrottle, scrollIndicatorInsets
+@docs scrollRenderAheadDistance, scrollsToTop, secureTextEntry
+@docs selectTextOnFocus, selectedIndex, selectionColor, sendMomentumEvents
+@docs shadowHidden, shouldRasterizeIOS, showHideTransition, showsCompass
+@docs showsHorizontalScrollIndicator, showsPointsOfInterest, showsUserLocation
+@docs showsVerticalScrollIndicator, size, sliderValue, snapToAlignment
+@docs snapToInterval, source, sourceNum, startInLoadingState
+@docs statusBarBackgroundColor, step, stickyHeaderIndices, subtitle
+@docs suppressHighlighting, testID, thumbTintColor, timeZoneOffsetInMinutes
+@docs tintColor, title, titleColor, titleTextColor, trackTintColor, translucent
+@docs transparent, underlayColor, underlineColorAndroid, value, zoomEnabled
+@docs zoomScale, propTlbr, propLatLong, firstLower, toHyphenated
 -}
 
 import Json.Encode
@@ -14,13 +58,66 @@ import NativeUi.Enum.Picker as PickerMode
 import NativeUi.Enum.ProgressView as ProgressViewStyle
 import NativeUi.Enum.ScrollView as ScrollViewEnum
 import NativeUi.Enum.DrawerLayoutAndroid as DrawerLayoutEnum
-import String exposing (toLower)
+import NativeUi.Enum.StatusBar as StatusBarEnum
+import NativeUi.Enum.TextInput as TextInputEnum
+import NativeUi.Enum.TextInputKA as TextInputKAEnum
+import NativeUi.Enum.ReturnKeyType as ReturnKeyTypeEnum
+import NativeUi.Enum.View as ViewEnum
+import NativeUi.Enum.Pointer as PointerEnum
+import NativeUi.Enum.DatePickerIos as DatePickerIosEnum
+import String
+import Char
+import String
+
+
+{-| -}
+firstLower : List Char -> List Char
+firstLower lst =
+  case lst of
+    [] ->
+      []
+
+    x :: xs ->
+      Char.toLower (x) :: xs
+
+
+{-| -}
+toHyphenated : List Char -> List Char
+toHyphenated x =
+  case x of
+    [] ->
+      []
+
+    x' :: xs ->
+      case (Char.isUpper x') of
+        True ->
+          '-' :: Char.toLower x' :: toHyphenated xs
+
+        False ->
+          x' :: toHyphenated xs
 
 
 {-| -}
 propInt : String -> Int -> Property
 propInt name val =
   property name (Json.Encode.int val)
+
+
+{-| -}
+propEnum : String -> a -> Property
+propEnum name val =
+  propString name (enumToString val)
+
+
+{-| -}
+propEnumInt : String -> Int -> a -> Property
+propEnumInt name dc val =
+  val
+    |> enumToString
+    |> String.dropLeft dc
+    |> String.toInt
+    |> Result.withDefault 0
+    |> propInt name
 
 
 {-| -}
@@ -77,10 +174,13 @@ propUri name uri =
 
 {-| -}
 enumToString : a -> String
-enumToString val =
-  val
+enumToString o =
+  o
     |> toString
-    |> toLower
+    |> String.toList
+    |> firstLower
+    |> toHyphenated
+    |> String.fromList
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -142,8 +242,8 @@ accessibilityLabel =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 resizeMode : Ire.Mode -> Property
-resizeMode val =
-  propString "resizeMode" (enumToString val)
+resizeMode =
+  propEnum "resizeMode"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -170,8 +270,8 @@ hidesWhenStopped =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 size : Aie.Size -> Property
-size val =
-  propString "size" (enumToString val)
+size =
+  propEnum "size"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -233,8 +333,8 @@ scrollEnabled =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 mapType : MapType.MapType -> Property
-mapType val =
-  propString "mapType" (enumToString val)
+mapType =
+  propEnum "mapType"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -268,8 +368,8 @@ enabled =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 pickerMode : PickerMode.Mode -> Property
-pickerMode val =
-  propString "mode" (enumToString val)
+pickerMode =
+  propEnum "mode"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -289,8 +389,8 @@ progress =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 progressViewStyle : ProgressViewStyle.Style -> Property
-progressViewStyle val =
-  propString "progressViewStyle" (enumToString val)
+progressViewStyle =
+  propEnum "progressViewStyle"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -373,8 +473,8 @@ horizontal =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 indicatorStyle : ScrollViewEnum.IndicatorStyle -> Property
-indicatorStyle val =
-  propString "indicatorStyle" (enumToString val)
+indicatorStyle =
+  propEnum "indicatorStyle"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -394,8 +494,8 @@ canCancelContentTouches =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 keyboardDismissMode : ScrollViewEnum.KeyboardDismissMode -> Property
-keyboardDismissMode val =
-  propString "keyboardDismissMode" (enumToString val)
+keyboardDismissMode =
+  propEnum "keyboardDismissMode"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -471,8 +571,8 @@ snapToInterval =
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
 snapToAlignment : ScrollViewEnum.SnapToAlignment -> Property
-snapToAlignment val =
-  propString "snapToAlignment" (enumToString val)
+snapToAlignment =
+  propEnum "snapToAlignment"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -582,28 +682,9 @@ translucent =
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-type StatusBarBarStyle
-  = StatusBarBarStyleDefault
-  | StatusBarBarStyleLightContent
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-barStyle : StatusBarBarStyle -> Property
-barStyle val =
-  let
-    stringValue =
-      case val of
-        StatusBarBarStyleDefault ->
-          "default"
-
-        StatusBarBarStyleLightContent ->
-          "light-content"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "barStyle" jsonValue
+barStyle : StatusBarEnum.BarStyle -> Property
+barStyle =
+  propEnum "barStyle"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -615,62 +696,16 @@ networkActivityIndicatorVisible =
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-type StatusBarShowHideTransition
-  = StatusBarShowHideTransitionFade
-  | StatusBarShowHideTransitionSlide
+showHideTransition : StatusBarEnum.ShowHideTransition -> Property
+showHideTransition =
+  propEnum "showHideTransition"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-showHideTransition : StatusBarShowHideTransition -> Property
-showHideTransition val =
-  let
-    stringValue =
-      case val of
-        StatusBarShowHideTransitionFade ->
-          "fade"
-
-        StatusBarShowHideTransitionSlide ->
-          "slide"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "showHideTransition" jsonValue
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-type TextInputAutoCapitalize
-  = TextInputAutoCapitalizeNone
-  | TextInputAutoCapitalizeSentences
-  | TextInputAutoCapitalizeWords
-  | TextInputAutoCapitalizeCharacters
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-autoCapitalize : TextInputAutoCapitalize -> Property
-autoCapitalize val =
-  let
-    stringValue =
-      case val of
-        TextInputAutoCapitalizeNone ->
-          "none"
-
-        TextInputAutoCapitalizeSentences ->
-          "sentences"
-
-        TextInputAutoCapitalizeWords ->
-          "words"
-
-        TextInputAutoCapitalizeCharacters ->
-          "characters"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "autoCapitalize" jsonValue
+autoCapitalize : TextInputEnum.AutoCapitalize -> Property
+autoCapitalize =
+  propEnum "autoCapitalize"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -696,160 +731,23 @@ editable =
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-type TextInputKeyboardType
-  = TextInputKeyboardTypeDefault
-  | TextInputKeyboardTypeEmailAddress
-  | TextInputKeyboardTypeNumeric
-  | TextInputKeyboardTypePhonePad
-  | TextInputKeyboardTypeAsciiCapable
-  | TextInputKeyboardTypeNumbersAndPunctuation
-  | TextInputKeyboardTypeUrl
-  | TextInputKeyboardTypeNumberPad
-  | TextInputKeyboardTypeNamePhonePad
-  | TextInputKeyboardTypeDecimalPad
-  | TextInputKeyboardTypeTwitter
-  | TextInputKeyboardTypeWebSearch
+keyboardType : TextInputEnum.KeyboardType -> Property
+keyboardType =
+  propEnum "keyboardType"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-keyboardType : TextInputKeyboardType -> Property
-keyboardType val =
-  let
-    stringValue =
-      case val of
-        TextInputKeyboardTypeDefault ->
-          "default"
-
-        TextInputKeyboardTypeEmailAddress ->
-          "email-address"
-
-        TextInputKeyboardTypeNumeric ->
-          "numeric"
-
-        TextInputKeyboardTypePhonePad ->
-          "phone-pad"
-
-        TextInputKeyboardTypeAsciiCapable ->
-          "ascii-capable"
-
-        TextInputKeyboardTypeNumbersAndPunctuation ->
-          "numbers-and-punctuation"
-
-        TextInputKeyboardTypeUrl ->
-          "url"
-
-        TextInputKeyboardTypeNumberPad ->
-          "number-pad"
-
-        TextInputKeyboardTypeNamePhonePad ->
-          "name-phone-pad"
-
-        TextInputKeyboardTypeDecimalPad ->
-          "decimal-pad"
-
-        TextInputKeyboardTypeTwitter ->
-          "twitter"
-
-        TextInputKeyboardTypeWebSearch ->
-          "web-search"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "keyboardType" jsonValue
+keyboardAppearance : TextInputKAEnum.KeyboardAppearance -> Property
+keyboardAppearance =
+  propEnum "keyboardAppearance"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-type TextInputKeyboardAppearance
-  = TextInputKeyboardAppearanceDefault
-  | TextInputKeyboardAppearanceLight
-  | TextInputKeyboardAppearanceDark
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-keyboardAppearance : TextInputKeyboardAppearance -> Property
-keyboardAppearance val =
-  let
-    stringValue =
-      case val of
-        TextInputKeyboardAppearanceDefault ->
-          "default"
-
-        TextInputKeyboardAppearanceLight ->
-          "light"
-
-        TextInputKeyboardAppearanceDark ->
-          "dark"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "keyboardAppearance" jsonValue
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-type ReturnKeyType
-  = ReturnKeyTypeDefault
-  | ReturnKeyTypeGo
-  | ReturnKeyTypeGoogle
-  | ReturnKeyTypeJoin
-  | ReturnKeyTypeNext
-  | ReturnKeyTypeRoute
-  | ReturnKeyTypeSearch
-  | ReturnKeyTypeSend
-  | ReturnKeyTypeYahoo
-  | ReturnKeyTypeDone
-  | ReturnKeyTypeEmergencyCall
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-returnKeyType : ReturnKeyType -> Property
-returnKeyType val =
-  let
-    stringValue =
-      case val of
-        ReturnKeyTypeDefault ->
-          "default"
-
-        ReturnKeyTypeGo ->
-          "go"
-
-        ReturnKeyTypeGoogle ->
-          "google"
-
-        ReturnKeyTypeJoin ->
-          "join"
-
-        ReturnKeyTypeNext ->
-          "next"
-
-        ReturnKeyTypeRoute ->
-          "route"
-
-        ReturnKeyTypeSearch ->
-          "search"
-
-        ReturnKeyTypeSend ->
-          "send"
-
-        ReturnKeyTypeYahoo ->
-          "yahoo"
-
-        ReturnKeyTypeDone ->
-          "done"
-
-        ReturnKeyTypeEmergencyCall ->
-          "emergency-call"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "returnKeyType" jsonValue
+returnKeyType : ReturnKeyTypeEnum.ReturnKeyType -> Property
+returnKeyType =
+  propEnum "returnKeyType"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -917,36 +815,9 @@ defaultValue =
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-type TextInputClearButtonMode
-  = TextInputClearButtonModeNever
-  | TextInputClearButtonModeWhileEditing
-  | TextInputClearButtonModeUnlessEditing
-  | TextInputClearButtonModeAlways
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-clearButtonMode : TextInputClearButtonMode -> Property
-clearButtonMode val =
-  let
-    stringValue =
-      case val of
-        TextInputClearButtonModeNever ->
-          "never"
-
-        TextInputClearButtonModeWhileEditing ->
-          "while-editing"
-
-        TextInputClearButtonModeUnlessEditing ->
-          "unless-editing"
-
-        TextInputClearButtonModeAlways ->
-          "always"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "clearButtonMode" jsonValue
+clearButtonMode : TextInputEnum.ClearButtonMode -> Property
+clearButtonMode =
+  propEnum "clearButtonMode"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -1007,100 +878,23 @@ rtl =
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-type ViewAccessibilityLiveRegion
-  = ViewAccessibilityLiveRegionNone
-  | ViewAccessibilityLiveRegionPolite
-  | ViewAccessibilityLiveRegionAssertive
+accessibilityLiveRegion : ViewEnum.AccessibilityLiveRegion -> Property
+accessibilityLiveRegion =
+  propEnum "accessibilityLiveRegion"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-accessibilityLiveRegion : ViewAccessibilityLiveRegion -> Property
-accessibilityLiveRegion val =
-  let
-    stringValue =
-      case val of
-        ViewAccessibilityLiveRegionNone ->
-          "none"
-
-        ViewAccessibilityLiveRegionPolite ->
-          "polite"
-
-        ViewAccessibilityLiveRegionAssertive ->
-          "assertive"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "accessibilityLiveRegion" jsonValue
+importantForAccessibility : ViewEnum.ImportantForAccessibility -> Property
+importantForAccessibility =
+  propEnum "importantForAccessibility"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-type ViewImportantForAccessibility
-  = ViewImportantForAccessibilityAuto
-  | ViewImportantForAccessibilityYes
-  | ViewImportantForAccessibilityNo
-  | ViewImportantForAccessibilityNoHideDescendants
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-importantForAccessibility : ViewImportantForAccessibility -> Property
-importantForAccessibility val =
-  let
-    stringValue =
-      case val of
-        ViewImportantForAccessibilityAuto ->
-          "auto"
-
-        ViewImportantForAccessibilityYes ->
-          "yes"
-
-        ViewImportantForAccessibilityNo ->
-          "no"
-
-        ViewImportantForAccessibilityNoHideDescendants ->
-          "no-hide-descendants"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "importantForAccessibility" jsonValue
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-type ViewPointerEvents
-  = ViewPointerEventsBoxNone
-  | ViewPointerEventsNone
-  | ViewPointerEventsBoxOnly
-  | ViewPointerEventsAuto
-
-
-{-| A node in the virtual View Tree that forms the basis of the UI for your app.
--}
-pointerEvents : ViewPointerEvents -> Property
-pointerEvents val =
-  let
-    stringValue =
-      case val of
-        ViewPointerEventsBoxNone ->
-          "box-none"
-
-        ViewPointerEventsNone ->
-          "none"
-
-        ViewPointerEventsBoxOnly ->
-          "box-only"
-
-        ViewPointerEventsAuto ->
-          "auto"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "pointerEvents" jsonValue
+pointerEvents : PointerEnum.PointerEvents -> Property
+pointerEvents =
+  propEnum "pointerEvents"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -1141,21 +935,6 @@ type Date
   = String
 
 
-{-| -}
-type MinuteInterval
-  = MI1
-  | MI2
-  | MI3
-  | MI4
-  | MI5
-  | MI6
-  | MI10
-  | MI12
-  | MI15
-  | MI20
-  | MI30
-
-
 
 --date  Date
 
@@ -1186,35 +965,16 @@ minimumDate =
   propString "minimumDate"
 
 
-
---minuteInterval enum(1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30)
-
-
 {-| -}
-minuteInterval : Int -> Property
+minuteInterval : DatePickerIosEnum.MinuteInterval -> Property
 minuteInterval =
-  propInt "minuteInterval"
+  propEnumInt "minuteInterval" 2
 
 
 {-| -}
 datePickerMode : Dpe.Mode -> Property
-datePickerMode val =
-  let
-    modeValue =
-      case val of
-        Dpe.Date ->
-          ""
-
-        Dpe.Time ->
-          "none"
-
-        Dpe.DateTime ->
-          ""
-
-    jsonValue =
-      Json.Encode.string modeValue
-  in
-    property "mode" jsonValue
+datePickerMode =
+  propEnum "mode"
 
 
 
@@ -1235,17 +995,9 @@ type DrawerLockMode
 
 
 {-| -}
-drawerLockMode : DrawerLockMode -> String
-drawerLockMode mode =
-  case mode of
-    UnLocked ->
-      "unlocked"
-
-    LockedClosed ->
-      "locked-closed"
-
-    LockedOpen ->
-      "locked-open"
+drawerLockMode : DrawerLockMode -> Property
+drawerLockMode =
+  propEnum "drawerLockMode"
 
 
 
@@ -1253,14 +1005,9 @@ drawerLockMode mode =
 
 
 {-| -}
-drawerPosition : DrawerLayoutEnum.DrawerPosition -> String
-drawerPosition mode =
-  case mode of
-    DrawerLayoutEnum.Left ->
-      "left"
-
-    DrawerLayoutEnum.Right ->
-      "right"
+drawerPosition : DrawerLayoutEnum.DrawerPosition -> Property
+drawerPosition =
+  propEnum "drawerPosition"
 
 
 {-| -}
