@@ -24,3 +24,8 @@ type SnapToAlignment
   = Start
   | Center
   | End
+
+
+type DecelerationRate
+  = Fast
+  | Normal

@@ -1,8 +1,8 @@
 module NativeUi.Properties (..) where
 
 {-| Properties of components
-@docs propEnum, Date, DrawerLockMode
-@docs accessibilityLabel, propEnumInt
+@docs propEnum,decelerationRate, decelerationRateNum, styleAttr
+@docs accessibilityLabel, propEnumInt, selectedValue
 @docs accessibilityLiveRegion, accessible, active, activeOpacity
 @docs allowFontScaling, allowsInlineMediaPlayback, alwaysBounceHorizontal
 @docs alwaysBounceVertical, animated, animating, annotations, autoCapitalize
@@ -47,6 +47,8 @@ module NativeUi.Properties (..) where
 @docs transparent, underlayColor, underlineColorAndroid, value, zoomEnabled
 @docs zoomScale, propTlbr, propLatLong, firstLower, toHyphenated, Bottom
 @docs Latitude, LatitudeDelta, Left, Longitude, LongitudeDelta, Right, Top
+@docs progressImage, progressImageNum, trackImage, trackImageNum
+@docs logo, logoNum, navIcon, navIconNum, overflowIcon, overflowIconNum, systemIcon
 -}
 
 import Json.Encode
@@ -66,6 +68,8 @@ import NativeUi.Enum.ReturnKeyType as ReturnKeyTypeEnum
 import NativeUi.Enum.View as ViewEnum
 import NativeUi.Enum.Pointer as PointerEnum
 import NativeUi.Enum.DatePickerIos as DatePickerIosEnum
+import NativeUi.Enum.ProgressBarAndroid as ProgressBarAndroidEnum
+import NativeUi.Enum.TabBarIos as TabBarIosEnum
 import String
 import Char
 import String
@@ -966,38 +970,16 @@ needsOffscreenAlphaCompositing =
   propBool "needsOffscreenAlphaCompositing"
 
 
-
---custom property handlers handled by me
---DatePickerIOS Properties
-
-
-{-| -}
-type Date
-  = String
-
-
-
---date  Date
-
-
 {-| -}
 date : String -> Property
 date =
   propString "date"
 
 
-
---maximumDate Date
-
-
 {-| -}
 maximumDate : String -> Property
 maximumDate =
   propString "maximumDate"
-
-
-
---minimumDate Date
 
 
 {-| -}
@@ -1018,10 +1000,6 @@ datePickerMode =
   propEnum "mode"
 
 
-
---timeZoneOffsetInMinutes number
-
-
 {-| -}
 timeZoneOffsetInMinutes : Int -> Property
 timeZoneOffsetInMinutes =
@@ -1029,20 +1007,9 @@ timeZoneOffsetInMinutes =
 
 
 {-| -}
-type DrawerLockMode
-  = UnLocked
-  | LockedClosed
-  | LockedOpen
-
-
-{-| -}
-drawerLockMode : DrawerLockMode -> Property
+drawerLockMode : DrawerLayoutEnum.DrawerLockMode -> Property
 drawerLockMode =
   propEnum "drawerLockMode"
-
-
-
---drawerPosition enum(DrawerConsts.DrawerPosition.Left, DrawerConsts.DrawerPosition.Right)
 
 
 {-| -}
@@ -1084,8 +1051,7 @@ blurRadius =
 {-| -}
 capInsets : Int -> Int -> Int -> Int -> Property
 capInsets =
-  propTlbr
-    "capInsets"
+  propTlbr "capInsets"
 
 
 {-| -}
@@ -1360,22 +1326,19 @@ underlayColor =
 {-| -}
 region : Float -> Float -> Float -> Float -> Property
 region =
-  propLatLong
-    "region"
+  propLatLong "region"
 
 
 {-| -}
 overlays : Int -> Int -> Int -> Int -> Property
 overlays =
-  propTlbr
-    "overlays"
+  propTlbr "overlays"
 
 
 {-| -}
 annotations : Int -> Int -> Int -> Int -> Property
 annotations =
-  propTlbr
-    "annotations"
+  propTlbr "annotations"
 
 
 {-| -}
@@ -1384,49 +1347,105 @@ badgeString =
   propString "badgeString"
 
 
+{-| -}
+decelerationRate : ScrollViewEnum.DecelerationRate -> Property
+decelerationRate =
+  propEnum "decelerationRate"
 
--- -- List View Components Properties
--- dataSource ListViewDataSource
+
+{-| -}
+decelerationRateNum : Int -> Property
+decelerationRateNum =
+  propInt "decelerationRate"
+
+
+{-| -}
+selectedValue : Json.Encode.Value -> Property
+selectedValue f =
+  property "selectedValue" f
+
+
+{-| -}
+styleAttr : ProgressBarAndroidEnum.StyleAttr -> Property
+styleAttr =
+  propEnum "styleAttr"
+
+
+{-| -}
+progressImage : String -> Property
+progressImage =
+  source
+
+
+{-| -}
+progressImageNum : Int -> Property
+progressImageNum =
+  sourceNum
+
+
+{-| -}
+trackImage : String -> Property
+trackImage =
+  source
+
+
+{-| -}
+trackImageNum : Int -> Property
+trackImageNum =
+  sourceNum
+
+
+{-| -}
+logo : String -> Property
+logo =
+  source
+
+
+{-| -}
+logoNum : Int -> Property
+logoNum =
+  sourceNum
+
+
+{-| -}
+navIcon : String -> Property
+navIcon =
+  source
+
+
+{-| -}
+navIconNum : Int -> Property
+navIconNum =
+  sourceNum
+
+
+{-| -}
+overflowIcon : String -> Property
+overflowIcon =
+  source
+
+
+{-| -}
+overflowIconNum : Int -> Property
+overflowIconNum =
+  sourceNum
+
+
+
+-- icon Image.propTypes.source
+-- selectedIcon Image.propTypes.source
+-- maximumTrackImage Image.propTypes.source
+-- thumbImage Image.propTypes.source
 --
---
--- -- Mapview Components Properties
---
--- --Navigator Component Properties
---
--- configureScene function ((route, routeStack) => Navigator.SceneConfigs.FloatFromRight)
--- initialRouteStack [object]
--- navigationBar node
--- sceneStyle View#style
---
--- --NavigatorIOS Components Properties
---
--- initialRoute {component: function, title: string, passProps: object, backButtonIcon: Image.propTypes.source, backButtonTitle: string, leftButtonIcon: Image.propTypes.source, leftButtonTitle: string, onLeftButtonPress: function, rightButtonIcon: Image.propTypes.source, rightButtonTitle: string, onRightButtonPress: function, wrapperStyle: [object Object], navigationBarHidden: bool, shadowHidden: bool, tintColor: string, barTintColor: string, titleTextColor: string, translucent: bool}
---
--- itemWrapperStyle View#style
---
--- -- PickerIOS component Properties
--- itemStyle itemStylePropType
--- selectedValue any
---
--- --Progress Bar Android  Component Properties
---
--- indeterminate indeterminateType
--- styleAttr STYLE_ATTRIBUTES
---
--- -- Style of the ProgressBar. One of:
--- --
--- -- -- Horizontal
--- -- -- Normal (default)
--- -- -- Small
--- -- -- Large
--- -- -- Inverse
--- -- -- SmallInverse
--- -- -- LargeInverse
---
--- -- ProogressViewIOS Component Properties
--- progressImage Image.propTypes.source
--- trackImage Image.propTypes.source
---
+
+
+{-| -}
+systemIcon : TabBarIosEnum.SystemIcon -> Property
+systemIcon =
+  propEnum "systemIcon"
+
+
+
 --
 -- -- Refresh Control Component Properties
 --
@@ -1437,54 +1456,12 @@ badgeString =
 -- contentContainerStyle StyleSheetPropType(ViewStylePropTypes)
 -- refreshControl element
 -- contentOffset PointPropType
--- decelerationRate enum('fast', 'normal'), number
 --
 --
 -- -- Segmented Control IOS Component Properties
 -- values [string]
---
---
--- -- Slider Component Properties
--- maximumTrackImage Image.propTypes.source
--- thumbImage Image.propTypes.source
---
---
--- --StatusBar Component Properties
---
---
--- --Switch Component Properties
---
---
--- --TabBarIOS.Item Component Properties
---
--- icon Image.propTypes.source
--- selectedIcon Image.propTypes.source
--- systemIcon enum('bookmarks', 'contacts', 'downloads', 'favorites', 'featured', 'history', 'more', 'most-recent', 'most-viewed', 'recents', 'search', 'top-rated')
--- -- TextInput Component Properties
--- autoCapitalize enum('none', 'sentences', 'words', 'characters')
--- keyboardType enum('default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search')
--- clearButtonMode enum('never', 'while-editing', 'unless-editing', 'always')
--- keyboardAppearance enum('default', 'light', 'dark')
--- returnKeyType enum('default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call')
--- selectionState
---
---
 -- --ToolbarAndroid Component Properties
 -- actions [{title: string, icon: optionalImageSource, show: enum('always', 'ifRoom', 'never'), showWithText: bool}]
--- logo optionalImageSource
--- navIcon optionalImageSource
--- overflowIcon optionalImageSource
---
---
--- -- TouchableHighlight Component Properties
---
---
---
--- --TouchableNativeFeedback Component Properties
--- background backgroundPropType
---
---
--- --TouchableOpacity  Component Properties
 --
 -- --TouchableWithoutFeedback Component Properties
 --
@@ -1496,9 +1473,5 @@ badgeString =
 --
 -- accessibilityComponentType AccessibilityComponentType
 -- accessibilityTraits AccessibilityTraits, [object Object
---
--- --ViewPagerAndroid Component Properties
---
 -- --WebView Component Properties
 -- source {uri: string, method: string, headers: object, body: string}, {html: string, baseUrl: string}, number
--- decelerationRate ScrollView.propTypes.decelerationRate
