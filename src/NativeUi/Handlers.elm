@@ -24,9 +24,12 @@ onLayout address action =
   on "Layout" Json.Decode.value (\_ -> Signal.message address action)
 
 
+{-| Binds an event handler into the `onPress` event.
+-}
 onPress : Signal.Address a -> a -> Property
-onPress address action =
-  on "Press" Json.Decode.value (\_ -> Signal.message address action)
+onPress address msg =
+  on "Press" Json.Decode.value (\_ -> Signal.message address msg)
+
 
 
 onLoadStart : Signal.Address a -> a -> Property

@@ -1,13 +1,11 @@
-module NativeUi (NativeUi, node, string, style, imageSource, onPress, Property) where
+module NativeUi (NativeUi, node, string, style, imageSource, Property, property, on) where
 
 {-| Render your application as a React Native app.
 
 # Types
 @docs NativeUi
 # Common Helpers
-@docs node, string, style, imageSource, Property
-# Events
-@docs onPress
+@docs node, string, style, imageSource, Property, property, on
 -}
 
 import Json.Encode
@@ -109,7 +107,8 @@ nativeEventHandler : Json.Decode.Decoder a -> (a -> Signal.Message) -> NativeVal
 nativeEventHandler =
   Native.NativeUi.nativeEventHandler
 
-
+{-| Binds an event handler into the `onPress` event.
+-}
 on : String -> Json.Decode.Decoder a -> (a -> Signal.Message) -> Property
 on name decoder toMessage =
   let
@@ -120,10 +119,3 @@ on name decoder toMessage =
       nativeEventHandler decoder toMessage
   in
     NativeProperty fullName handler
-
-
-{-| Binds an event handler into the `onPress` event.
--}
-onPress : Signal.Address a -> a -> Property
-onPress address msg =
-  on "Press" Json.Decode.value (\_ -> Signal.message address msg)

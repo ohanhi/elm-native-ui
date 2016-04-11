@@ -1,6 +1,16 @@
 module NativeUi.Elements where
--- Reactive Native Components
+{-|
 
+# Common Helpers
+@docs activityIndicatorIos, datePickerIos, drawerLayoutAndroid, image, listView, mapView
+@docs modal ,navigator, navigatorIos, picker ,pickerIos ,progressBar ,progressBarAndroid
+@docs progressView, progressViewIos, refreshControl ,scrollView, segmentedControl
+@docs segmentedControlIos ,slider, sliderIos, statusBar, switch, tabBar, tabBarIos
+@docs tabBarIosItem , text ,textInput ,toolbar, toolbarAndroid ,touchableHighlight
+@docs touchableNativeFeedback ,touchableOpacity, touchableWithoutFeedback ,view
+@docs viewPagerAndroid, webView
+
+-}
 import NativeUi exposing (..)
 
 {-| Create a React Native `View` element with the given properties and children.
@@ -71,175 +81,213 @@ image =
 
 
 
-
-
-
+{-| Animated Loading Indicators
+-}
 activityIndicatorIos : List Property -> List NativeUi -> NativeUi
 activityIndicatorIos =
   node "ActivityIndicatorIOS"
 
+
+{-| Selects Date and Time Using NativeUi Picker
+-}
 
 datePickerIos : List Property -> List NativeUi -> NativeUi
 datePickerIos =
   node "DatePickerIOS"
 
 
+{-| Acts Like a Drawer
+-}
 drawerLayoutAndroid : List Property -> List NativeUi -> NativeUi
 drawerLayoutAndroid =
   node "DrawerLayoutAndroid"
 
 
+{-| Base Components To Display Maps
+-}
 mapView : List Property -> List NativeUi -> NativeUi
 mapView =
   node "MapView"
 
-
+{-| Render Lists of Selectable Options with Picker
+-}
 picker : List Property -> List NativeUi -> NativeUi
 picker =
   node "Picker"
 
-
+{-| Component for Controlling the Progress
+-}
 progressBar : List Property -> List NativeUi -> NativeUi
 progressBar =
   node "ProgressBar"
 
-
+{-| Base component for Display Progress
+-}
 progressView : List Property -> List NativeUi -> NativeUi
 progressView =
   node "ProgressView"
 
-
+{-| Adds Pull-to refresh to Scroll View
+-}
 refreshControl : List Property -> List NativeUi -> NativeUi
 refreshControl =
   node "RefreshControl"
 
-
+{-| Component that enable Scrolling through Child Components
+-}
 scrollView : List Property -> List NativeUi -> NativeUi
 scrollView =
   node "ScrollView"
 
-
+{-| Native Segmented Control
+-}
 segmentedControl : List Property -> List NativeUi -> NativeUi
 segmentedControl =
   node "SegmentedControl"
 
-
+{-| Slider Input For Numeric Values
+-}
 slider : List Property -> List NativeUi -> NativeUi
 slider =
   node "Slider"
 
-
+{-| Component For Controlling Status Bar
+-}
 statusBar : List Property -> List NativeUi -> NativeUi
 statusBar =
   node "StatusBar"
 
-
+{-| Native Boolean Input
+-}
 switch : List Property -> List NativeUi -> NativeUi
 switch =
   node "Switch"
 
-
+{-| Tab Based Navigation
+-}
 tabBar : List Property -> List NativeUi -> NativeUi
 tabBar =
   node "TabBar"
 
-
+{-| Single and Multi Line Text Input
+-}
 textInput : List Property -> List NativeUi -> NativeUi
 textInput =
   node "TextInput"
 
-
+{-| A Toolbar can display a logo,
+navigation icon (e.g. hamburger menu), a title & subtitle and a list of actions.
+-}
 toolbar : List Property -> List NativeUi -> NativeUi
 toolbar =
   node "Toolbar"
 
 
-
+{-| Performant Scrollable liat of data
+-}
 listView : List Property -> List NativeUi -> NativeUi
 listView =
   node "ListView"
 
-
+{-| Component for presenting Modal view
+-}
 modal : List Property -> List NativeUi -> NativeUi
 modal =
   node "Modal"
 
-
+{-| Js Implemented Navigation
+-}
 navigator : List Property -> List NativeUi -> NativeUi
 navigator =
   node "Navigator"
 
-
+{-| Ios Navigation with custom nav bar colors
+-}
 navigatorIos : List Property -> List NativeUi -> NativeUi
 navigatorIos =
   node "NavigatorIOS"
 
-
+{-|Render List of Selectable options with PickerIOS
+-}
 pickerIos : List Property -> List NativeUi -> NativeUi
 pickerIos =
   node "PickerIOS"
 
-
+{-| Andriod Component for showing Progress
+-}
 progressBarAndroid : List Property -> List NativeUi -> NativeUi
 progressBarAndroid =
   node "ProgressBarAndroid"
 
-
+{-| IOS Base component for Displaying Progress
+-}
 progressViewIos : List Property -> List NativeUi -> NativeUi
 progressViewIos =
   node "ProgressViewIOS"
 
 
+{-| Native Component for Segmanted Control
+-}
 segmentedControlIos : List Property -> List NativeUi -> NativeUi
 segmentedControlIos =
   node "SegmentedControlIOS"
 
-
+{-| IOS Base component for sliding Input values
+-}
 sliderIos : List Property -> List NativeUi -> NativeUi
 sliderIos =
   node "SliderIOS"
 
-
+{-| Tab Based Navigation for IOS
+-}
 tabBarIos : List Property -> List NativeUi -> NativeUi
 tabBarIos =
   node "TabBarIOS"
 
-
+{-| IOS Base component for tab Bar
+-}
 tabBarIosItem : List Property -> List NativeUi -> NativeUi
 tabBarIosItem =
   node "TabBarIOS.Item"
 
-
+{-| Android Base component for Tool Bar
+-}
 toolbarAndroid : List Property -> List NativeUi -> NativeUi
 toolbarAndroid =
   node "ToolbarAndroid"
 
-
+{-| A wrapper for making views respond properly to touches
+-}
 touchableHighlight : List Property -> List NativeUi -> NativeUi
 touchableHighlight =
   node "TouchableHighlight"
 
-
+{-| Touchable A wrapper for making views respond properly to touches
+-}
 touchableNativeFeedback : List Property -> List NativeUi -> NativeUi
 touchableNativeFeedback =
   node "TouchableNativeFeedback"
 
-
+{-| Touchable A wrapper for making views respond properly to touches
+-}
 touchableOpacity : List Property -> List NativeUi -> NativeUi
 touchableOpacity =
   node "TouchableOpacity"
 
-
+{-| Touchable A wrapper for making views respond properly to touches
+-}
 touchableWithoutFeedback : List Property -> List NativeUi -> NativeUi
 touchableWithoutFeedback =
   node "TouchableWithoutFeedback"
 
-
+{-| Building Blocks For UI Component
+-}
 viewPagerAndroid : List Property -> List NativeUi -> NativeUi
 viewPagerAndroid =
   node "ViewPagerAndroid"
 
-
+{-| Base Component to display web content
+-}
 webView : List Property -> List NativeUi -> NativeUi
 webView =
   node "WebView"

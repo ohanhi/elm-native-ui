@@ -9,6 +9,9 @@
     "exposed-modules": [
         "NativeUi",
         "NativeUi.NativeApp",
+        "NativeUi.Elements",
+        "NativeUi.Handlers",
+        "NativeUi.Properties",
         "NativeUi.Style"
     ],
     "native-modules": true,

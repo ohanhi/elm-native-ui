@@ -1005,273 +1005,273 @@ needsOffscreenAlphaCompositing val =
   property "needsOffscreenAlphaCompositing" (Json.Encode.bool val)
 
 --DatePickerIOS Properties
-date  Date
-
-maximumDate Date
-
-minimumDate Date
-
-minuteInterval enum
-
-mode -> DatePickerIOS  mode enum('date', 'time', 'datetime')
-
-timeZoneOffsetInMinutes number
-
---DrawerLayoutAndroid Properties
-
-drawerLockMode enum('unlocked', 'locked-closed', 'locked-open')
-
-
-drawerPosition enum(DrawerConsts.DrawerPosition.Left, DrawerConsts.DrawerPosition.Right)
-
-drawerWidth number
-
-
-keyboardDismissMode enum('none', 'on-drag')
-
-
-renderNavigationView function
-
-statusBarBackgroundColor color
-
--- Image Component Properties
-source {uri: string}, number
-
-accessibilityLabel string
-
-accessible bool
-
-blurRadius number
-capInsets {top: number, left: number, bottom: number, right: number}
-defaultSource {uri: string}, number
-
--- List View Components Properties
-dataSource ListViewDataSource
-enableEmptySections bool
-initialListSize number
-pageSize number
-removeClippedSubviews bool
-
-renderFooter function
-renderHeader function
-renderRow function
-renderScrollComponent function
-renderSectionHeader function
-renderSeparator function
-scrollRenderAheadDistance number
-stickyHeaderIndices [number]
-
--- Mapview Components Properties
-pitchEnabled bool (true camera is associated with the map)
-region {latitude: number, longitude: number, latitudeDelta: number, longitudeDelta: number}
-rotateEnabled bool
-scrollEnabled bool
-showsUserLocation bool
-zoomEnabled bool
-active bool
-annotations [{latitude: number, longitude: number, animateDrop: bool, draggable: bool, onDragStateChange: function, onFocus: function, onBlur: function, title: string, subtitle: string, leftCalloutView: element, rightCalloutView: element, detailCalloutView: element, tintColor: [object Object], image: Image.propTypes.source, view: element, id: string, hasLeftCallout: deprecatedPropType( React.PropTypes.bool, 'Use `leftCalloutView` instead.' ), hasRightCallout: deprecatedPropType( React.PropTypes.bool, 'Use `rightCalloutView` instead.' ), onLeftCalloutPress: deprecatedPropType( React.PropTypes.func, 'Use `leftCalloutView` instead.' ), onRightCalloutPress: deprecatedPropType( React.PropTypes.func, 'Use `rightCalloutView` instead.' )}
-followUserLocation bool
-legalLabelInsets {top: number, left: number, bottom: number, right: number}
-mapType enum('standard', 'satellite', 'hybrid')
-maxDelta number
-minDelta number
-overlays [{coordinates: [object Object], lineWidth: number, strokeColor: [object Object], fillColor: [object Object], id: string}]
-showsCompass bool
-showsPointsOfInterest bool
-
---Model Component Properties
-
-animated bool
-transparent bool
-visible bool
-
---Navigator Component Properties
-
-configureScene function ((route, routeStack) => Navigator.SceneConfigs.FloatFromRight)
-initialRoute object
-initialRouteStack [object]
-navigationBar node
-navigator object
-renderScene function
-sceneStyle View#style
-
---NavigatorIOS Components Properties
-
-barTintColor string
-initialRoute {component: function, title: string, passProps: object, backButtonIcon: Image.propTypes.source, backButtonTitle: string, leftButtonIcon: Image.propTypes.source, leftButtonTitle: string, onLeftButtonPress: function, rightButtonIcon: Image.propTypes.source, rightButtonTitle: string, onRightButtonPress: function, wrapperStyle: [object Object], navigationBarHidden: bool, shadowHidden: bool, tintColor: string, barTintColor: string, titleTextColor: string, translucent: bool}
-
-itemWrapperStyle View#style
-navigationBarHidden bool
-shadowHidden bool
-titleTextColor string
-
--- PickerIOS component Properties
-itemStyle itemStylePropType
-selectedValue any
-
---Progress Bar Android  Component Properties
-
-indeterminate indeterminateType
-progress number
-styleAttr STYLE_ATTRIBUTES
-
--- Style of the ProgressBar. One of:
+-- date  Date
 --
--- -- Horizontal
--- -- Normal (default)
--- -- Small
--- -- Large
--- -- Inverse
--- -- SmallInverse
--- -- LargeInverse
-
--- ProogressViewIOS Component Properties
-progressImage Image.propTypes.source
-trackImage Image.propTypes.source
-
-
--- Refresh Control Component Properties
-
-colors [color]
-progressBackgroundColor color
-
---ScrollView Component Properties
-
-contentContainerStyle StyleSheetPropType(ViewStylePropTypes)
-refreshControl element
-endFillColor color
-contentOffset PointPropType
-decelerationRate enum('fast', 'normal'), number
-scrollIndicatorInsets {top: number, left: number, bottom: number, right: number}
-
-
--- Segmented Control IOS Component Properties
-values [string]
-
-
--- Slider Component Properties
-maximumTrackImage Image.propTypes.source
-maximumTrackTintColor string
-thumbImage Image.propTypes.source
-
-
---StatusBar Component Properties
-backgroundColor color
-
-
---Switch Component Properties
-thumbTintColor color
-
-
---TabBarIOS.Item Component Properties
-
-badge string, number
-icon Image.propTypes.source
-selectedIcon Image.propTypes.source
-systemIcon enum('bookmarks', 'contacts', 'downloads', 'favorites', 'featured', 'history', 'more', 'most-recent', 'most-viewed', 'recents', 'search', 'top-rated')
-
-
---Text Component Properties
-
-
-accessible
-numberOfLines number
-allowFontScaling bool
-suppressHighlighting bool
-
--- TextInput Component Properties
-autoCapitalize enum('none', 'sentences', 'words', 'characters')
-autoCorrect bool
-autoFocus bool
-blurOnSubmit bool
-defaultValue string
-editable bool
-keyboardType enum('default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search')
-maxLength number
-multiline bool
-placeholder string
-placeholderTextColor string
-secureTextEntry bool
-selectTextOnFocus bool
-selectionColor string
-underlineColorAndroid string
-clearButtonMode enum('never', 'while-editing', 'unless-editing', 'always')
-clearTextOnFocus bool
-enablesReturnKeyAutomatically bool
-keyboardAppearance enum('default', 'light', 'dark')
-returnKeyType enum('default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call')
-selectionState
-
-
---ToolbarAndroid Component Properties
-actions [{title: string, icon: optionalImageSource, show: enum('always', 'ifRoom', 'never'), showWithText: bool}]
-contentInsetEnd number
-contentInsetStart number
-logo optionalImageSource
-navIcon optionalImageSource
-overflowIcon optionalImageSource
-rtl bool
-subtitle string
-titleColor color
-
-
--- TouchableHighlight Component Properties
-
-activeOpacity number
-underlayColor color
-
-
---TouchableNativeFeedback Component Properties
-background backgroundPropType
-
-
---TouchableOpacity  Component Properties
-activeOpacity number
-
---TouchableWithoutFeedback Component Properties
-
-accessibilityComponentType View.AccessibilityComponentType
-accessibilityTraits View.AccessibilityTraits, [object Object]
-accessible bool
-delayLongPress number
-delayPressIn number
-delayPressOut number
-hitSlop {top: number, left: number, bottom: number, right: number}
-pressRetentionOffset {top: number, left: number, bottom: number, right: number}
-
-
---View Component Properties
-
-accessibilityLabel string
-pointerEvents enum('box-none', 'none', 'box-only', 'auto')
-removeClippedSubviews bool
-accessibilityComponentType AccessibilityComponentType
-accessibilityLiveRegion enum('none', 'polite', 'assertive')
-collapsable bool
-importantForAccessibility enum('auto', 'yes', 'no', 'no-hide-descendants')
-needsOffscreenAlphaCompositing bool
-renderToHardwareTextureAndroid bool
-accessibilityTraits AccessibilityTraits, [object Object
-shouldRasterizeIOS bool
-
-
---ViewPagerAndroid Component Properties
-initialPage number
-
-
---WebView Component Properties
-automaticallyAdjustContentInsets bool
-contentInset {top: number, left: number, bottom: number, right: number}
-injectedJavaScript string
-mediaPlaybackRequiresUserAction bool
-renderError function
-renderLoading function
-scalesPageToFit bool
-source {uri: string, method: string, headers: object, body: string}, {html: string, baseUrl: string}, number
-startInLoadingState bool
-domStorageEnabled bool
-javaScriptEnabled bool
-allowsInlineMediaPlayback bool
-bounces bool
-scrollEnabled bool
-decelerationRate ScrollView.propTypes.decelerationRate
+-- maximumDate Date
+--
+-- minimumDate Date
+--
+-- minuteInterval enum
+--
+-- mode -> DatePickerIOS  mode enum('date', 'time', 'datetime')
+--
+-- timeZoneOffsetInMinutes number
+--
+-- --DrawerLayoutAndroid Properties
+--
+-- drawerLockMode enum('unlocked', 'locked-closed', 'locked-open')
+--
+--
+-- drawerPosition enum(DrawerConsts.DrawerPosition.Left, DrawerConsts.DrawerPosition.Right)
+--
+-- drawerWidth number
+--
+--
+--
+--
+--
+-- renderNavigationView function
+--
+-- statusBarBackgroundColor color
+--
+-- -- Image Component Properties
+-- source {uri: string}, number
+--
+-- accessibilityLabel string
+--
+-- accessible bool
+--
+-- blurRadius number
+-- capInsets {top: number, left: number, bottom: number, right: number}
+-- defaultSource {uri: string}, number
+--
+-- -- List View Components Properties
+-- dataSource ListViewDataSource
+-- enableEmptySections bool
+-- initialListSize number
+-- pageSize number
+-- removeClippedSubviews bool
+--
+-- renderFooter function
+-- renderHeader function
+-- renderRow function
+-- renderScrollComponent function
+-- renderSectionHeader function
+-- renderSeparator function
+-- scrollRenderAheadDistance number
+-- stickyHeaderIndices [number]
+--
+-- -- Mapview Components Properties
+-- pitchEnabled bool (true camera is associated with the map)
+-- region {latitude: number, longitude: number, latitudeDelta: number, longitudeDelta: number}
+-- rotateEnabled bool
+-- scrollEnabled bool
+-- showsUserLocation bool
+-- zoomEnabled bool
+-- active bool
+-- annotations [{latitude: number, longitude: number, animateDrop: bool, draggable: bool, onDragStateChange: function, onFocus: function, onBlur: function, title: string, subtitle: string, leftCalloutView: element, rightCalloutView: element, detailCalloutView: element, tintColor: [object Object], image: Image.propTypes.source, view: element, id: string, hasLeftCallout: deprecatedPropType( React.PropTypes.bool, 'Use `leftCalloutView` instead.' ), hasRightCallout: deprecatedPropType( React.PropTypes.bool, 'Use `rightCalloutView` instead.' ), onLeftCalloutPress: deprecatedPropType( React.PropTypes.func, 'Use `leftCalloutView` instead.' ), onRightCalloutPress: deprecatedPropType( React.PropTypes.func, 'Use `rightCalloutView` instead.' )}
+-- followUserLocation bool
+-- legalLabelInsets {top: number, left: number, bottom: number, right: number}
+-- mapType enum('standard', 'satellite', 'hybrid')
+-- maxDelta number
+-- minDelta number
+-- overlays [{coordinates: [object Object], lineWidth: number, strokeColor: [object Object], fillColor: [object Object], id: string}]
+-- showsCompass bool
+-- showsPointsOfInterest bool
+--
+-- --Model Component Properties
+--
+-- animated bool
+-- transparent bool
+-- visible bool
+--
+-- --Navigator Component Properties
+--
+-- configureScene function ((route, routeStack) => Navigator.SceneConfigs.FloatFromRight)
+-- initialRoute object
+-- initialRouteStack [object]
+-- navigationBar node
+-- navigator object
+-- renderScene function
+-- sceneStyle View#style
+--
+-- --NavigatorIOS Components Properties
+--
+-- barTintColor string
+-- initialRoute {component: function, title: string, passProps: object, backButtonIcon: Image.propTypes.source, backButtonTitle: string, leftButtonIcon: Image.propTypes.source, leftButtonTitle: string, onLeftButtonPress: function, rightButtonIcon: Image.propTypes.source, rightButtonTitle: string, onRightButtonPress: function, wrapperStyle: [object Object], navigationBarHidden: bool, shadowHidden: bool, tintColor: string, barTintColor: string, titleTextColor: string, translucent: bool}
+--
+-- itemWrapperStyle View#style
+-- navigationBarHidden bool
+-- shadowHidden bool
+-- titleTextColor string
+--
+-- -- PickerIOS component Properties
+-- itemStyle itemStylePropType
+-- selectedValue any
+--
+-- --Progress Bar Android  Component Properties
+--
+-- indeterminate indeterminateType
+-- progress number
+-- styleAttr STYLE_ATTRIBUTES
+--
+-- -- Style of the ProgressBar. One of:
+-- --
+-- -- -- Horizontal
+-- -- -- Normal (default)
+-- -- -- Small
+-- -- -- Large
+-- -- -- Inverse
+-- -- -- SmallInverse
+-- -- -- LargeInverse
+--
+-- -- ProogressViewIOS Component Properties
+-- progressImage Image.propTypes.source
+-- trackImage Image.propTypes.source
+--
+--
+-- -- Refresh Control Component Properties
+--
+-- colors [color]
+-- progressBackgroundColor color
+--
+-- --ScrollView Component Properties
+--
+-- contentContainerStyle StyleSheetPropType(ViewStylePropTypes)
+-- refreshControl element
+-- endFillColor color
+-- contentOffset PointPropType
+-- decelerationRate enum('fast', 'normal'), number
+-- scrollIndicatorInsets {top: number, left: number, bottom: number, right: number}
+--
+--
+-- -- Segmented Control IOS Component Properties
+-- values [string]
+--
+--
+-- -- Slider Component Properties
+-- maximumTrackImage Image.propTypes.source
+-- maximumTrackTintColor string
+-- thumbImage Image.propTypes.source
+--
+--
+-- --StatusBar Component Properties
+-- backgroundColor color
+--
+--
+-- --Switch Component Properties
+-- thumbTintColor color
+--
+--
+-- --TabBarIOS.Item Component Properties
+--
+-- badge string, number
+-- icon Image.propTypes.source
+-- selectedIcon Image.propTypes.source
+-- systemIcon enum('bookmarks', 'contacts', 'downloads', 'favorites', 'featured', 'history', 'more', 'most-recent', 'most-viewed', 'recents', 'search', 'top-rated')
+--
+--
+-- --Text Component Properties
+--
+--
+-- accessible
+-- numberOfLines number
+-- allowFontScaling bool
+-- suppressHighlighting bool
+--
+-- -- TextInput Component Properties
+-- autoCapitalize enum('none', 'sentences', 'words', 'characters')
+-- autoCorrect bool
+-- autoFocus bool
+-- blurOnSubmit bool
+-- defaultValue string
+-- editable bool
+-- keyboardType enum('default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search')
+-- maxLength number
+-- multiline bool
+-- placeholder string
+-- placeholderTextColor string
+-- secureTextEntry bool
+-- selectTextOnFocus bool
+-- selectionColor string
+-- underlineColorAndroid string
+-- clearButtonMode enum('never', 'while-editing', 'unless-editing', 'always')
+-- clearTextOnFocus bool
+-- enablesReturnKeyAutomatically bool
+-- keyboardAppearance enum('default', 'light', 'dark')
+-- returnKeyType enum('default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call')
+-- selectionState
+--
+--
+-- --ToolbarAndroid Component Properties
+-- actions [{title: string, icon: optionalImageSource, show: enum('always', 'ifRoom', 'never'), showWithText: bool}]
+-- contentInsetEnd number
+-- contentInsetStart number
+-- logo optionalImageSource
+-- navIcon optionalImageSource
+-- overflowIcon optionalImageSource
+-- rtl bool
+-- subtitle string
+-- titleColor color
+--
+--
+-- -- TouchableHighlight Component Properties
+--
+-- activeOpacity number
+-- underlayColor color
+--
+--
+-- --TouchableNativeFeedback Component Properties
+-- background backgroundPropType
+--
+--
+-- --TouchableOpacity  Component Properties
+-- activeOpacity number
+--
+-- --TouchableWithoutFeedback Component Properties
+--
+-- accessibilityComponentType View.AccessibilityComponentType
+-- accessibilityTraits View.AccessibilityTraits, [object Object]
+-- accessible bool
+-- delayLongPress number
+-- delayPressIn number
+-- delayPressOut number
+-- hitSlop {top: number, left: number, bottom: number, right: number}
+-- pressRetentionOffset {top: number, left: number, bottom: number, right: number}
+--
+--
+-- --View Component Properties
+--
+-- accessibilityLabel string
+-- pointerEvents enum('box-none', 'none', 'box-only', 'auto')
+-- removeClippedSubviews bool
+-- accessibilityComponentType AccessibilityComponentType
+-- accessibilityLiveRegion enum('none', 'polite', 'assertive')
+-- collapsable bool
+-- importantForAccessibility enum('auto', 'yes', 'no', 'no-hide-descendants')
+-- needsOffscreenAlphaCompositing bool
+-- renderToHardwareTextureAndroid bool
+-- accessibilityTraits AccessibilityTraits, [object Object
+-- shouldRasterizeIOS bool
+--
+--
+-- --ViewPagerAndroid Component Properties
+-- initialPage number
+--
+--
+-- --WebView Component Properties
+-- automaticallyAdjustContentInsets bool
+-- contentInset {top: number, left: number, bottom: number, right: number}
+-- injectedJavaScript string
+-- mediaPlaybackRequiresUserAction bool
+-- renderError function
+-- renderLoading function
+-- scalesPageToFit bool
+-- source {uri: string, method: string, headers: object, body: string}, {html: string, baseUrl: string}, number
+-- startInLoadingState bool
+-- domStorageEnabled bool
+-- javaScriptEnabled bool
+-- allowsInlineMediaPlayback bool
+-- bounces bool
+-- scrollEnabled bool
+-- decelerationRate ScrollView.propTypes.decelerationRate
