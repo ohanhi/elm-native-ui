@@ -1,554 +1,566 @@
 module NativeUi.Properties (..) where
 
-{-| elm-native-ui Properties
-
-@docs numberOfLines, suppressHighlighting, testID, allowFontScaling, source,
-defaultSource, accessible, accessibilityLabel, resizeMode, animating,
-color, hidesWhenStopped, size, showsUserLocation, followUserLocation,
-showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled,
-scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt,
-progress, progressViewStyle, progressTintColor, trackTintColor, refreshing,
-title, automaticallyAdjustContentInsets, bounces, bouncesZoom,
-alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal,
-indicatorStyle, directionalLockEnabled, canCancelContentTouches,
-keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale,
-minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop,
-sendMomentumEvents, showsHorizontalScrollIndicator,
-showsVerticalScrollIndicator, snapToInterval, snapToAlignment,
-removeClippedSubviews, zoomScale, selectedIndex, tintColor, momentary,
-sliderValue, step, minimumValue, maximumValue, minimumTrackTintColor,
-maximumTrackTintColor, disabled, hidden, animated, translucent, barStyle,
-networkActivityIndicatorVisible, showHideTransition, autoCapitalize,
-autoCorrect, autoFocus, editable, keyboardType, keyboardAppearance,
-returnKeyType, maxLength, enablesReturnKeyAutomatically, multiline,
-placeholder, placeholderTextColor, secureTextEntry, selectionColor,
-value, defaultValue, clearButtonMode, clearTextOnFocus, selectTextOnFocus,
-blurOnSubmit, underlineColorAndroid, subtitle, contentInsetStart,
-contentInsetEnd, rtl, accessibilityLiveRegion, importantForAccessibility,
-pointerEvents, renderToHardwareTextureAndroid, shouldRasterizeIOS, collapsable,
-needsOffscreenAlphaCompositing
+{-| Properties of components
+@docs Date, DrawerLockMode, MinuteInterval, ReturnKeyType, StatusBarBarStyle, StatusBarShowHideTransition, TextInputAutoCapitalize, TextInputClearButtonMode, TextInputKeyboardAppearance, TextInputKeyboardType, ViewAccessibilityLiveRegion, ViewImportantForAccessibility, ViewPointerEvents, accessibilityLabel, accessibilityLiveRegion, accessible, active, activeOpacity, allowFontScaling, allowsInlineMediaPlayback, alwaysBounceHorizontal, alwaysBounceVertical, animated, animating, annotations, autoCapitalize, autoCorrect, autoFocus, automaticallyAdjustContentInsets, badgeString, barStyle, barTintColor, blurOnSubmit, blurRadius, bounces, bouncesZoom, canCancelContentTouches, capInsets, centerContent, clearButtonMode, clearTextOnFocus, collapsable, color, contentInset, contentInsetEnd, contentInsetStart, date, datePickerMode, defaultSource, defaultSourceNum, defaultValue, delayLongPress, delayPressIn, delayPressOut, directionalLockEnabled, disabled, domStorageEnabled, drawerLockMode, drawerPosition, drawerWidth, editable, enableEmptySections, enabled, enablesReturnKeyAutomatically, endFillColor, enumToString, followUserLocation, hidden, hidesWhenStopped, hitSlop, horizontal, importantForAccessibility, indicatorStyle, initialListSize, initialPage, initialRoute, injectedJavaScript, javaScriptEnabled, keyboardAppearance, keyboardDismissMode, keyboardShouldPersistTaps, keyboardType, legalLabelInsets, mapType, maxDelta, maxLength, maximumDate, maximumTrackTintColor, maximumValue, maximumZoomScale, mediaPlaybackRequiresUserAction, minDelta, minimumDate, minimumTrackTintColor, minimumValue, minimumZoomScale, minuteInterval, momentary, multiline, navigationBarHidden, navigator, needsOffscreenAlphaCompositing, networkActivityIndicatorVisible, numberOfLines, overlays, pageSize, pagingEnabled, pickerMode, pitchEnabled, placeholder, placeholderTextColor, pointerEvents, pressRetentionOffset, progress, progressBackgroundColor, progressTintColor, progressViewStyle, prompt, propBool, propFloat, propInt, propString, propUri, refreshing, region, removeClippedSubviews, renderError, renderFooter, renderHeader, renderLoading, renderNavigationView, renderRow, renderScene, renderScrollComponent, renderSectionHeader, renderSeparator, renderToHardwareTextureAndroid, resizeMode, returnKeyType, rotateEnabled, rtl, scalesPageToFit, scrollEnabled, scrollEventThrottle, scrollIndicatorInsets, scrollRenderAheadDistance, scrollsToTop, secureTextEntry, selectTextOnFocus, selectedIndex, selectionColor, sendMomentumEvents, shadowHidden, shouldRasterizeIOS, showHideTransition, showsCompass, showsHorizontalScrollIndicator, showsPointsOfInterest, showsUserLocation, showsVerticalScrollIndicator, size, sliderValue, snapToAlignment, snapToInterval, source, sourceNum, startInLoadingState, statusBarBackgroundColor, step, stickyHeaderIndices, subtitle, suppressHighlighting, testID, thumbTintColor, timeZoneOffsetInMinutes, tintColor, title, titleColor, titleTextColor, trackTintColor, translucent, transparent, underlayColor, underlineColorAndroid, value, zoomEnabled, zoomScale
 -}
 
 import Json.Encode
 import NativeUi exposing (Property, property)
+import NativeUi.Enum.DatePicker as Dpe
+import NativeUi.Enum.ImageResize as Ire
+import NativeUi.Enum.ActivityIndicator as Aie
+import NativeUi.Enum.MapView as MapType
+import NativeUi.Enum.Picker as PickerMode
+import NativeUi.Enum.ProgressView as ProgressViewStyle
+import NativeUi.Enum.ScrollView as ScrollViewEnum
+import NativeUi.Enum.DrawerLayoutAndroid as DrawerLayoutEnum
+import String exposing (toLower)
 
 
-numberOfLines : Float -> Property
-numberOfLines val =
-  property "numberOfLines" (Json.Encode.float val)
+{-| -}
+propInt : String -> Int -> Property
+propInt name val =
+  property name (Json.Encode.int val)
 
 
+{-| -}
+propFloat : String -> Float -> Property
+propFloat name val =
+  property name (Json.Encode.float val)
+
+
+{-| -}
+propString : String -> String -> Property
+propString name val =
+  property name (Json.Encode.string val)
+
+
+{-| -}
+propBool : String -> Bool -> Property
+propBool name val =
+  property name (Json.Encode.bool val)
+
+
+{-| -}
+propUri : String -> String -> Property
+propUri name uri =
+  property name (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
+
+
+{-| -}
+enumToString : a -> String
+enumToString val =
+  val
+    |> toString
+    |> toLower
+
+
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+numberOfLines : Int -> Property
+numberOfLines =
+  propInt "numberOfLines"
+
+
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 suppressHighlighting : Bool -> Property
-suppressHighlighting val =
-  property "suppressHighlighting" (Json.Encode.bool val)
+suppressHighlighting =
+  propBool "suppressHighlighting"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 testID : String -> Property
-testID val =
-  property "testID" (Json.Encode.string val)
+testID =
+  propString "testID"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 allowFontScaling : Bool -> Property
-allowFontScaling val =
-  property "allowFontScaling" (Json.Encode.bool val)
+allowFontScaling =
+  propBool "allowFontScaling"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 source : String -> Property
 source uri =
-  property "source" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
+  propUri "source" uri
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 defaultSource : String -> Property
 defaultSource uri =
-  property "defaultSource" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
+  propUri "defaultSource" uri
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 accessible : Bool -> Property
-accessible val =
-  property "accessible" (Json.Encode.bool val)
+accessible =
+  propBool "accessible"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 accessibilityLabel : String -> Property
-accessibilityLabel val =
-  property "accessibilityLabel" (Json.Encode.string val)
+accessibilityLabel =
+  propString "accessibilityLabel"
 
 
-type ImageResizeMode
-  = ImageResizeModeCover
-  | ImageResizeModeContain
-  | ImageResizeModeStretch
-
-
-resizeMode : ImageResizeMode -> Property
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+resizeMode : Ire.Mode -> Property
 resizeMode val =
-  let
-    stringValue =
-      case val of
-        ImageResizeModeCover ->
-          "cover"
-
-        ImageResizeModeContain ->
-          "contain"
-
-        ImageResizeModeStretch ->
-          "stretch"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "resizeMode" jsonValue
+  propString "resizeMode" (enumToString val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 animating : Bool -> Property
-animating val =
-  property "animating" (Json.Encode.bool val)
+animating =
+  propBool "animating"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 color : String -> Property
-color val =
-  property "color" (Json.Encode.string val)
+color =
+  propString "color"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 hidesWhenStopped : Bool -> Property
-hidesWhenStopped val =
-  property "hidesWhenStopped" (Json.Encode.bool val)
+hidesWhenStopped =
+  propBool "hidesWhenStopped"
 
 
-type ActivityIndicatorSize
-  = ActivityIndicatorSizeSmall
-  | ActivityIndicatorSizeLarge
-
-
-size : ActivityIndicatorSize -> Property
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+size : Aie.Size -> Property
 size val =
-  let
-    stringValue =
-      case val of
-        ActivityIndicatorSizeSmall ->
-          "small"
-
-        ActivityIndicatorSizeLarge ->
-          "large"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "size" jsonValue
+  propString "size" (enumToString val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 showsUserLocation : Bool -> Property
-showsUserLocation val =
-  property "showsUserLocation" (Json.Encode.bool val)
+showsUserLocation =
+  propBool "showsUserLocation"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 followUserLocation : Bool -> Property
-followUserLocation val =
-  property "followUserLocation" (Json.Encode.bool val)
+followUserLocation =
+  propBool "followUserLocation"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 showsPointsOfInterest : Bool -> Property
-showsPointsOfInterest val =
-  property "showsPointsOfInterest" (Json.Encode.bool val)
+showsPointsOfInterest =
+  propBool "showsPointsOfInterest"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 showsCompass : Bool -> Property
-showsCompass val =
-  property "showsCompass" (Json.Encode.bool val)
+showsCompass =
+  propBool "showsCompass"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 zoomEnabled : Bool -> Property
-zoomEnabled val =
-  property "zoomEnabled" (Json.Encode.bool val)
+zoomEnabled =
+  propBool "zoomEnabled"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 rotateEnabled : Bool -> Property
-rotateEnabled val =
-  property "rotateEnabled" (Json.Encode.bool val)
+rotateEnabled =
+  propBool "rotateEnabled"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 pitchEnabled : Bool -> Property
-pitchEnabled val =
-  property "pitchEnabled" (Json.Encode.bool val)
+pitchEnabled =
+  propBool "pitchEnabled"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 scrollEnabled : Bool -> Property
-scrollEnabled val =
-  property "scrollEnabled" (Json.Encode.bool val)
+scrollEnabled =
+  propBool "scrollEnabled"
 
 
-type MapViewMapType
-  = MapViewMapTypeStandard
-  | MapViewMapTypeSatellite
-  | MapViewMapTypeHybrid
-
-
-mapType : MapViewMapType -> Property
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+mapType : MapType.MapType -> Property
 mapType val =
-  let
-    stringValue =
-      case val of
-        MapViewMapTypeStandard ->
-          "standard"
-
-        MapViewMapTypeSatellite ->
-          "satellite"
-
-        MapViewMapTypeHybrid ->
-          "hybrid"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "mapType" jsonValue
+  propString "mapType" (enumToString val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 maxDelta : Float -> Property
-maxDelta val =
-  property "maxDelta" (Json.Encode.float val)
+maxDelta =
+  propFloat "maxDelta"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 minDelta : Float -> Property
-minDelta val =
-  property "minDelta" (Json.Encode.float val)
+minDelta =
+  propFloat "minDelta"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 active : Bool -> Property
-active val =
-  property "active" (Json.Encode.bool val)
+active =
+  propBool "active"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 enabled : Bool -> Property
-enabled val =
-  property "enabled" (Json.Encode.bool val)
+enabled =
+  propBool "enabled"
 
 
-type PickerMode
-  = PickerModeDialog
-  | PickerModeDropdown
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+pickerMode : PickerMode.Mode -> Property
+pickerMode val =
+  propString "mode" (enumToString val)
 
 
-mode : PickerMode -> Property
-mode val =
-  let
-    stringValue =
-      case val of
-        PickerModeDialog ->
-          "dialog"
-
-        PickerModeDropdown ->
-          "dropdown"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "mode" jsonValue
-
-
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 prompt : String -> Property
 prompt val =
   property "prompt" (Json.Encode.string val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 progress : Float -> Property
-progress val =
-  property "progress" (Json.Encode.float val)
+progress =
+  propFloat "progress"
 
 
-type ProgressViewProgressViewStyle
-  = ProgressViewProgressViewStyleDefault
-  | ProgressViewProgressViewStyleBar
-
-
-progressViewStyle : ProgressViewProgressViewStyle -> Property
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+progressViewStyle : ProgressViewStyle.Style -> Property
 progressViewStyle val =
-  let
-    stringValue =
-      case val of
-        ProgressViewProgressViewStyleDefault ->
-          "default"
-
-        ProgressViewProgressViewStyleBar ->
-          "bar"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "progressViewStyle" jsonValue
+  propString "progressViewStyle" (enumToString val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 progressTintColor : String -> Property
-progressTintColor val =
-  property "progressTintColor" (Json.Encode.string val)
+progressTintColor =
+  propString "progressTintColor"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 trackTintColor : String -> Property
-trackTintColor val =
-  property "trackTintColor" (Json.Encode.string val)
+trackTintColor =
+  propString "trackTintColor"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 refreshing : Bool -> Property
-refreshing val =
-  property "refreshing" (Json.Encode.bool val)
+refreshing =
+  propBool "refreshing"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 title : String -> Property
-title val =
-  property "title" (Json.Encode.string val)
+title =
+  propString "title"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 automaticallyAdjustContentInsets : Bool -> Property
-automaticallyAdjustContentInsets val =
-  property "automaticallyAdjustContentInsets" (Json.Encode.bool val)
+automaticallyAdjustContentInsets =
+  propBool "automaticallyAdjustContentInsets"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 bounces : Bool -> Property
-bounces val =
-  property "bounces" (Json.Encode.bool val)
+bounces =
+  propBool "bounces"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 bouncesZoom : Bool -> Property
-bouncesZoom val =
-  property "bouncesZoom" (Json.Encode.bool val)
+bouncesZoom =
+  propBool "bouncesZoom"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 alwaysBounceHorizontal : Bool -> Property
-alwaysBounceHorizontal val =
-  property "alwaysBounceHorizontal" (Json.Encode.bool val)
+alwaysBounceHorizontal =
+  propBool "alwaysBounceHorizontal"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 alwaysBounceVertical : Bool -> Property
-alwaysBounceVertical val =
-  property "alwaysBounceVertical" (Json.Encode.bool val)
+alwaysBounceVertical =
+  propBool "alwaysBounceVertical"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 centerContent : Bool -> Property
-centerContent val =
-  property "centerContent" (Json.Encode.bool val)
+centerContent =
+  propBool "centerContent"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 horizontal : Bool -> Property
-horizontal val =
-  property "horizontal" (Json.Encode.bool val)
+horizontal =
+  propBool "horizontal"
 
 
-type ScrollViewIndicatorStyle
-  = ScrollViewIndicatorStyleDefault
-  | ScrollViewIndicatorStyleBlack
-  | ScrollViewIndicatorStyleWhite
-
-
-indicatorStyle : ScrollViewIndicatorStyle -> Property
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+indicatorStyle : ScrollViewEnum.IndicatorStyle -> Property
 indicatorStyle val =
-  let
-    stringValue =
-      case val of
-        ScrollViewIndicatorStyleDefault ->
-          "default"
-
-        ScrollViewIndicatorStyleBlack ->
-          "black"
-
-        ScrollViewIndicatorStyleWhite ->
-          "white"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "indicatorStyle" jsonValue
+  propString "indicatorStyle" (enumToString val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 directionalLockEnabled : Bool -> Property
-directionalLockEnabled val =
-  property "directionalLockEnabled" (Json.Encode.bool val)
+directionalLockEnabled =
+  propBool "directionalLockEnabled"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 canCancelContentTouches : Bool -> Property
-canCancelContentTouches val =
-  property "canCancelContentTouches" (Json.Encode.bool val)
+canCancelContentTouches =
+  propBool "canCancelContentTouches"
 
 
-type ScrollViewKeyboardDismissMode
-  = ScrollViewKeyboardDismissModeNone
-  | ScrollViewKeyboardDismissModeInteractive
-  | ScrollViewKeyboardDismissModeOnDrag
-
-
-keyboardDismissMode : ScrollViewKeyboardDismissMode -> Property
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+keyboardDismissMode : ScrollViewEnum.KeyboardDismissMode -> Property
 keyboardDismissMode val =
-  let
-    stringValue =
-      case val of
-        ScrollViewKeyboardDismissModeNone ->
-          "none"
-
-        ScrollViewKeyboardDismissModeInteractive ->
-          "interactive"
-
-        ScrollViewKeyboardDismissModeOnDrag ->
-          "on-drag"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "keyboardDismissMode" jsonValue
+  propString "keyboardDismissMode" (enumToString val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 keyboardShouldPersistTaps : Bool -> Property
-keyboardShouldPersistTaps val =
-  property "keyboardShouldPersistTaps" (Json.Encode.bool val)
+keyboardShouldPersistTaps =
+  propBool "keyboardShouldPersistTaps"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 maximumZoomScale : Float -> Property
-maximumZoomScale val =
-  property "maximumZoomScale" (Json.Encode.float val)
+maximumZoomScale =
+  propFloat "maximumZoomScale"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 minimumZoomScale : Float -> Property
-minimumZoomScale val =
-  property "minimumZoomScale" (Json.Encode.float val)
+minimumZoomScale =
+  propFloat "minimumZoomScale"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 pagingEnabled : Bool -> Property
-pagingEnabled val =
-  property "pagingEnabled" (Json.Encode.bool val)
+pagingEnabled =
+  propBool "pagingEnabled"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 scrollEventThrottle : Float -> Property
 scrollEventThrottle val =
   property "scrollEventThrottle" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 scrollsToTop : Bool -> Property
-scrollsToTop val =
-  property "scrollsToTop" (Json.Encode.bool val)
+scrollsToTop =
+  propBool "scrollsToTop"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 sendMomentumEvents : Bool -> Property
-sendMomentumEvents val =
-  property "sendMomentumEvents" (Json.Encode.bool val)
+sendMomentumEvents =
+  propBool "sendMomentumEvents"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 showsHorizontalScrollIndicator : Bool -> Property
-showsHorizontalScrollIndicator val =
-  property "showsHorizontalScrollIndicator" (Json.Encode.bool val)
+showsHorizontalScrollIndicator =
+  propBool "showsHorizontalScrollIndicator"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 showsVerticalScrollIndicator : Bool -> Property
-showsVerticalScrollIndicator val =
-  property "showsVerticalScrollIndicator" (Json.Encode.bool val)
+showsVerticalScrollIndicator =
+  propBool "showsVerticalScrollIndicator"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 snapToInterval : Float -> Property
 snapToInterval val =
   property "snapToInterval" (Json.Encode.float val)
 
 
-type ScrollViewSnapToAlignment
-  = ScrollViewSnapToAlignmentStart
-  | ScrollViewSnapToAlignmentCenter
-  | ScrollViewSnapToAlignmentEnd
-
-
-snapToAlignment : ScrollViewSnapToAlignment -> Property
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+snapToAlignment : ScrollViewEnum.SnapToAlignment -> Property
 snapToAlignment val =
-  let
-    stringValue =
-      case val of
-        ScrollViewSnapToAlignmentStart ->
-          "start"
-
-        ScrollViewSnapToAlignmentCenter ->
-          "center"
-
-        ScrollViewSnapToAlignmentEnd ->
-          "end"
-
-    jsonValue =
-      Json.Encode.string stringValue
-  in
-    property "snapToAlignment" jsonValue
+  propString "snapToAlignment" (enumToString val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 removeClippedSubviews : Bool -> Property
-removeClippedSubviews val =
-  property "removeClippedSubviews" (Json.Encode.bool val)
+removeClippedSubviews =
+  propBool "removeClippedSubviews"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 zoomScale : Float -> Property
-zoomScale val =
-  property "zoomScale" (Json.Encode.float val)
+zoomScale =
+  propFloat "zoomScale"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 selectedIndex : Float -> Property
 selectedIndex val =
   property "selectedIndex" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 tintColor : String -> Property
-tintColor val =
-  property "tintColor" (Json.Encode.string val)
+tintColor =
+  propString "tintColor"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 momentary : Bool -> Property
-momentary val =
-  property "momentary" (Json.Encode.bool val)
+momentary =
+  propBool "momentary"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 sliderValue : Float -> Property
 sliderValue val =
   property "sliderValue" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 step : Float -> Property
 step val =
   property "step" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 minimumValue : Float -> Property
 minimumValue val =
   property "minimumValue" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 maximumValue : Float -> Property
 maximumValue val =
   property "maximumValue" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 minimumTrackTintColor : String -> Property
-minimumTrackTintColor val =
-  property "minimumTrackTintColor" (Json.Encode.string val)
+minimumTrackTintColor =
+  propString "minimumTrackTintColor"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 maximumTrackTintColor : String -> Property
-maximumTrackTintColor val =
-  property "maximumTrackTintColor" (Json.Encode.string val)
+maximumTrackTintColor =
+  propString "maximumTrackTintColor"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 disabled : Bool -> Property
-disabled val =
-  property "disabled" (Json.Encode.bool val)
+disabled =
+  propBool "disabled"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 hidden : Bool -> Property
-hidden val =
-  property "hidden" (Json.Encode.bool val)
+hidden =
+  propBool "hidden"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 animated : Bool -> Property
-animated val =
-  property "animated" (Json.Encode.bool val)
+animated =
+  propBool "animated"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 translucent : Bool -> Property
-translucent val =
-  property "translucent" (Json.Encode.bool val)
+translucent =
+  propBool "translucent"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type StatusBarBarStyle
   = StatusBarBarStyleDefault
   | StatusBarBarStyleLightContent
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 barStyle : StatusBarBarStyle -> Property
 barStyle val =
   let
@@ -566,16 +578,22 @@ barStyle val =
     property "barStyle" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 networkActivityIndicatorVisible : Bool -> Property
-networkActivityIndicatorVisible val =
-  property "networkActivityIndicatorVisible" (Json.Encode.bool val)
+networkActivityIndicatorVisible =
+  propBool "networkActivityIndicatorVisible"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type StatusBarShowHideTransition
   = StatusBarShowHideTransitionFade
   | StatusBarShowHideTransitionSlide
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 showHideTransition : StatusBarShowHideTransition -> Property
 showHideTransition val =
   let
@@ -593,6 +611,8 @@ showHideTransition val =
     property "showHideTransition" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type TextInputAutoCapitalize
   = TextInputAutoCapitalizeNone
   | TextInputAutoCapitalizeSentences
@@ -600,6 +620,8 @@ type TextInputAutoCapitalize
   | TextInputAutoCapitalizeCharacters
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 autoCapitalize : TextInputAutoCapitalize -> Property
 autoCapitalize val =
   let
@@ -623,21 +645,29 @@ autoCapitalize val =
     property "autoCapitalize" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 autoCorrect : Bool -> Property
-autoCorrect val =
-  property "autoCorrect" (Json.Encode.bool val)
+autoCorrect =
+  propBool "autoCorrect"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 autoFocus : Bool -> Property
-autoFocus val =
-  property "autoFocus" (Json.Encode.bool val)
+autoFocus =
+  propBool "autoFocus"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 editable : Bool -> Property
-editable val =
-  property "editable" (Json.Encode.bool val)
+editable =
+  propBool "editable"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type TextInputKeyboardType
   = TextInputKeyboardTypeDefault
   | TextInputKeyboardTypeEmailAddress
@@ -653,6 +683,8 @@ type TextInputKeyboardType
   | TextInputKeyboardTypeWebSearch
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 keyboardType : TextInputKeyboardType -> Property
 keyboardType val =
   let
@@ -700,12 +732,16 @@ keyboardType val =
     property "keyboardType" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type TextInputKeyboardAppearance
   = TextInputKeyboardAppearanceDefault
   | TextInputKeyboardAppearanceLight
   | TextInputKeyboardAppearanceDark
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 keyboardAppearance : TextInputKeyboardAppearance -> Property
 keyboardAppearance val =
   let
@@ -726,56 +762,60 @@ keyboardAppearance val =
     property "keyboardAppearance" jsonValue
 
 
-type TextInputReturnKeyType
-  = TextInputReturnKeyTypeDefault
-  | TextInputReturnKeyTypeGo
-  | TextInputReturnKeyTypeGoogle
-  | TextInputReturnKeyTypeJoin
-  | TextInputReturnKeyTypeNext
-  | TextInputReturnKeyTypeRoute
-  | TextInputReturnKeyTypeSearch
-  | TextInputReturnKeyTypeSend
-  | TextInputReturnKeyTypeYahoo
-  | TextInputReturnKeyTypeDone
-  | TextInputReturnKeyTypeEmergencyCall
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type ReturnKeyType
+  = ReturnKeyTypeDefault
+  | ReturnKeyTypeGo
+  | ReturnKeyTypeGoogle
+  | ReturnKeyTypeJoin
+  | ReturnKeyTypeNext
+  | ReturnKeyTypeRoute
+  | ReturnKeyTypeSearch
+  | ReturnKeyTypeSend
+  | ReturnKeyTypeYahoo
+  | ReturnKeyTypeDone
+  | ReturnKeyTypeEmergencyCall
 
 
-returnKeyType : TextInputReturnKeyType -> Property
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+returnKeyType : ReturnKeyType -> Property
 returnKeyType val =
   let
     stringValue =
       case val of
-        TextInputReturnKeyTypeDefault ->
+        ReturnKeyTypeDefault ->
           "default"
 
-        TextInputReturnKeyTypeGo ->
+        ReturnKeyTypeGo ->
           "go"
 
-        TextInputReturnKeyTypeGoogle ->
+        ReturnKeyTypeGoogle ->
           "google"
 
-        TextInputReturnKeyTypeJoin ->
+        ReturnKeyTypeJoin ->
           "join"
 
-        TextInputReturnKeyTypeNext ->
+        ReturnKeyTypeNext ->
           "next"
 
-        TextInputReturnKeyTypeRoute ->
+        ReturnKeyTypeRoute ->
           "route"
 
-        TextInputReturnKeyTypeSearch ->
+        ReturnKeyTypeSearch ->
           "search"
 
-        TextInputReturnKeyTypeSend ->
+        ReturnKeyTypeSend ->
           "send"
 
-        TextInputReturnKeyTypeYahoo ->
+        ReturnKeyTypeYahoo ->
           "yahoo"
 
-        TextInputReturnKeyTypeDone ->
+        ReturnKeyTypeDone ->
           "done"
 
-        TextInputReturnKeyTypeEmergencyCall ->
+        ReturnKeyTypeEmergencyCall ->
           "emergency-call"
 
     jsonValue =
@@ -784,51 +824,71 @@ returnKeyType val =
     property "returnKeyType" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 maxLength : Float -> Property
 maxLength val =
   property "maxLength" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 enablesReturnKeyAutomatically : Bool -> Property
-enablesReturnKeyAutomatically val =
-  property "enablesReturnKeyAutomatically" (Json.Encode.bool val)
+enablesReturnKeyAutomatically =
+  propBool "enablesReturnKeyAutomatically"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 multiline : Bool -> Property
-multiline val =
-  property "multiline" (Json.Encode.bool val)
+multiline =
+  propBool "multiline"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 placeholder : String -> Property
-placeholder val =
-  property "placeholder" (Json.Encode.string val)
+placeholder =
+  propString "placeholder"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 placeholderTextColor : String -> Property
-placeholderTextColor val =
-  property "placeholderTextColor" (Json.Encode.string val)
+placeholderTextColor =
+  propString "placeholderTextColor"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 secureTextEntry : Bool -> Property
-secureTextEntry val =
-  property "secureTextEntry" (Json.Encode.bool val)
+secureTextEntry =
+  propBool "secureTextEntry"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 selectionColor : String -> Property
-selectionColor val =
-  property "selectionColor" (Json.Encode.string val)
+selectionColor =
+  propString "selectionColor"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 value : String -> Property
-value val =
-  property "value" (Json.Encode.string val)
+value =
+  propString "value"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 defaultValue : String -> Property
-defaultValue val =
-  property "defaultValue" (Json.Encode.string val)
+defaultValue =
+  propString "defaultValue"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type TextInputClearButtonMode
   = TextInputClearButtonModeNever
   | TextInputClearButtonModeWhileEditing
@@ -836,6 +896,8 @@ type TextInputClearButtonMode
   | TextInputClearButtonModeAlways
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 clearButtonMode : TextInputClearButtonMode -> Property
 clearButtonMode val =
   let
@@ -859,52 +921,72 @@ clearButtonMode val =
     property "clearButtonMode" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 clearTextOnFocus : Bool -> Property
-clearTextOnFocus val =
-  property "clearTextOnFocus" (Json.Encode.bool val)
+clearTextOnFocus =
+  propBool "clearTextOnFocus"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 selectTextOnFocus : Bool -> Property
-selectTextOnFocus val =
-  property "selectTextOnFocus" (Json.Encode.bool val)
+selectTextOnFocus =
+  propBool "selectTextOnFocus"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 blurOnSubmit : Bool -> Property
-blurOnSubmit val =
-  property "blurOnSubmit" (Json.Encode.bool val)
+blurOnSubmit =
+  propBool "blurOnSubmit"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 underlineColorAndroid : String -> Property
-underlineColorAndroid val =
-  property "underlineColorAndroid" (Json.Encode.string val)
+underlineColorAndroid =
+  propString "underlineColorAndroid"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 subtitle : String -> Property
-subtitle val =
-  property "subtitle" (Json.Encode.string val)
+subtitle =
+  propString "subtitle"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 contentInsetStart : Float -> Property
 contentInsetStart val =
   property "contentInsetStart" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 contentInsetEnd : Float -> Property
 contentInsetEnd val =
   property "contentInsetEnd" (Json.Encode.float val)
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 rtl : Bool -> Property
-rtl val =
-  property "rtl" (Json.Encode.bool val)
+rtl =
+  propBool "rtl"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type ViewAccessibilityLiveRegion
   = ViewAccessibilityLiveRegionNone
   | ViewAccessibilityLiveRegionPolite
   | ViewAccessibilityLiveRegionAssertive
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 accessibilityLiveRegion : ViewAccessibilityLiveRegion -> Property
 accessibilityLiveRegion val =
   let
@@ -925,6 +1007,8 @@ accessibilityLiveRegion val =
     property "accessibilityLiveRegion" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type ViewImportantForAccessibility
   = ViewImportantForAccessibilityAuto
   | ViewImportantForAccessibilityYes
@@ -932,6 +1016,8 @@ type ViewImportantForAccessibility
   | ViewImportantForAccessibilityNoHideDescendants
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 importantForAccessibility : ViewImportantForAccessibility -> Property
 importantForAccessibility val =
   let
@@ -955,6 +1041,8 @@ importantForAccessibility val =
     property "importantForAccessibility" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 type ViewPointerEvents
   = ViewPointerEventsBoxNone
   | ViewPointerEventsNone
@@ -962,6 +1050,8 @@ type ViewPointerEvents
   | ViewPointerEventsAuto
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 pointerEvents : ViewPointerEvents -> Property
 pointerEvents val =
   let
@@ -985,125 +1075,581 @@ pointerEvents val =
     property "pointerEvents" jsonValue
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 renderToHardwareTextureAndroid : Bool -> Property
-renderToHardwareTextureAndroid val =
-  property "renderToHardwareTextureAndroid" (Json.Encode.bool val)
+renderToHardwareTextureAndroid =
+  propBool "renderToHardwareTextureAndroid"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 shouldRasterizeIOS : Bool -> Property
-shouldRasterizeIOS val =
-  property "shouldRasterizeIOS" (Json.Encode.bool val)
+shouldRasterizeIOS =
+  propBool "shouldRasterizeIOS"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 collapsable : Bool -> Property
-collapsable val =
-  property "collapsable" (Json.Encode.bool val)
+collapsable =
+  propBool "collapsable"
 
 
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
 needsOffscreenAlphaCompositing : Bool -> Property
-needsOffscreenAlphaCompositing val =
-  property "needsOffscreenAlphaCompositing" (Json.Encode.bool val)
+needsOffscreenAlphaCompositing =
+  propBool "needsOffscreenAlphaCompositing"
 
+
+
+--custom property handlers handled by me
 --DatePickerIOS Properties
--- date  Date
---
--- maximumDate Date
---
--- minimumDate Date
---
--- minuteInterval enum
---
--- mode -> DatePickerIOS  mode enum('date', 'time', 'datetime')
---
--- timeZoneOffsetInMinutes number
---
--- --DrawerLayoutAndroid Properties
---
--- drawerLockMode enum('unlocked', 'locked-closed', 'locked-open')
---
---
--- drawerPosition enum(DrawerConsts.DrawerPosition.Left, DrawerConsts.DrawerPosition.Right)
---
--- drawerWidth number
---
---
---
---
---
--- renderNavigationView function
---
--- statusBarBackgroundColor color
---
--- -- Image Component Properties
--- source {uri: string}, number
---
--- accessibilityLabel string
---
--- accessible bool
---
--- blurRadius number
--- capInsets {top: number, left: number, bottom: number, right: number}
--- defaultSource {uri: string}, number
---
+
+
+{-| -}
+type Date
+  = String
+
+
+{-| -}
+type MinuteInterval
+  = MI1
+  | MI2
+  | MI3
+  | MI4
+  | MI5
+  | MI6
+  | MI10
+  | MI12
+  | MI15
+  | MI20
+  | MI30
+
+
+
+--date  Date
+
+
+{-| -}
+date : String -> Property
+date =
+  propString "date"
+
+
+
+--maximumDate Date
+
+
+{-| -}
+maximumDate : String -> Property
+maximumDate =
+  propString "maximumDate"
+
+
+
+--minimumDate Date
+
+
+{-| -}
+minimumDate : String -> Property
+minimumDate =
+  propString "minimumDate"
+
+
+
+--minuteInterval enum(1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30)
+
+
+{-| -}
+minuteInterval : Int -> Property
+minuteInterval =
+  propInt "minuteInterval"
+
+
+{-| -}
+datePickerMode : Dpe.Mode -> Property
+datePickerMode val =
+  let
+    modeValue =
+      case val of
+        Dpe.Date ->
+          ""
+
+        Dpe.Time ->
+          "none"
+
+        Dpe.DateTime ->
+          ""
+
+    jsonValue =
+      Json.Encode.string modeValue
+  in
+    property "mode" jsonValue
+
+
+
+--timeZoneOffsetInMinutes number
+
+
+{-| -}
+timeZoneOffsetInMinutes : Int -> Property
+timeZoneOffsetInMinutes =
+  propInt "timeZoneOffsetInMinutes"
+
+
+{-| -}
+type DrawerLockMode
+  = UnLocked
+  | LockedClosed
+  | LockedOpen
+
+
+{-| -}
+drawerLockMode : DrawerLockMode -> String
+drawerLockMode mode =
+  case mode of
+    UnLocked ->
+      "unlocked"
+
+    LockedClosed ->
+      "locked-closed"
+
+    LockedOpen ->
+      "locked-open"
+
+
+
+--drawerPosition enum(DrawerConsts.DrawerPosition.Left, DrawerConsts.DrawerPosition.Right)
+
+
+{-| -}
+drawerPosition : DrawerLayoutEnum.DrawerPosition -> String
+drawerPosition mode =
+  case mode of
+    DrawerLayoutEnum.Left ->
+      "left"
+
+    DrawerLayoutEnum.Right ->
+      "right"
+
+
+{-| -}
+drawerWidth : Int -> Property
+drawerWidth =
+  propInt "drawerWidth"
+
+
+{-| -}
+renderNavigationView : Json.Encode.Value -> Property
+renderNavigationView f =
+  property "drawerWidth" f
+
+
+{-| -}
+statusBarBackgroundColor : String -> Property
+statusBarBackgroundColor =
+  propString "statusBarBackgroundColor"
+
+
+{-| -}
+sourceNum : Int -> Property
+sourceNum =
+  propInt "source"
+
+
+{-| -}
+blurRadius : Int -> Property
+blurRadius =
+  propInt "blurRadius"
+
+
+{-| -}
+capInsets : Int -> Int -> Int -> Int -> Property
+capInsets top left bottom right =
+  property
+    "capInsets"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int top )
+      , ( "left", Json.Encode.int left )
+      , ( "bottom", Json.Encode.int bottom )
+      , ( "right", Json.Encode.int right )
+      ]
+    )
+
+
+{-| -}
+defaultSourceNum : Int -> Property
+defaultSourceNum =
+  propInt "defaultSource"
+
+
+{-| -}
+enableEmptySections : Bool -> Property
+enableEmptySections =
+  propBool "enableEmptySections"
+
+
+{-| -}
+initialListSize : Int -> Property
+initialListSize =
+  propInt "initialListSize"
+
+
+{-| -}
+pageSize : Int -> Property
+pageSize =
+  propInt "pageSize"
+
+
+{-| -}
+renderFooter : Json.Encode.Value -> Property
+renderFooter f =
+  property "renderFooter" f
+
+
+{-| -}
+renderHeader : Json.Encode.Value -> Property
+renderHeader f =
+  property "renderHeader" f
+
+
+{-| -}
+renderRow : Json.Encode.Value -> Property
+renderRow f =
+  property "renderRow" f
+
+
+{-| -}
+renderScrollComponent : Json.Encode.Value -> Property
+renderScrollComponent f =
+  property "renderScrollComponent" f
+
+
+{-| -}
+renderSectionHeader : Json.Encode.Value -> Property
+renderSectionHeader f =
+  property "renderSectionHeader" f
+
+
+{-| -}
+renderSeparator : Json.Encode.Value -> Property
+renderSeparator f =
+  property "renderSeparator" f
+
+
+{-| -}
+scrollRenderAheadDistance : Int -> Property
+scrollRenderAheadDistance =
+  propInt "scrollRenderAheadDistance"
+
+
+{-| -}
+stickyHeaderIndices : List Int -> Property
+stickyHeaderIndices val =
+  property "stickyHeaderIndices" (Json.Encode.list (List.map Json.Encode.int val))
+
+
+{-| -}
+transparent : Bool -> Property
+transparent =
+  propBool "transparent"
+
+
+{-| -}
+barTintColor : String -> Property
+barTintColor =
+  propString "barTintColor"
+
+
+{-| -}
+navigationBarHidden : Bool -> Property
+navigationBarHidden =
+  propBool "navigationBarHidden"
+
+
+{-| -}
+shadowHidden : Bool -> Property
+shadowHidden =
+  propBool "shadowHidden"
+
+
+{-| -}
+titleTextColor : String -> Property
+titleTextColor =
+  propString "titleTextColor"
+
+
+{-| -}
+allowsInlineMediaPlayback : Bool -> Property
+allowsInlineMediaPlayback =
+  propBool "allowsInlineMediaPlayback"
+
+
+{-| -}
+javaScriptEnabled : Bool -> Property
+javaScriptEnabled =
+  propBool "javaScriptEnabled"
+
+
+{-| -}
+domStorageEnabled : Bool -> Property
+domStorageEnabled =
+  propBool "domStorageEnabled"
+
+
+{-| -}
+startInLoadingState : Bool -> Property
+startInLoadingState =
+  propBool "startInLoadingState"
+
+
+{-| -}
+scalesPageToFit : Bool -> Property
+scalesPageToFit =
+  propBool "scalesPageToFit"
+
+
+{-| -}
+mediaPlaybackRequiresUserAction : Bool -> Property
+mediaPlaybackRequiresUserAction =
+  propBool "mediaPlaybackRequiresUserAction"
+
+
+{-| -}
+injectedJavaScript : String -> Property
+injectedJavaScript =
+  propString "injectedJavaScript"
+
+
+{-| -}
+activeOpacity : Int -> Property
+activeOpacity =
+  propInt "activeOpacity"
+
+
+{-| -}
+delayLongPress : Int -> Property
+delayLongPress =
+  propInt "delayLongPress"
+
+
+{-| -}
+delayPressIn : Int -> Property
+delayPressIn =
+  propInt "delayPressIn"
+
+
+{-| -}
+delayPressOut : Int -> Property
+delayPressOut =
+  propInt "delayPressOut"
+
+
+{-| -}
+initialPage : Int -> Property
+initialPage =
+  propInt "initialPage"
+
+
+{-| -}
+hitSlop : Int -> Int -> Int -> Int -> Property
+hitSlop top left bottom right =
+  property
+    "hitSlop"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int top )
+      , ( "left", Json.Encode.int left )
+      , ( "bottom", Json.Encode.int bottom )
+      , ( "right", Json.Encode.int right )
+      ]
+    )
+
+
+{-| -}
+contentInset : Int -> Int -> Int -> Int -> Property
+contentInset top left bottom right =
+  property
+    "contentInset"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int top )
+      , ( "left", Json.Encode.int left )
+      , ( "bottom", Json.Encode.int bottom )
+      , ( "right", Json.Encode.int right )
+      ]
+    )
+
+
+{-| -}
+legalLabelInsets : Int -> Int -> Int -> Int -> Property
+legalLabelInsets top left bottom right =
+  property
+    "legalLabelInsets"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int top )
+      , ( "left", Json.Encode.int left )
+      , ( "bottom", Json.Encode.int bottom )
+      , ( "right", Json.Encode.int right )
+      ]
+    )
+
+
+{-| -}
+scrollIndicatorInsets : Int -> Int -> Int -> Int -> Property
+scrollIndicatorInsets top left bottom right =
+  property
+    "scrollIndicatorInsets"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int top )
+      , ( "left", Json.Encode.int left )
+      , ( "bottom", Json.Encode.int bottom )
+      , ( "right", Json.Encode.int right )
+      ]
+    )
+
+
+{-| -}
+pressRetentionOffset : Int -> Int -> Int -> Int -> Property
+pressRetentionOffset top left bottom right =
+  property
+    "pressRetentionOffset"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int top )
+      , ( "left", Json.Encode.int left )
+      , ( "bottom", Json.Encode.int bottom )
+      , ( "right", Json.Encode.int right )
+      ]
+    )
+
+
+{-| -}
+initialRoute : Json.Encode.Value -> Property
+initialRoute f =
+  property "initialRoute" f
+
+
+{-| -}
+renderError : Json.Encode.Value -> Property
+renderError f =
+  property "renderError" f
+
+
+{-| -}
+renderLoading : Json.Encode.Value -> Property
+renderLoading f =
+  property "renderLoading" f
+
+
+{-| -}
+navigator : Json.Encode.Value -> Property
+navigator f =
+  property "navigator" f
+
+
+{-| -}
+renderScene : Json.Encode.Value -> Property
+renderScene f =
+  property "renderScene" f
+
+
+{-| -}
+progressBackgroundColor : String -> Property
+progressBackgroundColor =
+  propString "progressBackgroundColor"
+
+
+{-| -}
+endFillColor : String -> Property
+endFillColor =
+  propString "endFillColor"
+
+
+{-| -}
+thumbTintColor : String -> Property
+thumbTintColor =
+  propString "thumbTintColor"
+
+
+{-| -}
+titleColor : String -> Property
+titleColor =
+  propString "titleColor"
+
+
+{-| -}
+underlayColor : String -> Property
+underlayColor =
+  propString "underlayColor"
+
+
+{-| -}
+region : Int -> Int -> Int -> Int -> Property
+region latitude longitude latitudeDelta longitudeDelta =
+  property
+    "region"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int latitude )
+      , ( "left", Json.Encode.int longitude )
+      , ( "bottom", Json.Encode.int latitudeDelta )
+      , ( "right", Json.Encode.int longitudeDelta )
+      ]
+    )
+
+
+{-| -}
+overlays : Int -> Int -> Int -> Int -> Property
+overlays latitude longitude latitudeDelta longitudeDelta =
+  property
+    "overlays"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int latitude )
+      , ( "left", Json.Encode.int longitude )
+      , ( "bottom", Json.Encode.int latitudeDelta )
+      , ( "right", Json.Encode.int longitudeDelta )
+      ]
+    )
+
+
+{-| -}
+annotations : Int -> Int -> Int -> Int -> Property
+annotations latitude longitude latitudeDelta longitudeDelta =
+  property
+    "annotations"
+    (Json.Encode.object
+      [ ( "top", Json.Encode.int latitude )
+      , ( "left", Json.Encode.int longitude )
+      , ( "bottom", Json.Encode.int latitudeDelta )
+      , ( "right", Json.Encode.int longitudeDelta )
+      ]
+    )
+
+
+{-| -}
+badgeString : String -> Property
+badgeString =
+  propString "badgeString"
+
+
+
 -- -- List View Components Properties
 -- dataSource ListViewDataSource
--- enableEmptySections bool
--- initialListSize number
--- pageSize number
--- removeClippedSubviews bool
 --
--- renderFooter function
--- renderHeader function
--- renderRow function
--- renderScrollComponent function
--- renderSectionHeader function
--- renderSeparator function
--- scrollRenderAheadDistance number
--- stickyHeaderIndices [number]
 --
 -- -- Mapview Components Properties
--- pitchEnabled bool (true camera is associated with the map)
--- region {latitude: number, longitude: number, latitudeDelta: number, longitudeDelta: number}
--- rotateEnabled bool
--- scrollEnabled bool
--- showsUserLocation bool
--- zoomEnabled bool
--- active bool
--- annotations [{latitude: number, longitude: number, animateDrop: bool, draggable: bool, onDragStateChange: function, onFocus: function, onBlur: function, title: string, subtitle: string, leftCalloutView: element, rightCalloutView: element, detailCalloutView: element, tintColor: [object Object], image: Image.propTypes.source, view: element, id: string, hasLeftCallout: deprecatedPropType( React.PropTypes.bool, 'Use `leftCalloutView` instead.' ), hasRightCallout: deprecatedPropType( React.PropTypes.bool, 'Use `rightCalloutView` instead.' ), onLeftCalloutPress: deprecatedPropType( React.PropTypes.func, 'Use `leftCalloutView` instead.' ), onRightCalloutPress: deprecatedPropType( React.PropTypes.func, 'Use `rightCalloutView` instead.' )}
--- followUserLocation bool
--- legalLabelInsets {top: number, left: number, bottom: number, right: number}
--- mapType enum('standard', 'satellite', 'hybrid')
--- maxDelta number
--- minDelta number
--- overlays [{coordinates: [object Object], lineWidth: number, strokeColor: [object Object], fillColor: [object Object], id: string}]
--- showsCompass bool
--- showsPointsOfInterest bool
---
--- --Model Component Properties
---
--- animated bool
--- transparent bool
--- visible bool
 --
 -- --Navigator Component Properties
 --
 -- configureScene function ((route, routeStack) => Navigator.SceneConfigs.FloatFromRight)
--- initialRoute object
 -- initialRouteStack [object]
 -- navigationBar node
--- navigator object
--- renderScene function
 -- sceneStyle View#style
 --
 -- --NavigatorIOS Components Properties
 --
--- barTintColor string
 -- initialRoute {component: function, title: string, passProps: object, backButtonIcon: Image.propTypes.source, backButtonTitle: string, leftButtonIcon: Image.propTypes.source, leftButtonTitle: string, onLeftButtonPress: function, rightButtonIcon: Image.propTypes.source, rightButtonTitle: string, onRightButtonPress: function, wrapperStyle: [object Object], navigationBarHidden: bool, shadowHidden: bool, tintColor: string, barTintColor: string, titleTextColor: string, translucent: bool}
 --
 -- itemWrapperStyle View#style
--- navigationBarHidden bool
--- shadowHidden bool
--- titleTextColor string
 --
 -- -- PickerIOS component Properties
 -- itemStyle itemStylePropType
@@ -1112,7 +1658,6 @@ needsOffscreenAlphaCompositing val =
 -- --Progress Bar Android  Component Properties
 --
 -- indeterminate indeterminateType
--- progress number
 -- styleAttr STYLE_ATTRIBUTES
 --
 -- -- Style of the ProgressBar. One of:
@@ -1133,16 +1678,13 @@ needsOffscreenAlphaCompositing val =
 -- -- Refresh Control Component Properties
 --
 -- colors [color]
--- progressBackgroundColor color
 --
 -- --ScrollView Component Properties
 --
 -- contentContainerStyle StyleSheetPropType(ViewStylePropTypes)
 -- refreshControl element
--- endFillColor color
 -- contentOffset PointPropType
 -- decelerationRate enum('fast', 'normal'), number
--- scrollIndicatorInsets {top: number, left: number, bottom: number, right: number}
 --
 --
 -- -- Segmented Control IOS Component Properties
@@ -1151,53 +1693,24 @@ needsOffscreenAlphaCompositing val =
 --
 -- -- Slider Component Properties
 -- maximumTrackImage Image.propTypes.source
--- maximumTrackTintColor string
 -- thumbImage Image.propTypes.source
 --
 --
 -- --StatusBar Component Properties
--- backgroundColor color
 --
 --
 -- --Switch Component Properties
--- thumbTintColor color
 --
 --
 -- --TabBarIOS.Item Component Properties
 --
--- badge string, number
 -- icon Image.propTypes.source
 -- selectedIcon Image.propTypes.source
 -- systemIcon enum('bookmarks', 'contacts', 'downloads', 'favorites', 'featured', 'history', 'more', 'most-recent', 'most-viewed', 'recents', 'search', 'top-rated')
---
---
--- --Text Component Properties
---
---
--- accessible
--- numberOfLines number
--- allowFontScaling bool
--- suppressHighlighting bool
---
 -- -- TextInput Component Properties
 -- autoCapitalize enum('none', 'sentences', 'words', 'characters')
--- autoCorrect bool
--- autoFocus bool
--- blurOnSubmit bool
--- defaultValue string
--- editable bool
 -- keyboardType enum('default', 'email-address', 'numeric', 'phone-pad', 'ascii-capable', 'numbers-and-punctuation', 'url', 'number-pad', 'name-phone-pad', 'decimal-pad', 'twitter', 'web-search')
--- maxLength number
--- multiline bool
--- placeholder string
--- placeholderTextColor string
--- secureTextEntry bool
--- selectTextOnFocus bool
--- selectionColor string
--- underlineColorAndroid string
 -- clearButtonMode enum('never', 'while-editing', 'unless-editing', 'always')
--- clearTextOnFocus bool
--- enablesReturnKeyAutomatically bool
 -- keyboardAppearance enum('default', 'light', 'dark')
 -- returnKeyType enum('default', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency-call')
 -- selectionState
@@ -1205,20 +1718,13 @@ needsOffscreenAlphaCompositing val =
 --
 -- --ToolbarAndroid Component Properties
 -- actions [{title: string, icon: optionalImageSource, show: enum('always', 'ifRoom', 'never'), showWithText: bool}]
--- contentInsetEnd number
--- contentInsetStart number
 -- logo optionalImageSource
 -- navIcon optionalImageSource
 -- overflowIcon optionalImageSource
--- rtl bool
--- subtitle string
--- titleColor color
 --
 --
 -- -- TouchableHighlight Component Properties
 --
--- activeOpacity number
--- underlayColor color
 --
 --
 -- --TouchableNativeFeedback Component Properties
@@ -1226,52 +1732,23 @@ needsOffscreenAlphaCompositing val =
 --
 --
 -- --TouchableOpacity  Component Properties
--- activeOpacity number
 --
 -- --TouchableWithoutFeedback Component Properties
 --
 -- accessibilityComponentType View.AccessibilityComponentType
 -- accessibilityTraits View.AccessibilityTraits, [object Object]
--- accessible bool
--- delayLongPress number
--- delayPressIn number
--- delayPressOut number
--- hitSlop {top: number, left: number, bottom: number, right: number}
--- pressRetentionOffset {top: number, left: number, bottom: number, right: number}
 --
 --
 -- --View Component Properties
 --
--- accessibilityLabel string
 -- pointerEvents enum('box-none', 'none', 'box-only', 'auto')
--- removeClippedSubviews bool
 -- accessibilityComponentType AccessibilityComponentType
 -- accessibilityLiveRegion enum('none', 'polite', 'assertive')
--- collapsable bool
 -- importantForAccessibility enum('auto', 'yes', 'no', 'no-hide-descendants')
--- needsOffscreenAlphaCompositing bool
--- renderToHardwareTextureAndroid bool
 -- accessibilityTraits AccessibilityTraits, [object Object
--- shouldRasterizeIOS bool
---
 --
 -- --ViewPagerAndroid Component Properties
--- initialPage number
---
 --
 -- --WebView Component Properties
--- automaticallyAdjustContentInsets bool
--- contentInset {top: number, left: number, bottom: number, right: number}
--- injectedJavaScript string
--- mediaPlaybackRequiresUserAction bool
--- renderError function
--- renderLoading function
--- scalesPageToFit bool
 -- source {uri: string, method: string, headers: object, body: string}, {html: string, baseUrl: string}, number
--- startInLoadingState bool
--- domStorageEnabled bool
--- javaScriptEnabled bool
--- allowsInlineMediaPlayback bool
--- bounces bool
--- scrollEnabled bool
 -- decelerationRate ScrollView.propTypes.decelerationRate
