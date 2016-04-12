@@ -49,7 +49,7 @@ module NativeUi.Properties (..) where
 @docs Latitude, LatitudeDelta, Left, Longitude, LongitudeDelta, Right, Top
 @docs progressImage, trackImage,ImageSource, propImageSource
 @docs logo, navIcon, overflowIcon, systemIcon, icon, maximumTrackImage
-@docs selectedIcon, thumbImage
+@docs selectedIcon, thumbImage, values, colors, contentContainerStyle, itemStyle
 -}
 
 import Json.Encode
@@ -74,6 +74,7 @@ import NativeUi.Enum.TabBarIos as TabBarIosEnum
 import String
 import Char
 import String
+import NativeUi.Style as Style
 
 
 {-| -}
@@ -1436,33 +1437,41 @@ systemIcon =
   propEnum "systemIcon"
 
 
+{-| -}
+values : List String -> Property
+values lst =
+  property "values" (Json.Encode.list (List.map Json.Encode.string lst))
 
---
--- -- Refresh Control Component Properties
---
--- colors [color]
---
+
+{-| -}
+colors : List String -> Property
+colors lst =
+  property "colors" (Json.Encode.list (List.map Json.Encode.string lst))
+
+
+{-| Turns a list of `Style`s into a property you can attach to a `NativeUi` node.
+-}
+contentContainerStyle : List Style.Style -> Property
+contentContainerStyle styles =
+  Style.encode styles
+    |> property "contentContainerStyle"
+
+
+{-| Turns a list of `Style`s into a property you can attach to a `NativeUi` node.
+-}
+itemStyle : List Style.Style -> Property
+itemStyle styles =
+  Style.encode styles
+    |> property "itemStyle"
+
+
+
 -- --ScrollView Component Properties
 --
--- contentContainerStyle StyleSheetPropType(ViewStylePropTypes)
 -- refreshControl element
 -- contentOffset PointPropType
 --
 --
--- -- Segmented Control IOS Component Properties
--- values [string]
 -- --ToolbarAndroid Component Properties
 -- actions [{title: string, icon: optionalImageSource, show: enum('always', 'ifRoom', 'never'), showWithText: bool}]
 --
--- --TouchableWithoutFeedback Component Properties
---
--- accessibilityComponentType View.AccessibilityComponentType
--- accessibilityTraits View.AccessibilityTraits, [object Object]
---
---
--- --View Component Properties
---
--- accessibilityComponentType AccessibilityComponentType
--- accessibilityTraits AccessibilityTraits, [object Object
--- --WebView Component Properties
--- source {uri: string, method: string, headers: object, body: string}, {html: string, baseUrl: string}, number
