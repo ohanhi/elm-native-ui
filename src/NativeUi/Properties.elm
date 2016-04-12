@@ -47,7 +47,7 @@ module NativeUi.Properties (..) where
 @docs transparent, underlayColor, underlineColorAndroid, value, zoomEnabled
 @docs zoomScale, propTlbr, propLatLong, firstLower, toHyphenated, Bottom
 @docs Latitude, LatitudeDelta, Left, Longitude, LongitudeDelta, Right, Top
-@docs progressImage, trackImage,ImageSource, propImageSource
+@docs progressImage, trackImage,ImageSource, propImageSource, contentOffset
 @docs logo, navIcon, overflowIcon, systemIcon, icon, maximumTrackImage
 @docs selectedIcon, thumbImage, values, colors, contentContainerStyle, itemStyle
 -}
@@ -1465,13 +1465,15 @@ itemStyle styles =
     |> property "itemStyle"
 
 
-
--- --ScrollView Component Properties
---
--- refreshControl element
--- contentOffset PointPropType
---
---
--- --ToolbarAndroid Component Properties
--- actions [{title: string, icon: optionalImageSource, show: enum('always', 'ifRoom', 'never'), showWithText: bool}]
---
+{-| Turns a list of `Style`s into a property you can attach to a `NativeUi` node.
+-}
+contentOffset : Int -> Int -> Property
+contentOffset x y =
+  property
+    "contentOffset"
+    (Json.Encode.object
+      ([ ( "x", Json.Encode.int x )
+       , ( "y", Json.Encode.int y )
+       ]
+      )
+    )
