@@ -1,5 +1,12 @@
 module NativeUi.Utils (..) where
 
+{-|
+
+# Common Helpers
+@docs enumToString,enumToStringd ,firstLower, toHyphenated
+
+-}
+
 import Char
 import String
 
