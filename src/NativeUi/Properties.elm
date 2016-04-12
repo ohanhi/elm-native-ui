@@ -10,7 +10,7 @@ module NativeUi.Properties (..) where
 @docs barStyle, barTintColor, blurOnSubmit, blurRadius, bounces, bouncesZoom
 @docs canCancelContentTouches, capInsets, centerContent, clearButtonMode
 @docs clearTextOnFocus, collapsable, color, contentInset, contentInsetEnd
-@docs contentInsetStart, date, datePickerMode, defaultSource, defaultSourceNum
+@docs contentInsetStart, date, datePickerMode, defaultSource
 @docs defaultValue, delayLongPress, delayPressIn, delayPressOut
 @docs directionalLockEnabled, disabled, domStorageEnabled, drawerLockMode
 @docs drawerPosition, drawerWidth, editable, enableEmptySections, enabled
@@ -40,15 +40,16 @@ module NativeUi.Properties (..) where
 @docs shadowHidden, shouldRasterizeIOS, showHideTransition, showsCompass
 @docs showsHorizontalScrollIndicator, showsPointsOfInterest, showsUserLocation
 @docs showsVerticalScrollIndicator, size, sliderValue, snapToAlignment
-@docs snapToInterval, source, sourceNum, startInLoadingState
+@docs snapToInterval, source, startInLoadingState
 @docs statusBarBackgroundColor, step, stickyHeaderIndices, subtitle
 @docs suppressHighlighting, testID, thumbTintColor, timeZoneOffsetInMinutes
 @docs tintColor, title, titleColor, titleTextColor, trackTintColor, translucent
 @docs transparent, underlayColor, underlineColorAndroid, value, zoomEnabled
 @docs zoomScale, propTlbr, propLatLong, firstLower, toHyphenated, Bottom
 @docs Latitude, LatitudeDelta, Left, Longitude, LongitudeDelta, Right, Top
-@docs progressImage, progressImageNum, trackImage, trackImageNum
-@docs logo, logoNum, navIcon, navIconNum, overflowIcon, overflowIconNum, systemIcon
+@docs progressImage, trackImage,ImageSource, propImageSource
+@docs logo, navIcon, overflowIcon, systemIcon, icon, maximumTrackImage
+@docs selectedIcon, thumbImage
 -}
 
 import Json.Encode
@@ -258,16 +259,16 @@ allowFontScaling =
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-source : String -> Property
-source uri =
-  propUri "source" uri
+source : ImageSource -> Property
+source =
+  propImageSource "source"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-defaultSource : String -> Property
-defaultSource uri =
-  propUri "defaultSource" uri
+defaultSource : ImageSource -> Property
+defaultSource =
+  propImageSource "defaultSource"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -1037,12 +1038,6 @@ statusBarBackgroundColor =
 
 
 {-| -}
-sourceNum : Int -> Property
-sourceNum =
-  propInt "source"
-
-
-{-| -}
 blurRadius : Int -> Property
 blurRadius =
   propInt "blurRadius"
@@ -1052,12 +1047,6 @@ blurRadius =
 capInsets : Int -> Int -> Int -> Int -> Property
 capInsets =
   propTlbr "capInsets"
-
-
-{-| -}
-defaultSourceNum : Int -> Property
-defaultSourceNum =
-  propInt "defaultSource"
 
 
 {-| -}
@@ -1231,36 +1220,31 @@ initialPage =
 {-| -}
 hitSlop : Int -> Int -> Int -> Int -> Property
 hitSlop =
-  propTlbr
-    "hitSlop"
+  propTlbr "hitSlop"
 
 
 {-| -}
 contentInset : Int -> Int -> Int -> Int -> Property
 contentInset =
-  propTlbr
-    "contentInset"
+  propTlbr "contentInset"
 
 
 {-| -}
 legalLabelInsets : Int -> Int -> Int -> Int -> Property
 legalLabelInsets =
-  propTlbr
-    "legalLabelInsets"
+  propTlbr "legalLabelInsets"
 
 
 {-| -}
 scrollIndicatorInsets : Int -> Int -> Int -> Int -> Property
 scrollIndicatorInsets =
-  propTlbr
-    "scrollIndicatorInsets"
+  propTlbr "scrollIndicatorInsets"
 
 
 {-| -}
 pressRetentionOffset : Int -> Int -> Int -> Int -> Property
 pressRetentionOffset =
-  propTlbr
-    "pressRetentionOffset"
+  propTlbr "pressRetentionOffset"
 
 
 {-| -}
@@ -1372,70 +1356,77 @@ styleAttr =
 
 
 {-| -}
-progressImage : String -> Property
+progressImage : ImageSource -> Property
 progressImage =
-  source
+  propImageSource "progressImage"
 
 
 {-| -}
-progressImageNum : Int -> Property
-progressImageNum =
-  sourceNum
-
-
-{-| -}
-trackImage : String -> Property
+trackImage : ImageSource -> Property
 trackImage =
-  source
+  propImageSource "trackImage"
 
 
 {-| -}
-trackImageNum : Int -> Property
-trackImageNum =
-  sourceNum
-
-
-{-| -}
-logo : String -> Property
+logo : ImageSource -> Property
 logo =
-  source
+  propImageSource "logo"
 
 
 {-| -}
-logoNum : Int -> Property
-logoNum =
-  sourceNum
-
-
-{-| -}
-navIcon : String -> Property
+navIcon : ImageSource -> Property
 navIcon =
-  source
+  propImageSource "navIcon"
 
 
 {-| -}
-navIconNum : Int -> Property
-navIconNum =
-  sourceNum
-
-
-{-| -}
-overflowIcon : String -> Property
+overflowIcon : ImageSource -> Property
 overflowIcon =
-  source
+  propImageSource "overflowIcon"
 
 
 {-| -}
-overflowIconNum : Int -> Property
-overflowIconNum =
-  sourceNum
+type ImageSource
+  = Uri String
+  | Num Int
+
+
+{-| -}
+propImageSource : String -> ImageSource -> Property
+propImageSource name imgSrc =
+  case imgSrc of
+    Uri str ->
+      propUri name str
+
+    Num n ->
+      propInt name n
+
+
+{-| -}
+icon : ImageSource -> Property
+icon =
+  propImageSource "icon"
+
+
+{-| -}
+selectedIcon : ImageSource -> Property
+selectedIcon =
+  propImageSource "selectedIcon"
+
+
+{-| -}
+maximumTrackImage : ImageSource -> Property
+maximumTrackImage =
+  propImageSource "maximumTrackImage"
+
+
+{-| -}
+thumbImage : ImageSource -> Property
+thumbImage =
+  propImageSource "thumbImage"
 
 
 
--- icon Image.propTypes.source
--- selectedIcon Image.propTypes.source
--- maximumTrackImage Image.propTypes.source
--- thumbImage Image.propTypes.source
 --
 
 
