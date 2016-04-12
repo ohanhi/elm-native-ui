@@ -2,6 +2,9 @@ module NativeUi.Style (..) where
 
 {-| Render your application as a React Native app.
 
+
+@docs JustifyContentEnum, FontStyleEnum
+
 # Types
 @docs Value
 # Common Helpers
@@ -21,11 +24,14 @@ module NativeUi.Style (..) where
 @docs paddingVertical, position, resizeMode, right, shadowColor, shadowOffset, shadowOpacity
 @docs shadowRadius, stringDeclaration, stringStyle, textAlign, textDecorationColor
 @docs textDecorationLine, textDecorationStyle, tintColor, toJsonProperty, top, transform
-@docs width, writingDirection
-
+@docs width, writingDirection, PositionEnum
+@docs AlignSelfEnum, BorderStyleEnum, DirectionEnum, FlexDirectionEnum
+@docs FlexWrapEnum, FontWeightEnum, TextAlignEnum, TextDecorationLine
+@docs VisibilityEnum
 -}
 
 import Json.Encode
+import NativeUi.Utils exposing (..)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -192,26 +198,41 @@ fontSize =
   numberStyle "fontSize"
 
 
-
---enum('normal', 'italic')
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type FontStyleEnum
+  = Normal
+  | Italic
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-fontStyle : String -> Style
-fontStyle =
-  stringStyle "fontStyle"
-
-
-
---enum("normal", 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900')
+fontStyle : FontStyleEnum -> Style
+fontStyle fs =
+  stringStyle "fontStyle" (enumToString fs)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-fontWeight : String -> Style
-fontWeight =
-  stringStyle "fontWeight"
+type FontWeightEnum
+  = FontWeightNormal
+  | FontWeightBold
+  | FontWeight100
+  | FontWeight200
+  | FontWeight300
+  | FontWeight400
+  | FontWeight500
+  | FontWeight600
+  | FontWeight700
+  | FontWeight800
+  | FontWeight900
+
+
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+fontWeight : FontWeightEnum -> Style
+fontWeight fw =
+  stringStyle "fontWeight" (enumToStringd 10 fw)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -228,15 +249,21 @@ lineHeight =
   numberStyle "lineHeight"
 
 
-
---enum("auto", 'left', 'right', 'center', 'justify')
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type TextAlignEnum
+  = TextAlignAuto
+  | TextAlignLeft
+  | TextAlignRight
+  | TextAlignCenter
+  | TextAlignJustify
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-textAlign : String -> Style
-textAlign =
-  stringStyle "textAlign"
+textAlign : TextAlignEnum -> Style
+textAlign styl =
+  stringStyle "textAlign" (enumToStringd 9 styl)
 
 
 
@@ -245,20 +272,25 @@ textAlign =
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-textDecorationLine : String -> Style
-textDecorationLine =
-  stringStyle "textDecorationLine"
-
-
-
---enum("solid", 'double', 'dotted', 'dashed')
+type TextDecorationLine
+  = DecNone
+  | DecUnderline
+  | DecLineThrough
+  | DecUnderline'LineThrough
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-textDecorationStyle : String -> Style
-textDecorationStyle =
-  stringStyle "textDecorationStyle"
+textDecorationLine : TextDecorationLine -> Style
+textDecorationLine dec =
+  stringStyle "textDecorationLine" (enumToStringd 3 dec)
+
+
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+textDecorationStyle : BorderStyleEnum -> Style
+textDecorationStyle styl =
+  stringStyle "textDecorationStyle" (enumToString styl)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -268,27 +300,30 @@ textDecorationColor =
   stringStyle "textDecorationColor"
 
 
-
---enum("auto", 'ltr', 'rtl')
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type DirectionEnum
+  = DirAuto
+  | DirLtr
+  | DirRtl
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-writingDirection : String -> Style
-writingDirection =
-  stringStyle "writingDirection"
+writingDirection : DirectionEnum -> Style
+writingDirection dir =
+  stringStyle "writingDirection" (enumToStringd 3 dir)
 
 
 
 --View Styles
---enum('visible', 'hidden')
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-backfaceVisibility : String -> Style
-backfaceVisibility =
-  stringStyle "backfaceVisibility"
+backfaceVisibility : VisibilityEnum -> Style
+backfaceVisibility vis =
+  stringStyle "backfaceVisibility" (enumToString vis)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -368,15 +403,20 @@ borderBottomRightRadius =
   numberStyle "borderBottomRightRadius"
 
 
-
---enum('solid', 'dotted', 'dashed')
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type BorderStyleEnum
+  = Solid
+  | Dotted
+  | Dashed
+  | Double
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-borderStyle : String -> Style
-borderStyle =
-  stringStyle "borderStyle"
+borderStyle : BorderStyleEnum -> Style
+borderStyle styl =
+  stringStyle "borderStyle" (enumToString styl)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -421,15 +461,18 @@ opacity =
   numberStyle "opacity"
 
 
-
---enum('visible', 'hidden')
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type VisibilityEnum
+  = Visible
+  | Hidden
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-overflow : String -> Style
-overflow =
-  stringStyle "overflow"
+overflow : VisibilityEnum -> Style
+overflow ovrfl =
+  stringStyle "overflow" (enumToString ovrfl)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -497,33 +540,43 @@ tintColor =
 
 
 
---opacity : Float -> Style
---opacity = numberStyle "opacity"
---Flex Styles
---enum('flex-start', 'flex-end', 'center', 'stretch')
+-- opacity : Float -> Style
+-- opacity =
+--   numberStyle "opacity"
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-alignItems : String -> Style
-alignItems =
-  stringStyle "alignItems"
+alignItems : AlignSelfEnum -> Style
+alignItems aligns =
+  stringStyle "alignItems" (enumToString aligns)
 
 
 
---enum('auto', 'flex-start', 'flex-end', 'center', 'stretch')
+--TODO
+--Drop Align and then use the rest
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-alignSelf : String -> Style
-alignSelf =
-  stringStyle "alignSelf"
+type AlignSelfEnum
+  = AlignAuto
+  | AlignFlexStart
+  | AlignFlexEnd
+  | AlignCenter
+  | AlignStretch
+
+
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+alignSelf : AlignSelfEnum -> Style
+alignSelf aligns =
+  stringStyle "alignSelf" (enumToStringd 5 aligns)
 
 
 
---borderBottomWidth : Float -> Style
---borderBottomWidth = numberStyle "borderBottomWidth"
+-- borderBottomWidth : Float -> Style
+-- borderBottomWidth = numberStyle "borderBottomWidth"
 --borderLeftWidth : Float -> Style
 --borderLeftWidth = numberStyle "borderLeftWidth"
 --borderRightWidth : Float -> Style
@@ -548,26 +601,32 @@ flex =
   numberStyle "flex"
 
 
-
---enum('row', 'column')
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type FlexDirectionEnum
+  = Row
+  | Column
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-flexDirection : String -> Style
-flexDirection =
-  stringStyle "flexDirection"
-
-
-
---enum('wrap', 'nowrap')
+flexDirection : FlexDirectionEnum -> Style
+flexDirection dir =
+  stringStyle "flexDirection" (enumToString dir)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-flexWrap : String -> Style
-flexWrap =
-  stringStyle "flexWrap"
+type FlexWrapEnum
+  = Wrap
+  | Nowrap
+
+
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+flexWrap : FlexWrapEnum -> Style
+flexWrap wrp =
+  stringStyle "flexWrap" (enumToString wrp)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -577,15 +636,21 @@ height =
   numberStyle "height"
 
 
-
---enum('flex-start', 'flex-end', 'center', 'space-between', 'space-around')
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type JustifyContentEnum
+  = FlexStart
+  | FlexEnd
+  | Center
+  | SpaceBetween
+  | SpaceAround
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-justifyContent : String -> Style
-justifyContent =
-  stringStyle "justifyContent"
+justifyContent : JustifyContentEnum -> Style
+justifyContent jc =
+  stringStyle "justifyContent" (enumToString jc)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
@@ -693,15 +758,18 @@ paddingVertical =
   numberStyle "paddingVertical"
 
 
-
---enum('absolute', 'relative')
+{-| A node in the virtual View Tree that forms the basis of the UI for your app.
+-}
+type PositionEnum
+  = Absolute
+  | Relative
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
 -}
-position : String -> Style
-position =
-  stringStyle "position"
+position : PositionEnum -> Style
+position pos =
+  stringStyle "position" (enumToString pos)
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.

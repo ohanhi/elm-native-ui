@@ -2,7 +2,7 @@ module NativeUi.Properties (..) where
 
 {-| Properties of components
 @docs propEnum,decelerationRate, decelerationRateNum, styleAttr
-@docs accessibilityLabel, propEnumInt, selectedValue
+@docs accessibilityLabel, selectedValue
 @docs accessibilityLiveRegion, accessible, active, activeOpacity
 @docs allowFontScaling, allowsInlineMediaPlayback, alwaysBounceHorizontal
 @docs alwaysBounceVertical, animated, animating, annotations, autoCapitalize
@@ -14,7 +14,7 @@ module NativeUi.Properties (..) where
 @docs defaultValue, delayLongPress, delayPressIn, delayPressOut
 @docs directionalLockEnabled, disabled, domStorageEnabled, drawerLockMode
 @docs drawerPosition, drawerWidth, editable, enableEmptySections, enabled
-@docs enablesReturnKeyAutomatically, endFillColor, enumToString
+@docs enablesReturnKeyAutomatically, endFillColor
 @docs followUserLocation, hidden, hidesWhenStopped, hitSlop, horizontal
 @docs importantForAccessibility, indicatorStyle, initialListSize, initialPage
 @docs initialRoute, injectedJavaScript, javaScriptEnabled, keyboardAppearance
@@ -28,7 +28,7 @@ module NativeUi.Properties (..) where
 @docs numberOfLines, overlays, pageSize, pagingEnabled, pickerMode
 @docs pitchEnabled, placeholder, placeholderTextColor, pointerEvents
 @docs pressRetentionOffset, progress, progressBackgroundColor
-@docs progressTintColor, progressViewStyle, prompt, propBool, propFloat, propInt
+@docs progressTintColor, progressViewStyle, prompt, propBool, propFloat
 @docs propString, propUri, refreshing, region, removeClippedSubviews
 @docs renderError, renderFooter, renderHeader, renderLoading
 @docs renderNavigationView, renderRow, renderScene, renderScrollComponent
@@ -45,7 +45,7 @@ module NativeUi.Properties (..) where
 @docs suppressHighlighting, testID, thumbTintColor, timeZoneOffsetInMinutes
 @docs tintColor, title, titleColor, titleTextColor, trackTintColor, translucent
 @docs transparent, underlayColor, underlineColorAndroid, value, zoomEnabled
-@docs zoomScale, propTlbr, propLatLong, firstLower, toHyphenated, Bottom
+@docs zoomScale, propTlbr, propLatLong, Bottom, propEnumInt, propInt
 @docs Latitude, LatitudeDelta, Left, Longitude, LongitudeDelta, Right, Top
 @docs progressImage, trackImage,ImageSource, propImageSource, contentOffset
 @docs logo, navIcon, overflowIcon, systemIcon, icon, maximumTrackImage
@@ -71,37 +71,20 @@ import NativeUi.Enum.Pointer as PointerEnum
 import NativeUi.Enum.DatePickerIos as DatePickerIosEnum
 import NativeUi.Enum.ProgressBarAndroid as ProgressBarAndroidEnum
 import NativeUi.Enum.TabBarIos as TabBarIosEnum
-import String
-import Char
-import String
 import NativeUi.Style as Style
+import NativeUi.Utils exposing (..)
+import String
 
 
 {-| -}
-firstLower : List Char -> List Char
-firstLower lst =
-  case lst of
-    [] ->
-      []
-
-    x :: xs ->
-      Char.toLower (x) :: xs
-
-
-{-| -}
-toHyphenated : List Char -> List Char
-toHyphenated x =
-  case x of
-    [] ->
-      []
-
-    x' :: xs ->
-      case (Char.isUpper x') of
-        True ->
-          '-' :: Char.toLower x' :: toHyphenated xs
-
-        False ->
-          x' :: toHyphenated xs
+propEnumInt : String -> Int -> a -> Property
+propEnumInt name dc val =
+  val
+    |> enumToString
+    |> String.dropLeft dc
+    |> String.toInt
+    |> Result.withDefault 0
+    |> propInt name
 
 
 {-| -}
@@ -114,17 +97,6 @@ propInt name val =
 propEnum : String -> a -> Property
 propEnum name val =
   propString name (enumToString val)
-
-
-{-| -}
-propEnumInt : String -> Int -> a -> Property
-propEnumInt name dc val =
-  val
-    |> enumToString
-    |> String.dropLeft dc
-    |> String.toInt
-    |> Result.withDefault 0
-    |> propInt name
 
 
 {-| -}
@@ -217,17 +189,6 @@ propBool name val =
 propUri : String -> String -> Property
 propUri name uri =
   property name (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
-
-
-{-| -}
-enumToString : a -> String
-enumToString o =
-  o
-    |> toString
-    |> String.toList
-    |> firstLower
-    |> toHyphenated
-    |> String.fromList
 
 
 {-| A node in the virtual View Tree that forms the basis of the UI for your app.
