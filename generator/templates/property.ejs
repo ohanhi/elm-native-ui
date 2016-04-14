@@ -1,0 +1,3 @@
+<%- propName %> : <%- propType.type %> -> Property
+<%- propName %> val =
+  property "<%- propName %>" (Json.Encode.<%- propType.encoder %> val)
