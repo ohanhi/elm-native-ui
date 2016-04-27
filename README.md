@@ -111,13 +111,16 @@ iOS | Android
 - [ ] Styles
   - [x] Basic types for styles
   - [x] Support object type styles - _transform styles and `shadowOffset`_
-  - [ ] Make enum type styles safer - _currently all Strings_
+  - [x] Make enum type styles safer
   - [ ] Allow the `StyleSheet.create` method for styles
-- [ ] Props
-  - [x] Improve event handlers - _currently uses event handler ids_
-  - [ ] Support props besides styles and event handlers
+- [x] Props
+  - [x] Improved event handlers
+  - [x] Support props besides styles and event handlers
   - [x] Unify syntax for styles, handlers and other props
-
+- [ ] Core features
+  - [ ] Navigation (NavigationExperimental)
+  - [ ] Tasks (HTTP calls, storage)
+  - [ ] UIExplorer / Component examples
 
 ## License
 
