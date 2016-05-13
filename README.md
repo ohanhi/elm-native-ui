@@ -46,13 +46,17 @@ Once that works, clone this repository and the [modified core](https://github.co
   -- MyAppName
 ```
 
-Go ahead and copy the files from the [`examples`](examples) in your React Native app directory now and try to compile the Elm code with
+Go ahead and copy the files from the [`examples`](examples) in your React Native app directory now.
+
+Now try to compile the Elm code with
 
 ```bash
 $ npm run compile
 ```
 
-This will create the `elm-package.json` and `elm-stuff` for you, even though it won't compile yet. (Also, edit the `index.*.js` files' last lines in case your React Native app is not called 'MyAppName' at this point.)
+This will create the `elm-package.json` and `elm-stuff` for you, even though it won't compile yet.
+
+Edit the `index.*.js` files' last lines in case your React Native app is not called 'MyAppName' at this point. You may also need to rename the project in the `package.json` file.
 
 We will then use [elm_self_publish](https://github.com/NoRedInk/elm-ops-tooling#elm_self_publish) to publish the Elm packages into our project.
 
