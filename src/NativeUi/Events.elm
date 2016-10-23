@@ -1,4 +1,4 @@
-module NativeUi.Handlers exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange)
+module NativeUi.Events exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange)
 
 {-| elm-native-ui Handlers
 
@@ -7,6 +7,12 @@ module NativeUi.Handlers exposing (onLayout, onPress, onLongPress, onRegionChang
 
 import Json.Decode as Decode exposing (Value, Decoder)
 import NativeUi exposing (Property, on)
+
+
+constantMsgEvent : String -> msg -> Property msg
+constantMsgEvent name msg =
+    on name (Decode.succeed msg)
+
 
 {-| -}
 onLayout : msg -> Property msg

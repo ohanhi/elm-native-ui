@@ -1,8 +1,8 @@
-module NativeUi.Properties exposing (ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, defaultSource, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, size, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning)
+module NativeUi.Properties exposing (ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, defaultSource, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning)
 
 {-| elm-native-ui Properties
 
-@docs ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, defaultSource, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, size, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning
+@docs ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, defaultSource, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning
 -}
 
 import Json.Encode
@@ -89,14 +89,14 @@ minimumFontScale val =
 
 
 {-| -}
-source : String -> Property
+source : String -> Property msg
 source uri =
     property "source" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
 
 
 
 {-| -}
-defaultSource : String -> Property
+defaultSource : String -> Property msg
 defaultSource uri =
     property "defaultSource" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
 
@@ -242,30 +242,6 @@ refreshing val =
 title : String -> Property msg
 title val =
     property "title" (Json.Encode.string val)
-
-
-{-| -}
-type RefreshControlSize
-    = RefreshControlSizeRefreshLayoutConsts.SIZE.DEFAULT
-    | RefreshControlSizeRefreshLayoutConsts.SIZE.LARGE
-
-
-{-| -}
-size : RefreshControlSize -> Property msg
-size val =
-    let
-        stringValue =
-            case val of
-                RefreshControlSizeRefreshLayoutConsts.SIZE.DEFAULT ->
-                    "RefreshLayoutConsts.SIZE.DEFAULT"
-
-                RefreshControlSizeRefreshLayoutConsts.SIZE.LARGE ->
-                    "RefreshLayoutConsts.SIZE.LARGE"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "size" jsonValue
 
 
 {-| -}

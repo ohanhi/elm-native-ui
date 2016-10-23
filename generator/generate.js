@@ -152,13 +152,18 @@ function generateElm(moduleJson) {
         if (allowedPropTypes.indexOf(propType) !== -1) {
           if (propType === "enum") {
             let values = module.props[propName].type.value;
-            if (_.isArray(values)) { // Ignore non-Array enums for now
+            let validValues = _.some(values, function(x) {
+              return x.value.indexOf('.') === -1; // ignore enum type with a dot in its value
+            });
+            if (_.isArray(values) && validValues) { // Ignore non-Array enums for now
               if (!properties[propName]) {
-                properties[propName] = elmTransformer.enumProperty(
-                  propName,
-                  moduleName,
-                  enumValues(module.props[propName].type.value)
-                );
+                if(propName !== 'refreshControlSize') {
+                  properties[propName] = elmTransformer.enumProperty(
+                      propName,
+                      moduleName,
+                      enumValues(module.props[propName].type.value)
+                  );
+                }
               }
             }
           } else if (propType === "func") {
