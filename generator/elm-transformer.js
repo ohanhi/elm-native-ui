@@ -41,11 +41,10 @@ class ElmTransformer {
     }
     var unionTypeValues = values.map(function(value) {
       return unionTypeValue(value);
-    }).join("\n  | ");
-    var valueFuncName = decapitalize(moduleName) + capitalize(propName) + "Value";
+    }).join("\n    | ");
     var valueToStringCaseBody = values.map(function(value) {
-      return unionTypeValue(value) + " -> " + '"' + value + '"';
-    }).join("\n      ");
+      return "        " + unionTypeValue(value) + " ->\n" + '                    "' + value + '"\n';
+    }).join("\n        ");
 
     return ejs.render(this.enumPropertyTemplate, {
       propName: propName,

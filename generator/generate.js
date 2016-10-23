@@ -21,7 +21,7 @@ const rnModuleFiles = [
   // "DrawerAndroid/DrawerLayoutAndroid.android.js",
   "Text/Text.js",
   "Image/Image.ios.js",
-  "Components/ActivityIndicatorIOS/ActivityIndicatorIOS.ios.js",
+  "Components/ActivityIndicator/ActivityIndicatorIOS.ios.js",
   "Components/MapView/MapView.js",
   "Components/Picker/Picker.js",
   "Components/ProgressBarAndroid/ProgressBarAndroid.android.js",
@@ -35,7 +35,6 @@ const rnModuleFiles = [
   "Components/SwitchAndroid/SwitchAndroid.android.js",
   "Components/SwitchIOS/SwitchIOS.ios.js",
   "Components/TabBarIOS/TabBarIOS.ios.js",
-  "Components/ActivityIndicatorIOS/ActivityIndicatorIOS.ios.js",
   "Components/TextInput/TextInput.js",
   "Components/ToolbarAndroid/ToolbarAndroid.android.js",
   "Components/View/View.js"
