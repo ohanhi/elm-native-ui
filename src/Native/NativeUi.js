@@ -178,58 +178,55 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
 
   // PROGRAM
 
-  function renderer(view) {
+  function makeComponent(impl) {
     var noValue = {};
-    var updateCallback = function () {};
-    var eventNode = { tagger: function() {}, parent: undefined };
 
-    var RendererComponent = React.createClass({
+    return React.createClass({
       getInitialState() {
         return { model: noValue };
       },
-      componentWillMount() {
+
+      componentDidMount() {
         var self = this;
-        updateCallback = function(model) {
-          self.render = function () {
-            var rn = treeToReactNative(view(this.state.model), eventNode);
-            return rn;
+        this.eventNode = { tagger: function() {}, parent: undefined };
+
+        function renderer(onMessage, initialModel) {
+          self.eventNode.tagger = onMessage;
+          self.updateModel(initialModel);
+          return function (model) {
+            self.updateModel(model);
           };
-          self.updateModel(model);
-          updateCallback = self.updateModel;
+        }
+
+        this._app = _elm_lang$core$Native_Platform.initialize(
+          impl.init,
+          impl.update,
+          impl.subscriptions,
+          renderer
+        );
+
+        if (typeof this.onAppReady === 'function') {
+          this.onAppReady(this._app);
         }
       },
+
       updateModel(model) {
         this.setState({ model: model });
       },
+
       render() {
-        return null;
+        return this.state.model !== noValue ?
+          treeToReactNative(impl.view(this.state.model), this.eventNode) :
+          null;
       }
     });
-
-    return {
-      renderer: function(onMessage, initialModel) {
-        eventNode.tagger = onMessage;
-        updateCallback(initialModel);
-        return function (model) {
-          updateCallback(model);
-        }
-      },
-      Component: RendererComponent
-    };
   }
 
   function program(impl) {
     return function(flagDecoder) {
       return function(object, moduleName, debugMetadata) {
-        object.start = function start(appName) {
-          var stuff = renderer(impl.view);
-          ReactNative.AppRegistry.registerComponent(appName, function () { return stuff.Component });
-          return _elm_lang$core$Native_Platform.initialize(
-            impl.init,
-            impl.update,
-            impl.subscriptions,
-            stuff.renderer
-          );
+        object.start = function start() {
+          return makeComponent(impl);
         };
       };
     };

@@ -1,2 +1,5 @@
+const { AppRegistry } = require('react-native');
 const Elm = require('./elm');
-Elm.Main.start('Counter');
+const component = Elm.Main.start();
+
+AppRegistry.registerComponent('Counter', () => component);
