@@ -11,6 +11,7 @@ class ElmTransformer {
     this.propertyTemplate = fs.readFileSync("templates/property.ejs", 'utf8');
     this.enumPropertyTemplate = fs.readFileSync("templates/enum-property.ejs", 'utf8');
     this.funcPropertyTemplate = fs.readFileSync("templates/func-property.ejs", 'utf8');
+    this.funcConstantPropertyTemplate = fs.readFileSync("templates/func-constant-property.ejs", 'utf8');
     this.elementTemplate = fs.readFileSync("templates/element.ejs", 'utf8');
     this.uriPropertyTemplate = fs.readFileSync("templates/uri-property.ejs", 'utf8');
   }
@@ -56,21 +57,20 @@ class ElmTransformer {
 
   funcProperty(funcName, args) {
     if (args) {
-      var funcDef = "(" + capitalize(args.type) + "-> a)";
-      var funcParamNames = args.type + "ToAction";
-      var decoder = "Json.Decode." + args.type + " (\\" + args.name +" -> Signal.message address (" + funcParamNames + " " + args.name + "))";
+      var decoder = "(Decode.map tagger Decode." + args.type + ")";
+
+      return ejs.render(this.funcPropertyTemplate, {
+        funcName: funcName,
+        handlerName: funcName.replace("on", ""),
+        decoder: decoder
+      });
     } else {
-      var funcDef = "a";
-      var funcParamNames = "action";
-      var decoder = "Json.Decode.value (\\_ -> Signal.message address action)";
+      return ejs.render(this.funcConstantPropertyTemplate, {
+        funcName: funcName,
+        handlerName: funcName.replace("on", "")
+      });
     }
-    return ejs.render(this.funcPropertyTemplate, {
-      funcName: funcName,
-      handlerName: funcName.replace("on", ""),
-      funcDef: funcDef,
-      funcParamNames: funcParamNames,
-      decoder: decoder
-    });
+
   }
 }
 

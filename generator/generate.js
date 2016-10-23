@@ -137,7 +137,7 @@ function rnModuleName(fileName) {
 
 function generateElm(moduleJson) {
   var elements = {};
-  var handlers = {};
+  var events = {};
   var properties = {};
 
   _(moduleJson).each(function(module, moduleName) {
@@ -171,8 +171,8 @@ function generateElm(moduleJson) {
                 type: exceptions[moduleName][propName].paramType
               }
             }
-            if (!handlers[funcName]) {
-              handlers[funcName] = elmTransformer.funcProperty(
+            if (!events[funcName]) {
+              events[funcName] = elmTransformer.funcProperty(
                 funcName,
                 funcParams
               );
@@ -204,7 +204,7 @@ function generateElm(moduleJson) {
     });
   });
   generateElmModuleFile("Properties.elm", "properties-module.ejs", properties);
-  generateElmModuleFile("Handlers.elm", "handlers-module.ejs", handlers);
+  generateElmModuleFile("Events.elm", "events-module.ejs", events);
   generateElmModuleFile("Elements.elm", "elements-module.ejs", elements);
 }
 
@@ -255,7 +255,7 @@ function generateRNModuleSpec(moduleJson) {
   if (Object.keys(rnModulesJson).length > 0) {
     rimraf.sync(elmModulesDir + "Elements.elm");
     rimraf.sync(elmModulesDir + "Properties.elm");
-    rimraf.sync(elmModulesDir + "Handlers.elm");
+    rimraf.sync(elmModulesDir + "Events.elm");
     rimraf.sync(elmModulesDir + "rn-modules.json");
     generateElm(rnModulesJson);
     generateRNModuleSpec(rnModulesJson);
