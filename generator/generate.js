@@ -157,13 +157,11 @@ function generateElm(moduleJson) {
             });
             if (_.isArray(values) && validValues) { // Ignore non-Array enums for now
               if (!properties[propName]) {
-                if(propName !== 'refreshControlSize') {
-                  properties[propName] = elmTransformer.enumProperty(
-                      propName,
-                      moduleName,
-                      enumValues(module.props[propName].type.value)
-                  );
-                }
+                properties[propName] = elmTransformer.enumProperty(
+                    propName,
+                    moduleName,
+                    enumValues(module.props[propName].type.value)
+                );
               }
             }
           } else if (propType === "func") {
