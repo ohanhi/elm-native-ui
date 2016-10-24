@@ -1,100 +1,267 @@
-Elm.Native.NativeUi = {};
-Elm.Native.NativeUi.make = function(localRuntime) {
-    localRuntime.Native = localRuntime.Native || {};
-    localRuntime.Native.NativeUi = localRuntime.Native.NativeUi || {};
-    if (localRuntime.Native.NativeUi.values) {
-        return localRuntime.Native.NativeUi.values;
-    }
+var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
 
-    var List = Elm.Native.List.make(localRuntime);
-    var Json = Elm.Native.Json.make(localRuntime);
-    var Signal = Elm.Native.Signal.make(localRuntime);
-    var React = require('react-native');
+  var ReactNative = require('react-native');
+  var React = require('react');
 
-    function nativeEventHandler(decoder, createMessage) {
-        function eventHandler(event) {
-            var value = A2(Json.runDecoderValue, decoder, event);
-            if (value.ctor === 'Ok') {
-                Signal.sendMessage(createMessage(value._0));
-            }
-        }
-        return eventHandler;
-    }
+  // PROPS
 
-    function vtreeToReactElement(vtree) {
-      switch (vtree.ctor) {
-        case 'VString':
-        {
-          return vtree._0;
-        }
-        case 'VNode':
-        {
-          var tagName = vtree._0;
-          var propertyList = vtree._1;
-          var childNodes = vtree._2;
-
-          var reactClass = React[tagName];
-          var props = propertyListToObject(propertyList);
-          var children = List.toArray(childNodes).map(vtreeToReactElement);
-
-          var args = [reactClass, props].concat(children);
-          return React.createElement.apply(null, args);
-        }
-        default:
-          throw new Error("I don't know how to render a VTree of type '" + vtree.ctor + "'\n" +
-            "If you've recently added a new type of VTree, you must add a new case to\n" +
-            "the switch statement in Native.NativeUi.vtreeToReactElement");
-      }
-    }
-
-    function propertyToObject(property) {
-      if (property.ctor !== 'JsonProperty' &&
-          property.ctor !== 'NativeProperty') {
-        throw new Error("I don't know how to handle a Property of type '" + property.ctor + "'\n" +
-          "If you've recently added a new type of Property, you must edit the\n" +
-          "function Native.NativeUi.propertyToObject");
-      }
-
-      return {
-        key: property._0,
-        value: property._1,
-      };
-    }
-
-    function propertyListToObject(list)
-  	{
-  		var object = {};
-  		while (list.ctor !== '[]')
-  		{
-  			var entry = propertyToObject(list._0);
-  			object[entry.key] = entry.value;
-  			list = list._1;
-  		}
-  		return object;
-  	}
-
-    function render(vtree) {
-      return vtreeToReactElement(vtree);
-    }
-
-    function setReactVTree(reactElement, vtree) {
-			var newState = Object.assign({},
-				reactElement.state,
-				{_elmVTree: vtreeToReactElement(vtree)}
-			);
-
-			reactElement.setState(newState);
-		}
-
-    function updateAndReplace(containerElement, oldVTree, newVTree) {
-      setReactVTree(containerElement, newVTree);
-    }
-
-
-    localRuntime.Native.NativeUi.values = {
-        render: render,
-        updateAndReplace: updateAndReplace,
-        nativeEventHandler: F2(nativeEventHandler),
+  function on(eventName, decoder) {
+    return {
+      type: 'event',
+      eventName: eventName,
+      decoder: decoder
     };
-    return localRuntime.Native.NativeUi.values;
-};
+  }
+
+  function property(propName, value) {
+    return {
+      type: 'prop',
+      propName: propName,
+      value: value
+    };
+  }
+
+  function style(attrs) {
+    return {
+      type: 'style',
+      sheet: attrs
+    };
+  }
+
+  // ELEMENTS
+
+  function organizeFacts(facts) {
+    var head = facts;
+    var output = [];
+    while (head.ctor !== '[]') {
+      output.push(head._0);
+      head = head._1;
+    }
+    return output;
+  }
+
+  function organizeChildren(children) {
+    var head = children;
+    var output = [];
+    while(head.ctor !== '[]') {
+      output.push(head._0);
+      head = head._1;
+    }
+    return output;
+  }
+
+  function string(text) {
+    return {
+      type: 'string',
+      string: text
+    };
+  }
+
+  function node(tagName) {
+    return F2(function(factList, childList) {
+      return {
+        type: 'node',
+        tagName: tagName,
+        facts: organizeFacts(factList),
+        children: organizeChildren(childList)
+      };
+    });
+  }
+
+  function voidNode(tagName) {
+    return function (factList) {
+      return {
+        type: 'node',
+        tagName: tagName,
+        facts: organizeFacts(factList),
+        children: []
+      };
+    };
+  }
+
+  function map(tagger, node) {
+    return {
+      type: 'tagger',
+      tagger: tagger,
+      node: node
+    };
+  }
+
+  // RENDER
+
+  function makeEventHandler(eventNode, decoder) {
+    function eventHandler(event) {
+      var decoder = eventHandler.decoder;
+      var value = A2(_elm_lang$core$Native_Json.run, decoder, event);
+
+      if (value.ctor !== 'Ok') {
+        return;
+      }
+
+      var message = value._0;
+      var currentEventNode = eventNode;
+      while (currentEventNode) {
+        var tagger = currentEventNode.tagger;
+
+        if (typeof tagger === 'function') {
+          message = tagger(message);
+        } else {
+          for (var i = tagger.length; i--; ) {
+            message = tagger[i](message);
+          }
+        }
+
+        currentEventNode = currentEventNode.parent;
+      }
+    }
+
+    eventHandler.decoder = decoder;
+
+    return eventHandler;
+  }
+
+
+  function treeToReactNative(node, eventNode) {
+    switch (node.type) {
+      case 'string':
+        return node.string;
+
+      case 'tagger':
+        var subNode = node.node;
+        var tagger = node.tagger;
+
+        while (subNode.type === 'tagger') {
+          typeof tagger !== 'object' ?
+            tagger = [tagger, subNode.tagger] :
+            tagger.push(subNode.tagger);
+
+          subNode = subNode.node;
+        }
+
+        var subEventRoot = { tagger: tagger, parent: eventNode };
+        return treeToReactNative(subNode, subEventRoot);
+
+      case 'node':
+        var children = [];
+        for (var i = 0; i < node.children.length; i++) {
+          children.push(treeToReactNative(node.children[i], eventNode));
+        }
+
+        var finalProps = {};
+
+        for (var i = 0; i < node.facts.length; i++) {
+          var fact = node.facts[i];
+          switch (fact.type) {
+            case 'prop':
+              finalProps[fact.propName] = fact.value;
+              break;
+
+            case 'event':
+              finalProps[fact.eventName] = makeEventHandler(eventNode, fact.decoder);
+              break;
+
+            case 'style':
+              finalProps.style = fact.sheet;
+              break;
+          }
+        }
+
+        if (children.length === 1) {
+          finalProps.children = children[0];
+        } else if (children.length) {
+          finalProps.children = children;
+        }
+
+        return React.createElement(ReactNative[node.tagName], finalProps);
+    }
+  }
+
+  // PROGRAM
+
+  function renderer(view) {
+    var noValue = {};
+    var updateCallback = function () {};
+    var eventNode = { tagger: function() {}, parent: undefined };
+
+    var RendererComponent = React.createClass({
+      getInitialState() {
+        return { model: noValue };
+      },
+      componentWillMount() {
+        var self = this;
+        updateCallback = function(model) {
+          self.render = function () {
+            var rn = treeToReactNative(view(this.state.model), eventNode);
+            return rn;
+          };
+          self.updateModel(model);
+          updateCallback = self.updateModel;
+        }
+      },
+      updateModel(model) {
+        this.setState({ model: model });
+      },
+      render() {
+        return null;
+      }
+    });
+
+    return {
+      renderer: function(onMessage, initialModel) {
+        eventNode.tagger = onMessage;
+        updateCallback(initialModel);
+        return function (model) {
+          updateCallback(model);
+        }
+      },
+      Component: RendererComponent
+    };
+  }
+
+  function program(impl) {
+    return function(flagDecoder) {
+      return function(object, moduleName, debugMetadata) {
+        object.start = function start(appName) {
+          var stuff = renderer(impl.view);
+          ReactNative.AppRegistry.registerComponent(appName, function () { return stuff.Component });
+          return _elm_lang$core$Native_Platform.initialize(
+            impl.init,
+            impl.update,
+            impl.subscriptions,
+            stuff.renderer
+          );
+        };
+      };
+    };
+  };
+
+  function identity(value) {
+    return value;
+  }
+
+  function parseDate(value) {
+    if (value instanceof Date) {
+      return _elm_lang$core$Native_Json.succeed(value);
+    } else {
+      return _elm_lang$core$Native_Json.fail('Expected a Date, but did not find one');
+    }
+  }
+
+  function toIsoString(date) {
+    return date.toISOString();
+  }
+
+  return {
+    program: program,
+    node: node,
+    voidNode: voidNode,
+    string: string,
+    map: F2(map),
+    on: F2(on),
+    style: style,
+    property: F2(property),
+    encodeDate: identity,
+    parseDate: parseDate,
+    toIsoString: toIsoString
+  };
+}());

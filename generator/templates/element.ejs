@@ -1,3 +1,4 @@
-<%- elementFuncName %> : List Property -> List NativeUi -> NativeUi
+{-| -}
+<%- elementFuncName %> : List (Property msg) -> List (Node msg) -> Node msg
 <%- elementFuncName %> =
-  node "<%- elementName %>"
+    node "<%- elementName %>"
