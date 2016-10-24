@@ -1,3 +1,4 @@
-<%- propName %> : <%- propType.type %> -> Property
+{-| -}
+<%- propName %> : <%- propType.type %> -> Property msg
 <%- propName %> val =
-  property "<%- propName %>" (Json.Encode.<%- propType.encoder %> val)
+    property "<%- propName %>" (Json.Encode.<%- propType.encoder %> val)

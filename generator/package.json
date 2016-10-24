@@ -8,9 +8,9 @@
   "dependencies": {
     "ejs": "^2.4.1",
     "lodash": "^4.6.1",
-    "react": "^0.14.7",
-    "react-docgen": "^2.7.0",
-    "react-native": "^0.22.2",
+    "react": "^15.3.2",
+    "react-docgen": "^2.12.1",
+    "react-native": "^0.35.0",
     "rimraf": "^2.5.2",
     "underscore.string": "^3.3.4"
   }
