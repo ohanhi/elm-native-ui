@@ -5,10 +5,19 @@
 Experimental support for writing native iOS and Android applications in the beautiful functional [Elm language](http://elm-lang.org/).
 This project builds on Facebook's [React Native](https://facebook.github.io/react-native/), using it as the JavaScript environment for Elm.
 
+## Frequently Asked Questions
 
-## Is This Production Ready?
+### Is This Production Ready?
 
-No.
+No. This is all very experimental and work in progress. 
+
+### Why React Native?
+
+Mobile applications are expected to look and feel at home on the device and the OS it is running. This goal cannot really be achieved with a WebView-based solution (such as Cordova). React Native applications use the same pieces of UI as an app built with Objective-C or Java, choosing the platform-specific native variant of the UI feature for you.
+
+### Will it always be React Native?
+
+In the long term, not necessarily. The ultimate goal would be for Elm Native UI to be a standalone project, complete with the mobile platform groundwork that has been put into React Native already. It has not been fully assessed how much work this would in reality entail.
 
 
 ## Get it running
