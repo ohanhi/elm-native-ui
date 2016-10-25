@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "compile": "elm make ./src/Main.elm --output elm.js",
+    "build": "npm run compile --silent",
     "test": "jest"
   },
   "dependencies": {
