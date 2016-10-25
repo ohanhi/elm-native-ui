@@ -1,4 +1,4 @@
-module NativeUi exposing (Node, node, string, style, on, Property, property, map, program)
+module NativeUi exposing (Node, node, string, style, on, Property, property, map, program, componentProperty)
 
 {-| Render your application as a React Native app.
 
@@ -44,9 +44,13 @@ string =
 
 {-| -}
 property : String -> Value -> Property msg
-property name value =
+property =
     Native.NativeUi.property
 
+
+componentProperty : String -> (a -> Node b) -> Property msg
+componentProperty =
+    Native.NativeUi.componentProperty
 
 {-| -}
 style : List Style.Style -> Property msg

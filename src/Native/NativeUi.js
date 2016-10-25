@@ -39,6 +39,13 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     };
   }
 
+  function componentProperty(propName, value) {
+    return {
+      type: 'compProp',
+      propName: propName,
+      value: value
+    };
+  }
 
   // ELEMENTS
 
@@ -140,7 +147,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   /**
    * Composes taggers created by `map`
    */
-  function renderTagger(node, eventNode) {
+  function renderTagger(node, eventNode, key) {
     var subNode = node.node;
     var tagger = node.tagger;
 
@@ -153,7 +160,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     }
 
     var subEventRoot = { tagger: tagger, parent: eventNode };
-    return renderTree(subNode, subEventRoot);
+    return renderTree(subNode, subEventRoot, key);
   }
 
   /**
@@ -161,19 +168,27 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
    * children array and props object, looks up the component by name on the
    * React Native module and calls into React.createElement.
    */
-  function renderComponent(node, eventNode) {
+  function renderComponent(node, eventNode, key) {
     var children = [];
     for (var i = 0; i < node.children.length; i++) {
-      children.push(renderTree(node.children[i], eventNode));
+      children.push(renderTree(node.children[i], eventNode, i));
     }
 
     var finalProps = {};
 
-    for (var i = 0; i < node.facts.length; i++) {
-      var fact = node.facts[i];
+    for (var j = 0; j < node.facts.length; j++) {
+      var fact = node.facts[j];
+
       switch (fact.type) {
         case 'prop':
           finalProps[fact.propName] = fact.value;
+          break;
+
+        case 'compProp':
+          const component = fact.value;
+          finalProps[fact.propName] = function(props) {
+            return renderTree(component(props), eventNode, key);
+          };
           break;
 
         case 'event':
@@ -186,28 +201,39 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
       }
     }
 
+    if(!finalProps.key) {
+      finalProps.key = 'elm-native-ui-auto-added-' + key;
+    }
+
     if (children.length === 1) {
       finalProps.children = children[0];
     } else if (children.length) {
       finalProps.children = children;
     }
 
-    return React.createElement(ReactNative[node.tagName], finalProps);
+    if (ReactNative[node.tagName]) {
+      return React.createElement(ReactNative[node.tagName], finalProps);
+    } else {
+      var customComponent = require(node.tagName);
+
+      return React.createElement(customComponent, finalProps);
+    }
   }
 
   /**
    * Renders the whole tree!
    */
-  function renderTree(node, eventNode) {
+  function renderTree(node, eventNode, key) {
     switch (node.type) {
       case 'string':
         return renderString(node);
 
       case 'tagger':
-        return renderTagger(node, eventNode);
+        return renderTagger(node, eventNode, key);
 
       case 'component':
-        return renderComponent(node, eventNode);
+        return renderComponent(node, eventNode, key);
+
     }
   }
 
@@ -307,6 +333,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     on: F2(on),
     style: style,
     property: F2(property),
+    componentProperty: F2(componentProperty),
     encodeDate: identity,
     parseDate: parseDate
   };
