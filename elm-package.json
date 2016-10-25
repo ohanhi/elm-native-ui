@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "summary": "Experimental support for writing React Native powered mobile applications",
     "repository": "https://github.com/elm-native-ui/elm-native-ui.git",
     "license": "BSD3",
@@ -8,15 +8,14 @@
     ],
     "exposed-modules": [
         "NativeUi",
-        "NativeUi.NativeApp",
         "NativeUi.Style",
         "NativeUi.Elements",
         "NativeUi.Properties",
-        "NativeUi.Handlers"
+        "NativeUi.Events"
     ],
     "native-modules": true,
     "dependencies": {
-        "elm-lang/core": "3.0.0 <= v < 4.0.0"
+        "elm-lang/core": "5.0.0 <= v < 6.0.0"
     },
-    "elm-version": "0.16.0 <= v < 0.17.0"
+    "elm-version": "0.18.0 <= v < 0.19.0"
 }

@@ -1,10 +1,5 @@
-/**
- * Sample Elm Native UI app
- * https://github.com/elm-native-ui/elm-native-ui
- * https://github.com/facebook/react-native
- */
-'use strict';
-var {AppRegistry} = require('react-native');
-var ElmAppWrapper = require('./ElmAppWrapper');
+const { AppRegistry } = require('react-native');
+const Elm = require('./elm');
+const component = Elm.Main.start();
 
-AppRegistry.registerComponent('MyAppName', ElmAppWrapper);
+AppRegistry.registerComponent('Counter', () => component);
