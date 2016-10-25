@@ -1,10 +1,11 @@
-module NativeUi.Elements (..) where
+module NativeUi.Elements exposing (<%- moduleExports %>)
 
 {-| elm-native-ui Elements
 
 @docs <%- moduleExports %>
 -}
 
-import NativeUi exposing (Property, NativeUi, node)
+import NativeUi exposing (Property, Node, node)
+
 
 <%- content %>

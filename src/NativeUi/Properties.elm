@@ -1,18 +1,55 @@
-module NativeUi.Properties exposing (..)
+module NativeUi.Properties exposing (ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, defaultSource, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning)
 
 {-| elm-native-ui Properties
 
-@docs numberOfLines, suppressHighlighting, testID, allowFontScaling, source, defaultSource, accessible, accessibilityLabel, resizeMode, animating, color, hidesWhenStopped, size, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, progress, progressViewStyle, progressTintColor, trackTintColor, refreshing, title, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, sendMomentumEvents, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, selectedIndex, tintColor, momentary, sliderValue, step, minimumValue, maximumValue, minimumTrackTintColor, maximumTrackTintColor, disabled, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, autoCapitalize, autoCorrect, autoFocus, editable, keyboardType, keyboardAppearance, returnKeyType, maxLength, enablesReturnKeyAutomatically, multiline, placeholder, placeholderTextColor, secureTextEntry, selectionColor, value, defaultValue, clearButtonMode, clearTextOnFocus, selectTextOnFocus, blurOnSubmit, underlineColorAndroid, subtitle, contentInsetStart, contentInsetEnd, rtl, accessibilityLiveRegion, importantForAccessibility, pointerEvents, renderToHardwareTextureAndroid, shouldRasterizeIOS, collapsable, needsOffscreenAlphaCompositing, ActivityIndicatorSize, ImageResizeMode, MapViewMapType, PickerMode, ProgressViewProgressViewStyle, ScrollViewIndicatorStyle, ScrollViewKeyboardDismissMode, ScrollViewSnapToAlignment, StatusBarBarStyle, StatusBarShowHideTransition, TextInputAutoCapitalize, TextInputClearButtonMode, TextInputKeyboardAppearance, TextInputKeyboardType, TextInputReturnKeyType, ViewAccessibilityLiveRegion, ViewImportantForAccessibility, ViewPointerEvents
+@docs ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, defaultSource, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning
 -}
 
 import Json.Encode
 import NativeUi exposing (Property, property)
+
+{-| -}
+type TextEllipsizeMode
+    = TextEllipsizeModeHead
+    | TextEllipsizeModeMiddle
+    | TextEllipsizeModeTail
+    | TextEllipsizeModeClip
+
+
+{-| -}
+ellipsizeMode : TextEllipsizeMode -> Property msg
+ellipsizeMode val =
+    let
+        stringValue =
+            case val of
+                TextEllipsizeModeHead ->
+                    "head"
+
+                TextEllipsizeModeMiddle ->
+                    "middle"
+
+                TextEllipsizeModeTail ->
+                    "tail"
+
+                TextEllipsizeModeClip ->
+                    "clip"
+
+        jsonValue =
+            Json.Encode.string stringValue
+    in
+        property "ellipsizeMode" jsonValue
 
 
 {-| -}
 numberOfLines : Float -> Property msg
 numberOfLines val =
     property "numberOfLines" (Json.Encode.float val)
+
+
+{-| -}
+selectable : Bool -> Property msg
+selectable val =
+    property "selectable" (Json.Encode.bool val)
 
 
 {-| -}
@@ -34,9 +71,28 @@ allowFontScaling val =
 
 
 {-| -}
+accessible : Bool -> Property msg
+accessible val =
+    property "accessible" (Json.Encode.bool val)
+
+
+{-| -}
+adjustsFontSizeToFit : Bool -> Property msg
+adjustsFontSizeToFit val =
+    property "adjustsFontSizeToFit" (Json.Encode.bool val)
+
+
+{-| -}
+minimumFontScale : Float -> Property msg
+minimumFontScale val =
+    property "minimumFontScale" (Json.Encode.float val)
+
+
+{-| -}
 source : String -> Property msg
 source uri =
     property "source" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
+
 
 
 {-| -}
@@ -44,87 +100,6 @@ defaultSource : String -> Property msg
 defaultSource uri =
     property "defaultSource" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
 
-
-{-| -}
-accessible : Bool -> Property msg
-accessible val =
-    property "accessible" (Json.Encode.bool val)
-
-
-{-| -}
-accessibilityLabel : String -> Property msg
-accessibilityLabel val =
-    property "accessibilityLabel" (Json.Encode.string val)
-
-
-{-| -}
-type ImageResizeMode
-    = ImageResizeModeCover
-    | ImageResizeModeContain
-    | ImageResizeModeStretch
-
-
-{-| -}
-resizeMode : ImageResizeMode -> Property msg
-resizeMode val =
-    let
-        stringValue =
-            case val of
-                ImageResizeModeCover ->
-                    "cover"
-
-                ImageResizeModeContain ->
-                    "contain"
-
-                ImageResizeModeStretch ->
-                    "stretch"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "resizeMode" jsonValue
-
-
-{-| -}
-animating : Bool -> Property msg
-animating val =
-    property "animating" (Json.Encode.bool val)
-
-
-{-| -}
-color : String -> Property msg
-color val =
-    property "color" (Json.Encode.string val)
-
-
-{-| -}
-hidesWhenStopped : Bool -> Property msg
-hidesWhenStopped val =
-    property "hidesWhenStopped" (Json.Encode.bool val)
-
-
-{-| -}
-type ActivityIndicatorSize
-    = ActivityIndicatorSizeSmall
-    | ActivityIndicatorSizeLarge
-
-
-{-| -}
-size : ActivityIndicatorSize -> Property msg
-size val =
-    let
-        stringValue =
-            case val of
-                ActivityIndicatorSizeSmall ->
-                    "small"
-
-                ActivityIndicatorSizeLarge ->
-                    "large"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "size" jsonValue
 
 
 {-| -}
@@ -258,48 +233,6 @@ prompt val =
 
 
 {-| -}
-progress : Float -> Property msg
-progress val =
-    property "progress" (Json.Encode.float val)
-
-
-{-| -}
-type ProgressViewProgressViewStyle
-    = ProgressViewProgressViewStyleDefault
-    | ProgressViewProgressViewStyleBar
-
-
-{-| -}
-progressViewStyle : ProgressViewProgressViewStyle -> Property msg
-progressViewStyle val =
-    let
-        stringValue =
-            case val of
-                ProgressViewProgressViewStyleDefault ->
-                    "default"
-
-                ProgressViewProgressViewStyleBar ->
-                    "bar"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "progressViewStyle" jsonValue
-
-
-{-| -}
-progressTintColor : String -> Property msg
-progressTintColor val =
-    property "progressTintColor" (Json.Encode.string val)
-
-
-{-| -}
-trackTintColor : String -> Property msg
-trackTintColor val =
-    property "trackTintColor" (Json.Encode.string val)
-
-
-{-| -}
 refreshing : Bool -> Property msg
 refreshing val =
     property "refreshing" (Json.Encode.bool val)
@@ -309,6 +242,12 @@ refreshing val =
 title : String -> Property msg
 title val =
     property "title" (Json.Encode.string val)
+
+
+{-| -}
+progressViewOffset : Float -> Property msg
+progressViewOffset val =
+    property "progressViewOffset" (Json.Encode.float val)
 
 
 {-| -}
@@ -458,12 +397,6 @@ scrollsToTop val =
 
 
 {-| -}
-sendMomentumEvents : Bool -> Property msg
-sendMomentumEvents val =
-    property "sendMomentumEvents" (Json.Encode.bool val)
-
-
-{-| -}
 showsHorizontalScrollIndicator : Bool -> Property msg
 showsHorizontalScrollIndicator val =
     property "showsHorizontalScrollIndicator" (Json.Encode.bool val)
@@ -522,63 +455,9 @@ zoomScale val =
 
 
 {-| -}
-selectedIndex : Float -> Property msg
-selectedIndex val =
-    property "selectedIndex" (Json.Encode.float val)
-
-
-{-| -}
-tintColor : String -> Property msg
-tintColor val =
-    property "tintColor" (Json.Encode.string val)
-
-
-{-| -}
-momentary : Bool -> Property msg
-momentary val =
-    property "momentary" (Json.Encode.bool val)
-
-
-{-| -}
-sliderValue : Float -> Property msg
-sliderValue val =
-    property "sliderValue" (Json.Encode.float val)
-
-
-{-| -}
-step : Float -> Property msg
-step val =
-    property "step" (Json.Encode.float val)
-
-
-{-| -}
-minimumValue : Float -> Property msg
-minimumValue val =
-    property "minimumValue" (Json.Encode.float val)
-
-
-{-| -}
-maximumValue : Float -> Property msg
-maximumValue val =
-    property "maximumValue" (Json.Encode.float val)
-
-
-{-| -}
-minimumTrackTintColor : String -> Property msg
-minimumTrackTintColor val =
-    property "minimumTrackTintColor" (Json.Encode.string val)
-
-
-{-| -}
-maximumTrackTintColor : String -> Property msg
-maximumTrackTintColor val =
-    property "maximumTrackTintColor" (Json.Encode.string val)
-
-
-{-| -}
-disabled : Bool -> Property msg
-disabled val =
-    property "disabled" (Json.Encode.bool val)
+scrollPerfTag : String -> Property msg
+scrollPerfTag val =
+    property "scrollPerfTag" (Json.Encode.string val)
 
 
 {-| -}
@@ -654,452 +533,29 @@ showHideTransition val =
 
 
 {-| -}
-type TextInputAutoCapitalize
-    = TextInputAutoCapitalizeNone
-    | TextInputAutoCapitalizeSentences
-    | TextInputAutoCapitalizeWords
-    | TextInputAutoCapitalizeCharacters
+type TabBarItemPositioning
+    = TabBarItemPositioningFill
+    | TabBarItemPositioningCenter
+    | TabBarItemPositioningAuto
 
 
 {-| -}
-autoCapitalize : TextInputAutoCapitalize -> Property msg
-autoCapitalize val =
+itemPositioning : TabBarItemPositioning -> Property msg
+itemPositioning val =
     let
         stringValue =
             case val of
-                TextInputAutoCapitalizeNone ->
-                    "none"
+                TabBarItemPositioningFill ->
+                    "fill"
 
-                TextInputAutoCapitalizeSentences ->
-                    "sentences"
+                TabBarItemPositioningCenter ->
+                    "center"
 
-                TextInputAutoCapitalizeWords ->
-                    "words"
-
-                TextInputAutoCapitalizeCharacters ->
-                    "characters"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "autoCapitalize" jsonValue
-
-
-{-| -}
-autoCorrect : Bool -> Property msg
-autoCorrect val =
-    property "autoCorrect" (Json.Encode.bool val)
-
-
-{-| -}
-autoFocus : Bool -> Property msg
-autoFocus val =
-    property "autoFocus" (Json.Encode.bool val)
-
-
-{-| -}
-editable : Bool -> Property msg
-editable val =
-    property "editable" (Json.Encode.bool val)
-
-
-{-| -}
-type TextInputKeyboardType
-    = TextInputKeyboardTypeDefault
-    | TextInputKeyboardTypeEmailAddress
-    | TextInputKeyboardTypeNumeric
-    | TextInputKeyboardTypePhonePad
-    | TextInputKeyboardTypeAsciiCapable
-    | TextInputKeyboardTypeNumbersAndPunctuation
-    | TextInputKeyboardTypeUrl
-    | TextInputKeyboardTypeNumberPad
-    | TextInputKeyboardTypeNamePhonePad
-    | TextInputKeyboardTypeDecimalPad
-    | TextInputKeyboardTypeTwitter
-    | TextInputKeyboardTypeWebSearch
-
-
-{-| -}
-keyboardType : TextInputKeyboardType -> Property msg
-keyboardType val =
-    let
-        stringValue =
-            case val of
-                TextInputKeyboardTypeDefault ->
-                    "default"
-
-                TextInputKeyboardTypeEmailAddress ->
-                    "email-address"
-
-                TextInputKeyboardTypeNumeric ->
-                    "numeric"
-
-                TextInputKeyboardTypePhonePad ->
-                    "phone-pad"
-
-                TextInputKeyboardTypeAsciiCapable ->
-                    "ascii-capable"
-
-                TextInputKeyboardTypeNumbersAndPunctuation ->
-                    "numbers-and-punctuation"
-
-                TextInputKeyboardTypeUrl ->
-                    "url"
-
-                TextInputKeyboardTypeNumberPad ->
-                    "number-pad"
-
-                TextInputKeyboardTypeNamePhonePad ->
-                    "name-phone-pad"
-
-                TextInputKeyboardTypeDecimalPad ->
-                    "decimal-pad"
-
-                TextInputKeyboardTypeTwitter ->
-                    "twitter"
-
-                TextInputKeyboardTypeWebSearch ->
-                    "web-search"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "keyboardType" jsonValue
-
-
-{-| -}
-type TextInputKeyboardAppearance
-    = TextInputKeyboardAppearanceDefault
-    | TextInputKeyboardAppearanceLight
-    | TextInputKeyboardAppearanceDark
-
-
-{-| -}
-keyboardAppearance : TextInputKeyboardAppearance -> Property msg
-keyboardAppearance val =
-    let
-        stringValue =
-            case val of
-                TextInputKeyboardAppearanceDefault ->
-                    "default"
-
-                TextInputKeyboardAppearanceLight ->
-                    "light"
-
-                TextInputKeyboardAppearanceDark ->
-                    "dark"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "keyboardAppearance" jsonValue
-
-
-{-| -}
-type TextInputReturnKeyType
-    = TextInputReturnKeyTypeDefault
-    | TextInputReturnKeyTypeGo
-    | TextInputReturnKeyTypeGoogle
-    | TextInputReturnKeyTypeJoin
-    | TextInputReturnKeyTypeNext
-    | TextInputReturnKeyTypeRoute
-    | TextInputReturnKeyTypeSearch
-    | TextInputReturnKeyTypeSend
-    | TextInputReturnKeyTypeYahoo
-    | TextInputReturnKeyTypeDone
-    | TextInputReturnKeyTypeEmergencyCall
-
-
-{-| -}
-returnKeyType : TextInputReturnKeyType -> Property msg
-returnKeyType val =
-    let
-        stringValue =
-            case val of
-                TextInputReturnKeyTypeDefault ->
-                    "default"
-
-                TextInputReturnKeyTypeGo ->
-                    "go"
-
-                TextInputReturnKeyTypeGoogle ->
-                    "google"
-
-                TextInputReturnKeyTypeJoin ->
-                    "join"
-
-                TextInputReturnKeyTypeNext ->
-                    "next"
-
-                TextInputReturnKeyTypeRoute ->
-                    "route"
-
-                TextInputReturnKeyTypeSearch ->
-                    "search"
-
-                TextInputReturnKeyTypeSend ->
-                    "send"
-
-                TextInputReturnKeyTypeYahoo ->
-                    "yahoo"
-
-                TextInputReturnKeyTypeDone ->
-                    "done"
-
-                TextInputReturnKeyTypeEmergencyCall ->
-                    "emergency-call"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "returnKeyType" jsonValue
-
-
-{-| -}
-maxLength : Float -> Property msg
-maxLength val =
-    property "maxLength" (Json.Encode.float val)
-
-
-{-| -}
-enablesReturnKeyAutomatically : Bool -> Property msg
-enablesReturnKeyAutomatically val =
-    property "enablesReturnKeyAutomatically" (Json.Encode.bool val)
-
-
-{-| -}
-multiline : Bool -> Property msg
-multiline val =
-    property "multiline" (Json.Encode.bool val)
-
-
-{-| -}
-placeholder : String -> Property msg
-placeholder val =
-    property "placeholder" (Json.Encode.string val)
-
-
-{-| -}
-placeholderTextColor : String -> Property msg
-placeholderTextColor val =
-    property "placeholderTextColor" (Json.Encode.string val)
-
-
-{-| -}
-secureTextEntry : Bool -> Property msg
-secureTextEntry val =
-    property "secureTextEntry" (Json.Encode.bool val)
-
-
-{-| -}
-selectionColor : String -> Property msg
-selectionColor val =
-    property "selectionColor" (Json.Encode.string val)
-
-
-{-| -}
-value : String -> Property msg
-value val =
-    property "value" (Json.Encode.string val)
-
-
-{-| -}
-defaultValue : String -> Property msg
-defaultValue val =
-    property "defaultValue" (Json.Encode.string val)
-
-
-{-| -}
-type TextInputClearButtonMode
-    = TextInputClearButtonModeNever
-    | TextInputClearButtonModeWhileEditing
-    | TextInputClearButtonModeUnlessEditing
-    | TextInputClearButtonModeAlways
-
-
-{-| -}
-clearButtonMode : TextInputClearButtonMode -> Property msg
-clearButtonMode val =
-    let
-        stringValue =
-            case val of
-                TextInputClearButtonModeNever ->
-                    "never"
-
-                TextInputClearButtonModeWhileEditing ->
-                    "while-editing"
-
-                TextInputClearButtonModeUnlessEditing ->
-                    "unless-editing"
-
-                TextInputClearButtonModeAlways ->
-                    "always"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "clearButtonMode" jsonValue
-
-
-{-| -}
-clearTextOnFocus : Bool -> Property msg
-clearTextOnFocus val =
-    property "clearTextOnFocus" (Json.Encode.bool val)
-
-
-{-| -}
-selectTextOnFocus : Bool -> Property msg
-selectTextOnFocus val =
-    property "selectTextOnFocus" (Json.Encode.bool val)
-
-
-{-| -}
-blurOnSubmit : Bool -> Property msg
-blurOnSubmit val =
-    property "blurOnSubmit" (Json.Encode.bool val)
-
-
-{-| -}
-underlineColorAndroid : String -> Property msg
-underlineColorAndroid val =
-    property "underlineColorAndroid" (Json.Encode.string val)
-
-
-{-| -}
-subtitle : String -> Property msg
-subtitle val =
-    property "subtitle" (Json.Encode.string val)
-
-
-{-| -}
-contentInsetStart : Float -> Property msg
-contentInsetStart val =
-    property "contentInsetStart" (Json.Encode.float val)
-
-
-{-| -}
-contentInsetEnd : Float -> Property msg
-contentInsetEnd val =
-    property "contentInsetEnd" (Json.Encode.float val)
-
-
-{-| -}
-rtl : Bool -> Property msg
-rtl val =
-    property "rtl" (Json.Encode.bool val)
-
-
-{-| -}
-type ViewAccessibilityLiveRegion
-    = ViewAccessibilityLiveRegionNone
-    | ViewAccessibilityLiveRegionPolite
-    | ViewAccessibilityLiveRegionAssertive
-
-
-{-| -}
-accessibilityLiveRegion : ViewAccessibilityLiveRegion -> Property msg
-accessibilityLiveRegion val =
-    let
-        stringValue =
-            case val of
-                ViewAccessibilityLiveRegionNone ->
-                    "none"
-
-                ViewAccessibilityLiveRegionPolite ->
-                    "polite"
-
-                ViewAccessibilityLiveRegionAssertive ->
-                    "assertive"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "accessibilityLiveRegion" jsonValue
-
-
-{-| -}
-type ViewImportantForAccessibility
-    = ViewImportantForAccessibilityAuto
-    | ViewImportantForAccessibilityYes
-    | ViewImportantForAccessibilityNo
-    | ViewImportantForAccessibilityNoHideDescendants
-
-
-{-| -}
-importantForAccessibility : ViewImportantForAccessibility -> Property msg
-importantForAccessibility val =
-    let
-        stringValue =
-            case val of
-                ViewImportantForAccessibilityAuto ->
-                    "auto"
-
-                ViewImportantForAccessibilityYes ->
-                    "yes"
-
-                ViewImportantForAccessibilityNo ->
-                    "no"
-
-                ViewImportantForAccessibilityNoHideDescendants ->
-                    "no-hide-descendants"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "importantForAccessibility" jsonValue
-
-
-{-| -}
-type ViewPointerEvents
-    = ViewPointerEventsBoxNone
-    | ViewPointerEventsNone
-    | ViewPointerEventsBoxOnly
-    | ViewPointerEventsAuto
-
-
-{-| -}
-pointerEvents : ViewPointerEvents -> Property msg
-pointerEvents val =
-    let
-        stringValue =
-            case val of
-                ViewPointerEventsBoxNone ->
-                    "box-none"
-
-                ViewPointerEventsNone ->
-                    "none"
-
-                ViewPointerEventsBoxOnly ->
-                    "box-only"
-
-                ViewPointerEventsAuto ->
+                TabBarItemPositioningAuto ->
                     "auto"
 
         jsonValue =
             Json.Encode.string stringValue
     in
-        property "pointerEvents" jsonValue
+        property "itemPositioning" jsonValue
 
-
-{-| -}
-renderToHardwareTextureAndroid : Bool -> Property msg
-renderToHardwareTextureAndroid val =
-    property "renderToHardwareTextureAndroid" (Json.Encode.bool val)
-
-
-{-| -}
-shouldRasterizeIOS : Bool -> Property msg
-shouldRasterizeIOS val =
-    property "shouldRasterizeIOS" (Json.Encode.bool val)
-
-
-{-| -}
-collapsable : Bool -> Property msg
-collapsable val =
-    property "collapsable" (Json.Encode.bool val)
-
-
-{-| -}
-needsOffscreenAlphaCompositing : Bool -> Property msg
-needsOffscreenAlphaCompositing val =
-    property "needsOffscreenAlphaCompositing" (Json.Encode.bool val)
