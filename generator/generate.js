@@ -37,7 +37,9 @@ const rnModuleFiles = [
   "Components/TabBarIOS/TabBarIOS.ios.js",
   "Components/TextInput/TextInput.js",
   "Components/ToolbarAndroid/ToolbarAndroid.android.js",
-  "Components/View/View.js"
+  "Components/Touchable/TouchableHighlight.js",
+  "Components/View/View.js",
+  "CustomComponents/NavigationExperimental/NavigationCardStack.js"
 ];
 const exceptions = {
   "Slider": {

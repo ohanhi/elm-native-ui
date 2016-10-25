@@ -61,13 +61,13 @@ class ElmTransformer {
 
       return ejs.render(this.funcPropertyTemplate, {
         funcName: funcName,
-        handlerName: funcName.replace("on", ""),
+        handlerName: funcName.replace(/^on/, ""),
         decoder: decoder
       });
     } else {
       return ejs.render(this.funcConstantPropertyTemplate, {
         funcName: funcName,
-        handlerName: funcName.replace("on", "")
+        handlerName: funcName.replace(/^on/, "")
       });
     }
 
