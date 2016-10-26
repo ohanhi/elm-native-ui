@@ -21,7 +21,7 @@ const rnModuleFiles = [
   // "DrawerAndroid/DrawerLayoutAndroid.android.js",
   "Text/Text.js",
   "Image/Image.ios.js",
-  "Components/ActivityIndicatorIOS/ActivityIndicatorIOS.ios.js",
+  "Components/ActivityIndicator/ActivityIndicatorIOS.ios.js",
   "Components/MapView/MapView.js",
   "Components/Picker/Picker.js",
   "Components/ProgressBarAndroid/ProgressBarAndroid.android.js",
@@ -35,7 +35,6 @@ const rnModuleFiles = [
   "Components/SwitchAndroid/SwitchAndroid.android.js",
   "Components/SwitchIOS/SwitchIOS.ios.js",
   "Components/TabBarIOS/TabBarIOS.ios.js",
-  "Components/ActivityIndicatorIOS/ActivityIndicatorIOS.ios.js",
   "Components/TextInput/TextInput.js",
   "Components/ToolbarAndroid/ToolbarAndroid.android.js",
   "Components/View/View.js"
@@ -138,7 +137,7 @@ function rnModuleName(fileName) {
 
 function generateElm(moduleJson) {
   var elements = {};
-  var handlers = {};
+  var events = {};
   var properties = {};
 
   _(moduleJson).each(function(module, moduleName) {
@@ -153,12 +152,15 @@ function generateElm(moduleJson) {
         if (allowedPropTypes.indexOf(propType) !== -1) {
           if (propType === "enum") {
             let values = module.props[propName].type.value;
-            if (_.isArray(values)) { // Ignore non-Array enums for now
+            let validValues = _.some(values, function(x) {
+              return x.value.indexOf('.') === -1; // ignore enum type with a dot in its value
+            });
+            if (_.isArray(values) && validValues) { // Ignore non-Array enums for now
               if (!properties[propName]) {
                 properties[propName] = elmTransformer.enumProperty(
-                  propName,
-                  moduleName,
-                  enumValues(module.props[propName].type.value)
+                    propName,
+                    moduleName,
+                    enumValues(module.props[propName].type.value)
                 );
               }
             }
@@ -172,8 +174,8 @@ function generateElm(moduleJson) {
                 type: exceptions[moduleName][propName].paramType
               }
             }
-            if (!handlers[funcName]) {
-              handlers[funcName] = elmTransformer.funcProperty(
+            if (!events[funcName]) {
+              events[funcName] = elmTransformer.funcProperty(
                 funcName,
                 funcParams
               );
@@ -205,7 +207,7 @@ function generateElm(moduleJson) {
     });
   });
   generateElmModuleFile("Properties.elm", "properties-module.ejs", properties);
-  generateElmModuleFile("Handlers.elm", "handlers-module.ejs", handlers);
+  generateElmModuleFile("Events.elm", "events-module.ejs", events);
   generateElmModuleFile("Elements.elm", "elements-module.ejs", elements);
 }
 
@@ -256,7 +258,7 @@ function generateRNModuleSpec(moduleJson) {
   if (Object.keys(rnModulesJson).length > 0) {
     rimraf.sync(elmModulesDir + "Elements.elm");
     rimraf.sync(elmModulesDir + "Properties.elm");
-    rimraf.sync(elmModulesDir + "Handlers.elm");
+    rimraf.sync(elmModulesDir + "Events.elm");
     rimraf.sync(elmModulesDir + "rn-modules.json");
     generateElm(rnModulesJson);
     generateRNModuleSpec(rnModulesJson);
