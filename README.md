@@ -5,10 +5,19 @@
 Experimental support for writing native iOS and Android applications in the beautiful functional [Elm language](http://elm-lang.org/).
 This project builds on Facebook's [React Native](https://facebook.github.io/react-native/), using it as the JavaScript environment for Elm.
 
+## Frequently Asked Questions
 
-## Is This Production Ready?
+### Is This Production Ready?
 
-No.
+No. This is all very experimental and work in progress. 
+
+### Why React Native?
+
+Mobile applications are expected to look and feel at home on the device and the OS it is running. This goal cannot really be achieved with a WebView-based solution (such as Cordova). React Native applications use the same pieces of UI as an app built with Objective-C or Java, choosing the platform-specific native variant of the UI feature for you.
+
+### Will it always be React Native?
+
+In the long term, not necessarily. The ultimate goal would be for Elm Native UI to be a standalone project, complete with the mobile platform groundwork that has been put into React Native already. It has not been fully assessed how much work this would in reality entail.
 
 
 ## Get it running
@@ -16,14 +25,7 @@ No.
 
 ### Caution: Experimental software!
 
-The newest version of Elm Native UI depends on
-
-- [modified Elm compiler](https://github.com/elm-native-ui/elm-compiler/) &mdash; **Must be on your `PATH`** before the standard `elm-make`. There is a [pre-built `elm-make`](https://github.com/elm-native-ui/elm-compiler/blob/master/built/elm-make?raw=true) for OS X 64-bit. For other platforms you will need to build the compiler from source yourself for now.
-
-- [modified core](https://github.com/elm-native-ui/core/) &mdash; Must replace the `elm-lang/core` package in your project.
-
-The modified compiler will allow our `NativeUi` type to pass through `main`, and the modified core enables rendering for it.
-
+The newest version of Elm Native UI is using an alpha release of Elm, but it no longer depends on a modified compiler and core.
 
 ### Actually getting it running
 
@@ -35,15 +37,12 @@ $ react-native init MyAppName
 
 and try running it on a real or virtual device.
 
-Once that works, clone this repository and the [modified core](https://github.com/elm-native-ui/core/) in the same directory where you ran `react-native init` in. You should have a directory structure similar to this:
+Once that works, clone this repository in the same directory where you ran `react-native init` in. You should have a directory structure similar to this:
 
 ```
---|
-  -- core
-  |
-  -- elm-native-ui
-  |
-  -- MyAppName
+│
+├── elm-native-ui
+└── MyAppName
 ```
 
 Go ahead and copy the files from the [`examples`](examples) in your React Native app directory now.
@@ -58,13 +57,12 @@ This will create the `elm-package.json` and `elm-stuff` for you, even though it 
 
 Edit the `index.*.js` files' last lines in case your React Native app is not called 'MyAppName' at this point. You may also need to rename the project in the `package.json` file.
 
-We will then use [elm_self_publish](https://github.com/NoRedInk/elm-ops-tooling#elm_self_publish) to publish the Elm packages into our project.
+We will then use [elm_self_publish](https://github.com/NoRedInk/elm-ops-tooling#elm_self_publish) to publish the Elm Native UI package into our project.
 
-Assuming we're in the parent directory where `core` and `elm-native-ui` reside, and that `elm_self_publish.py` is in that same directory:
+Assuming we're in the parent directory where `elm-native-ui` reside:
 
 ```bash
-$ python elm_self_publish.py ./core ./MyAppName
-$ python elm_self_publish.py ./elm-native-ui ./MyAppName
+$ python path/to/elm_self_publish.py ./elm-native-ui ./MyAppName
 ```
 
 Now we are ready to rock! 🤘🎸
