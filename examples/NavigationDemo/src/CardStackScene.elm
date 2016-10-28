@@ -1,13 +1,13 @@
-module Scene exposing (view)
+module CardStackScene exposing (view)
 
-import NativeApi.NavigationStateUtil exposing (NavigationScene)
-import NativeUi exposing (Node, Property, node)
+import NativeUi.NavigationExperimental exposing (SceneRendererProps)
+import NativeUi exposing (Node)
 import NativeUi.Elements as Elements
 import Navigation exposing (NavigationChangeMsg(Exit, None, Pop, Push))
 import NavigationExampleRow as Row
 
 
-view : { scene: NavigationScene } -> Node NavigationChangeMsg
+view : SceneRendererProps -> Node NavigationChangeMsg
 view props =
     Elements.scrollView
         []

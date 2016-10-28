@@ -57,11 +57,13 @@ init =
 
 type Msg
     = CardStack CS.Msg
+    | CardStackNoGesture CS.Msg
 
 
 type Current
     = None
     | ExampleCardStack
+    | ExampleCardStackNoGesture
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -71,6 +73,13 @@ update msg model =
             let
                 ( current, cardStack ) =
                     updateCardStack cardStackMsg model.cardStack ExampleCardStack
+            in
+                ( { model | current = current, cardStack = cardStack }, Cmd.none )
+
+        CardStackNoGesture cardStackMsg ->
+            let
+                ( current, cardStack ) =
+                    updateCardStack cardStackMsg model.cardStackNoGesture ExampleCardStackNoGesture
             in
                 ( { model | current = current, cardStack = cardStack }, Cmd.none )
 
@@ -100,6 +109,9 @@ view model =
         ExampleCardStack ->
             viewCardStack model.cardStack
 
+        ExampleCardStackNoGesture ->
+            viewCardStack model.cardStackNoGesture
+
 
 viewNone : Node Msg
 viewNone =
@@ -107,6 +119,7 @@ viewNone =
         []
         [ label "Navigation Experimental"
         , row "CardStack Example" <| CardStack <| CS.Start True
+        , row "CardStack Without Gestures Example" <| CardStack <| CS.Start False
         ]
 
 
