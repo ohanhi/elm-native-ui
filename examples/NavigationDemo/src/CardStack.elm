@@ -1,25 +1,29 @@
 module CardStack exposing (Model, Msg(Start), init, update, view)
 
-import NativeApi.NavigationStateUtil exposing (NavigationRoute, NavigationState, navigationState, pop, push)
+import NativeApi.NavigationStateUtil exposing (pop, push)
+import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 import NativeUi exposing (Node, Property, node)
 import Navigation exposing (NavigationChangeMsg(Exit, None, Pop, Push))
-import Navigator exposing (NavigatorMsg, view)
+import Navigator exposing (NavigatorModel, NavigatorMsg, update, view)
 
 
 -- MODEL
 
 
 type alias Model =
-    { navigationState : NavigationState
+    { navigator : NavigatorModel
     , counter : Int
     }
 
 
-init : Model
-init =
-    { navigationState =
-        { index = 0
-        , routes = [ { key = "Welcome", title = "Foo" } ]
+init : Bool -> Model
+init enableGestures =
+    { navigator =
+        { enableGestures = enableGestures
+        , navigationState =
+            { index = 0
+            , routes = [ { key = "Welcome", title = Nothing } ]
+            }
         }
     , counter = 1
     }
@@ -30,45 +34,60 @@ init =
 
 
 type Msg
-    = Start
+    = Start Bool
     | NavigationChange NavigatorMsg
 
 
 update : Msg -> Model -> ( Model, Bool )
 update msg model =
     case msg of
-        Start ->
-            ( init, False )
+        Start enableGestures ->
+            ( init enableGestures, False )
 
         NavigationChange navigatorMsg ->
             let
-                ( state, changeMsg ) =
-                    Navigator.update navigatorMsg model.navigationState
+                ( navigator, changeMsg ) =
+                    Navigator.update navigatorMsg model.navigator
             in
                 case changeMsg of
                     Exit ->
                         ( model, True )
 
                     None ->
-                        ( { model | navigationState = state }, False )
+                        ( { model | navigator = navigator }, False )
 
                     Pop ->
-                        ( { model | navigationState = pop state
-                                  , counter = model.counter - 1 }
-                         , False )
+                        let
+                            newNavigator =
+                                { navigator | navigationState = pop navigator.navigationState }
+                        in
+                            ( { model
+                                | navigator = newNavigator
+                                , counter = model.counter - 1
+                              }
+                            , False
+                            )
 
                     Push ->
-                        ( { model
-                            | navigationState = push { key = "route - " ++ toString model.counter, title = "Bar" } state
-                            , counter = model.counter + 1
-                          }
-                        , False
-                        )
+                        let
+                            route =
+                                { key = "route - " ++ toString model.counter, title = Nothing }
+
+                            newNavigator =
+                                { navigator | navigationState = push route navigator.navigationState }
+                        in
+                            ( { model
+                                | navigator = newNavigator
+                                , counter = model.counter + 1
+                              }
+                            , False
+                            )
 
 
 
 -- VIEW
 
+
 view : Model -> Node Msg
 view model =
-    Navigator.view model.navigationState |> NativeUi.map NavigationChange
+    Navigator.view model.navigator |> NativeUi.map NavigationChange

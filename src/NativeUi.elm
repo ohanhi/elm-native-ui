@@ -48,9 +48,11 @@ property =
     Native.NativeUi.property
 
 
-componentProperty : String -> (a -> Node b) -> Property msg
+{-| -}
+componentProperty : String -> Decoder a -> (a -> Node b) -> Property msg
 componentProperty =
     Native.NativeUi.componentProperty
+
 
 {-| -}
 style : List Style.Style -> Property msg

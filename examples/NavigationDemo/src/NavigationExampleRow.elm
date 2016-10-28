@@ -7,7 +7,7 @@ import NativeUi.Style as Style
 import Navigation exposing (underlayColor)
 
 
-label : String -> Node a
+label : String -> Node msg
 label label =
     view [ Ui.style styleRow ]
         [ text
@@ -18,12 +18,12 @@ label label =
         ]
 
 
-button : String -> a -> Node a
-button label msg =
+button : String -> msg -> Node msg
+button label onPressMsg =
     touchableHighlight
         [ style styleRow
         , underlayColor "#D0D0D0"
-        , Events.onPress msg
+        , Events.onPress onPressMsg
         ]
         [ text
             [ Ui.style

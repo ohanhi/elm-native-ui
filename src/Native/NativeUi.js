@@ -39,11 +39,12 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     };
   }
 
-  function componentProperty(propName, value) {
+  function componentProperty(propName, decoder, value) {
     return {
       type: 'compProp',
       propName: propName,
-      value: value
+      value: value,
+      decoder: decoder
     };
   }
 
@@ -138,6 +139,29 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   }
 
   /**
+   * Converts a fact whose value is a function that renders a subTree into a
+   * function that constructs the subTree to render with the provided props.
+   * This is used by NavigationExperimental to pass the header and scene views
+   * into the component
+   */
+  function makeComponentPropHandler(fact, eventNode, key) {
+    var decoder = fact.decoder;
+    var component = fact.value;
+
+    return function(props) {
+      var value = A2(_elm_lang$core$Native_Json.run, decoder, props);
+
+        if (value.ctor !== 'Ok') {
+            throw Error(value._0);
+        }
+
+        var decodedProps = value._0;
+
+      return renderTree(component(decodedProps), eventNode, key);
+    };
+  }
+
+  /**
    * Converts a string node back to a plain string for React Native to render
    */
   function renderString(node) {
@@ -185,10 +209,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
           break;
 
         case 'compProp':
-          const component = fact.value;
-          finalProps[fact.propName] = function(props) {
-            return renderTree(component(props), eventNode, key);
-          };
+          finalProps[fact.propName] = makeComponentPropHandler(fact, eventNode, key);
           break;
 
         case 'event':
@@ -275,7 +296,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
         // There won't be a model to render right away so we'll check that it
         // exists before trying to call the view function
         return typeof this.state.model !== 'undefined' ?
-          renderTree(impl.view(this.state.model), this.eventNode) :
+          renderTree(impl.view(this.state.model), this.eventNode, 0) :
           null;
       }
     });
@@ -333,7 +354,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     on: F2(on),
     style: style,
     property: F2(property),
-    componentProperty: F2(componentProperty),
+    componentProperty: F3(componentProperty),
     encodeDate: identity,
     parseDate: parseDate
   };

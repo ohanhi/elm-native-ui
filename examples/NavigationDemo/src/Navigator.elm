@@ -1,13 +1,19 @@
-module Navigator exposing (NavigatorMsg, update, view)
+module Navigator exposing (NavigatorModel, NavigatorMsg, update, view)
 
-import NativeApi.NavigationStateUtil as NS
+import CardStackScene
+import NativeUi.NavigationExperimental as NE
 import NativeUi as Ui exposing (Node, node, map)
 import NativeUi.Elements as Elements
 import NativeUi.Events as Events
+import NativeUi.Properties exposing (enableGestures)
 import NativeUi.Style as Style
 import Navigation exposing (NavigationChangeMsg(Exit, None, Pop))
-import Scene
-import Json.Encode
+
+
+type alias NavigatorModel =
+    { enableGestures : Bool
+    , navigationState : NE.NavigationState
+    }
 
 
 type NavigatorMsg
@@ -15,32 +21,33 @@ type NavigatorMsg
     | Scene NavigationChangeMsg
 
 
-update : NavigatorMsg -> NS.NavigationState -> ( NS.NavigationState, NavigationChangeMsg )
-update msg state =
+update : NavigatorMsg -> NavigatorModel -> ( NavigatorModel, NavigationChangeMsg )
+update msg model =
     case msg of
         Back ->
-            ( state, Pop )
+            ( model, Pop )
 
         Scene changeMsg ->
-            ( state, changeMsg )
+            ( model, changeMsg )
 
 
 
 -- VIEW
 
 
-view : NS.NavigationState -> Node NavigatorMsg
-view state =
+view : NavigatorModel -> Node NavigatorMsg
+view model =
     Elements.navigationCardStack
         [ Ui.style
             [ Style.flex 1 ]
-        , NS.navigationState state
+        , NE.navigationState model.navigationState
         , Events.onNavigateBack Back
-        , NS.renderScene viewScene
+        , NE.renderScene viewScene
+        , enableGestures model.enableGestures
         ]
         []
 
 
-viewScene : { scene: NS.NavigationScene } -> Node NavigatorMsg
+viewScene : NE.SceneRendererProps -> Node NavigatorMsg
 viewScene props =
-    Scene.view props |> Ui.map Scene
+    CardStackScene.view props |> Ui.map Scene

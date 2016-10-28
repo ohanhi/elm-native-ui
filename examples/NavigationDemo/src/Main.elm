@@ -1,10 +1,16 @@
 module Main exposing (..)
 
+{-|
+ Elm implementation of the NavigationExperimental example from the react-native UIExplorer example:
+https://github.com/facebook/react-native/tree/master/Examples/UIExplorer/js/NavigationExperimental
+-}
+
 import CardStack as CS
+import CardStackTabs as Tabs
 import NativeUi as Ui exposing (Node)
 import NativeUi.Elements as Elements exposing (scrollView, text, touchableHighlight, view)
-import NativeUi.Properties as Properties
 import NativeUi.Events exposing (onPress)
+import NativeUi.Properties as Properties
 import NativeUi.Style as Style
 import Navigation exposing (underlayColor)
 
@@ -29,13 +35,17 @@ main =
 type alias Model =
     { current : Current
     , cardStack : CS.Model
+    , cardStackNoGesture : CS.Model
+    , tabs : Tabs.Model
     }
 
 
 init : ( Model, Cmd Msg )
 init =
     ( { current = None
-      , cardStack = CS.init
+      , cardStack = CS.init True
+      , cardStackNoGesture = CS.init False
+      , tabs = Tabs.init
       }
     , Cmd.none
     )
@@ -51,7 +61,7 @@ type Msg
 
 type Current
     = None
-    | CardStackExample
+    | ExampleCardStack
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -59,13 +69,22 @@ update msg model =
     case msg of
         CardStack cardStackMsg ->
             let
-                ( cardStack, exit ) =
-                    CS.update cardStackMsg model.cardStack
+                ( current, cardStack ) =
+                    updateCardStack cardStackMsg model.cardStack ExampleCardStack
             in
-                if exit then
-                    ( { model | current = None }, Cmd.none )
-                else
-                    ( { model | current = CardStackExample, cardStack = cardStack }, Cmd.none )
+                ( { model | current = current, cardStack = cardStack }, Cmd.none )
+
+
+updateCardStack : CS.Msg -> CS.Model -> Current -> ( Current, CS.Model )
+updateCardStack msg model current =
+    let
+        ( cardStack, exit ) =
+            CS.update msg model
+    in
+        if exit then
+            ( None, cardStack )
+        else
+            ( current, cardStack )
 
 
 
@@ -78,7 +97,7 @@ view model =
         None ->
             viewNone
 
-        CardStackExample ->
+        ExampleCardStack ->
             viewCardStack model.cardStack
 
 
@@ -87,7 +106,7 @@ viewNone =
     Elements.scrollView
         []
         [ label "Navigation Experimental"
-        , row "Card Stack" (CardStack CS.Start)
+        , row "CardStack Example" <| CardStack <| CS.Start True
         ]
 
 

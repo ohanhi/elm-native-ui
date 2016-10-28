@@ -2,7 +2,7 @@ module Navigation exposing (NavigationChangeMsg(Exit, None, Pop, Push), underlay
 
 import Json.Encode
 import NativeUi exposing (Property, property)
-import NativeApi.NavigationStateUtil exposing (NavigationRoute)
+import NativeUi.NavigationExperimental exposing (NavigationRoute)
 
 
 type NavigationChangeMsg
