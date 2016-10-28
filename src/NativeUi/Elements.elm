@@ -1,8 +1,8 @@
-module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, view, navigationCardStack)
+module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationCardStack, navigationHeader, navigationHeaderTitle)
 
 {-| elm-native-ui Elements
 
-@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, view, navigationCardStack
+@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationCardStack, navigationHeader, navigationHeaderTitle
 -}
 
 import NativeUi exposing (Property, Node, node)
@@ -111,6 +111,12 @@ touchableHighlight =
 
 
 {-| -}
+touchableOpacity : List (Property msg) -> List (Node msg) -> Node msg
+touchableOpacity =
+    node "TouchableOpacity"
+
+
+{-| -}
 view : List (Property msg) -> List (Node msg) -> Node msg
 view =
     node "View"
@@ -120,3 +126,15 @@ view =
 navigationCardStack : List (Property msg) -> List (Node msg) -> Node msg
 navigationCardStack =
     node "NavigationCardStack"
+
+
+{-| -}
+navigationHeader : List (Property msg) -> List (Node msg) -> Node msg
+navigationHeader =
+    node "NavigationHeader"
+
+
+{-| -}
+navigationHeaderTitle : List (Property msg) -> List (Node msg) -> Node msg
+navigationHeaderTitle =
+    node "NavigationHeaderTitle"

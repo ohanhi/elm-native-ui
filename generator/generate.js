@@ -15,7 +15,6 @@ const rnModulePathPrefixes = ["Components", "Text"];
 const rnModuleFiles = [
   // "DatePicker/DatePicker.js",
   // "Intent/Intent.js",
-  // "Navigation/Navigation.js",
   // "ViewPager/ViewPager.js",
   // "WebView/WebView.js",
   // "DrawerAndroid/DrawerLayoutAndroid.android.js",
@@ -38,8 +37,11 @@ const rnModuleFiles = [
   "Components/TextInput/TextInput.js",
   "Components/ToolbarAndroid/ToolbarAndroid.android.js",
   "Components/Touchable/TouchableHighlight.js",
+  "Components/Touchable/TouchableOpacity.js",
   "Components/View/View.js",
-  "CustomComponents/NavigationExperimental/NavigationCardStack.js"
+  "CustomComponents/NavigationExperimental/NavigationCardStack.js",
+  "CustomComponents/NavigationExperimental/NavigationHeader.js",
+  "CustomComponents/NavigationExperimental/NavigationHeaderTitle.js"
 ];
 const exceptions = {
   "Slider": {
@@ -176,7 +178,9 @@ function generateElm(moduleJson) {
                 type: exceptions[moduleName][propName].paramType
               }
             }
-            if (!events[funcName]) {
+
+            if (!events[funcName] &&
+                !/^render/.test(funcName)) { // ignore render functions as they are component properties
               events[funcName] = elmTransformer.funcProperty(
                 funcName,
                 funcParams

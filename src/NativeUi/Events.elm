@@ -1,8 +1,8 @@
-module NativeUi.Events exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack, renderHeader, renderScene)
+module NativeUi.Events exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack)
 
 {-| elm-native-ui Handlers
 
-@docs onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack, renderHeader, renderScene
+@docs onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack
 -}
 
 import Json.Decode as Decode exposing (Value, Decoder)
@@ -96,15 +96,3 @@ onHideUnderlay =
 onNavigateBack : msg -> Property msg
 onNavigateBack =
     constantMsgEvent "NavigateBack"
-
-
-{-| -}
-renderHeader : msg -> Property msg
-renderHeader =
-    constantMsgEvent "renderHeader"
-
-
-{-| -}
-renderScene : msg -> Property msg
-renderScene =
-    constantMsgEvent "renderScene"
