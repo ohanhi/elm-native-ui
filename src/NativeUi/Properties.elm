@@ -14,6 +14,7 @@ key : String -> Property msg
 key val =
     property "key" (Json.Encode.string val)
 
+
 {-| -}
 type TextEllipsizeMode
     = TextEllipsizeModeHead
@@ -100,12 +101,10 @@ source uri =
     property "source" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
 
 
-
 {-| -}
 defaultSource : String -> Property msg
 defaultSource uri =
     property "defaultSource" (Json.Encode.object [ ( "uri", Json.Encode.string uri ) ])
-
 
 
 {-| -}
@@ -588,4 +587,3 @@ enableGestures val =
 statusBarHeight : Float -> Property msg
 statusBarHeight val =
     property "statusBarHeight" (Json.Encode.float val)
-

@@ -1,13 +1,13 @@
-module Navigator exposing (NavigatorModel, NavigatorMsg, update, view)
+module CardStack.Navigator exposing (NavigatorModel, NavigatorMsg, update, view)
 
-import CardStackScene
+import CardStack.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
+import CardStack.Scene as Scene
 import NativeUi.NavigationExperimental as NE
 import NativeUi as Ui exposing (Node, node, map)
 import NativeUi.Elements as Elements
 import NativeUi.Events as Events
 import NativeUi.Properties exposing (enableGestures)
 import NativeUi.Style as Style
-import Navigation exposing (NavigationChangeMsg(Exit, None, Pop))
 
 
 type alias NavigatorModel =
@@ -18,17 +18,17 @@ type alias NavigatorModel =
 
 type NavigatorMsg
     = Back
-    | Scene NavigationChangeMsg
+    | Scene NavigationMsg
 
 
-update : NavigatorMsg -> NavigatorModel -> ( NavigatorModel, NavigationChangeMsg )
+update : NavigatorMsg -> NavigatorModel -> ( NavigatorModel, NavigationMsg )
 update msg model =
     case msg of
         Back ->
             ( model, Pop )
 
-        Scene changeMsg ->
-            ( model, changeMsg )
+        Scene navigationMsg ->
+            ( model, navigationMsg )
 
 
 
@@ -50,4 +50,4 @@ view model =
 
 viewScene : NE.SceneRendererProps -> Node NavigatorMsg
 viewScene props =
-    CardStackScene.view props |> Ui.map Scene
+    Scene.view props |> Ui.map Scene

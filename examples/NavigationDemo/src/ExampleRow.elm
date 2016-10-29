@@ -1,10 +1,10 @@
-module NavigationExampleRow exposing (button, label)
+module ExampleRow exposing (button, label, underlayColor)
 
-import NativeUi as Ui exposing (Node, Property, string, style)
+import Json.Encode
+import NativeUi as Ui exposing (Node, Property, property, string, style)
 import NativeUi.Elements exposing (touchableHighlight, text, view)
 import NativeUi.Events as Events exposing (onPress)
 import NativeUi.Style as Style
-import Navigation exposing (underlayColor)
 
 
 label : String -> Node msg
@@ -42,3 +42,11 @@ styleRow =
     , Style.borderBottomWidth 1
     , Style.borderBottomColor "#CDCDCD"
     ]
+
+
+{-|
+Custom property definition - for when items are missing from elm-native-ui
+-}
+underlayColor : String -> Property msg
+underlayColor val =
+    property "underlayColor" (Json.Encode.string val)

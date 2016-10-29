@@ -5,14 +5,14 @@ module Main exposing (..)
 https://github.com/facebook/react-native/tree/master/Examples/UIExplorer/js/NavigationExperimental
 -}
 
-import CardStack as CS
-import CardStackTabs as Tabs
+import CardStack.Example as CS
+import ExampleRow exposing (underlayColor)
 import NativeUi as Ui exposing (Node)
 import NativeUi.Elements as Elements exposing (scrollView, text, touchableHighlight, view)
 import NativeUi.Events exposing (onPress)
 import NativeUi.Properties as Properties
 import NativeUi.Style as Style
-import Navigation exposing (underlayColor)
+import Tab.Example as Tabs
 
 
 -- PROGRAM
@@ -58,12 +58,14 @@ init =
 type Msg
     = CardStack CS.Msg
     | CardStackNoGesture CS.Msg
+    | CardStackTabs Tabs.Msg
 
 
 type Current
     = None
     | ExampleCardStack
     | ExampleCardStackNoGesture
+    | ExampleCardStackTabs
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -72,28 +74,35 @@ update msg model =
         CardStack cardStackMsg ->
             let
                 ( current, cardStack ) =
-                    updateCardStack cardStackMsg model.cardStack ExampleCardStack
+                    updateSubModel cardStackMsg model.cardStack CS.update ExampleCardStack
             in
                 ( { model | current = current, cardStack = cardStack }, Cmd.none )
 
         CardStackNoGesture cardStackMsg ->
             let
                 ( current, cardStack ) =
-                    updateCardStack cardStackMsg model.cardStackNoGesture ExampleCardStackNoGesture
+                    updateSubModel cardStackMsg model.cardStackNoGesture CS.update ExampleCardStackNoGesture
             in
                 ( { model | current = current, cardStack = cardStack }, Cmd.none )
 
+        CardStackTabs tabsMsg ->
+            let
+                ( current, tabs ) =
+                    updateSubModel tabsMsg model.tabs Tabs.update ExampleCardStackTabs
+            in
+                ( { model | current = current, tabs = tabs }, Cmd.none )
 
-updateCardStack : CS.Msg -> CS.Model -> Current -> ( Current, CS.Model )
-updateCardStack msg model current =
+
+updateSubModel : msg -> model -> (msg -> model -> ( model, Bool )) -> Current -> ( Current, model )
+updateSubModel subMsg subModel updateFunc current =
     let
-        ( cardStack, exit ) =
-            CS.update msg model
+        ( newSubModel, exit ) =
+            updateFunc subMsg subModel
     in
         if exit then
-            ( None, cardStack )
+            ( None, newSubModel )
         else
-            ( current, cardStack )
+            ( current, newSubModel )
 
 
 
@@ -112,12 +121,16 @@ view model =
         ExampleCardStackNoGesture ->
             viewCardStack model.cardStackNoGesture
 
+        ExampleCardStackTabs ->
+            Tabs.view model.tabs |> Ui.map CardStackTabs
+
 
 viewNone : Node Msg
 viewNone =
     Elements.scrollView
         []
         [ label "Navigation Experimental"
+        , row "CardStack + Header + Tabs Example" <| CardStackTabs Tabs.Start
         , row "CardStack Example" <| CardStack <| CS.Start True
         , row "CardStack Without Gestures Example" <| CardStack <| CS.Start False
         ]

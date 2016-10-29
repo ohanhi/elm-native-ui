@@ -1,17 +1,17 @@
-module CardStack exposing (Model, Msg(Start), init, update, view)
+module CardStack.Example exposing (Model, Msg(Start), init, update, view)
 
+import CardStack.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
+import CardStack.Navigator as Navigator
 import NativeApi.NavigationStateUtil exposing (pop, push)
 import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 import NativeUi exposing (Node, Property, node)
-import Navigation exposing (NavigationChangeMsg(Exit, None, Pop, Push))
-import Navigator exposing (NavigatorModel, NavigatorMsg, update, view)
 
 
 -- MODEL
 
 
 type alias Model =
-    { navigator : NavigatorModel
+    { navigator : Navigator.NavigatorModel
     , counter : Int
     }
 
@@ -35,7 +35,7 @@ init enableGestures =
 
 type Msg
     = Start Bool
-    | NavigationChange NavigatorMsg
+    | NavigationChange Navigator.NavigatorMsg
 
 
 update : Msg -> Model -> ( Model, Bool )
@@ -46,10 +46,10 @@ update msg model =
 
         NavigationChange navigatorMsg ->
             let
-                ( navigator, changeMsg ) =
+                ( navigator, navigationMsg ) =
                     Navigator.update navigatorMsg model.navigator
             in
-                case changeMsg of
+                case navigationMsg of
                     Exit ->
                         ( model, True )
 
