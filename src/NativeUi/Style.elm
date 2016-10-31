@@ -1,6 +1,7 @@
 module NativeUi.Style
     exposing
-        ( Style
+        ( Animatable(Animated, NotAnimated)
+        , Style
         , encode
         , color
         , fontFamily
@@ -78,6 +79,7 @@ module NativeUi.Style
 -}
 
 import Json.Encode
+import NativeApi.Animated as Animated
 
 
 type Value
@@ -85,6 +87,7 @@ type Value
     | NumberValue Float
     | ObjectValue (List Declaration)
     | ListValue (List (Maybe Declaration))
+    | AnimatedValue Animated.AnimatedValue
 
 
 stringDeclaration : String -> String -> Declaration
@@ -105,6 +108,16 @@ objectDeclaration name value =
 listDeclaration : String -> List (Maybe Declaration) -> Declaration
 listDeclaration name value =
     ( name, ListValue value )
+
+
+animatableDeclaration : String -> Animatable -> Declaration
+animatableDeclaration name value =
+    case value of
+        NotAnimated number ->
+            ( name, NumberValue number )
+
+        Animated animatedValue ->
+            ( name, AnimatedValue animatedValue )
 
 
 stringStyle : String -> String -> Style
@@ -137,6 +150,7 @@ type Style
     | NumberStyle Declaration
     | ObjectStyle Declaration
     | ListStyle Declaration
+    | ValueStyle Declaration
 
 
 encodeValue : Value -> Json.Encode.Value
@@ -153,6 +167,9 @@ encodeValue value =
 
         ListValue list ->
             Json.Encode.list (List.map encodeObject (List.filterMap identity list))
+
+        AnimatedValue value ->
+            Animated.encodeAnimatedValue value
 
 
 encodeDeclaration : ( String, Value ) -> ( String, Json.Encode.Value )
@@ -178,6 +195,9 @@ toJsonProperty style =
             ( name, encodeValue value )
 
         ListStyle ( name, value ) ->
+            ( name, encodeValue value )
+
+        ValueStyle ( name, value ) ->
             ( name, encodeValue value )
 
 
@@ -618,6 +638,11 @@ width =
 --Transform Styles
 
 
+type Animatable
+    = NotAnimated Float
+    | Animated Animated.AnimatedValue
+
+
 {-| -}
 type alias Transform =
     { perspective : Maybe Float
@@ -628,7 +653,7 @@ type alias Transform =
     , scale : Maybe Float
     , scaleX : Maybe Float
     , scaleY : Maybe Float
-    , translateX : Maybe Float
+    , translateX : Maybe Animatable
     , translateY : Maybe Float
     , skewX : Maybe String
     , skewY : Maybe String
@@ -665,7 +690,7 @@ transform options =
         , Maybe.map (numberDeclaration "scale") options.scale
         , Maybe.map (numberDeclaration "scaleX") options.scaleX
         , Maybe.map (numberDeclaration "scaleY") options.scaleY
-        , Maybe.map (numberDeclaration "translateX") options.translateX
+        , Maybe.map (animatableDeclaration "translateX") options.translateX
         , Maybe.map (numberDeclaration "translateY") options.translateY
         , Maybe.map (stringDeclaration "skewX") options.skewX
         , Maybe.map (stringDeclaration "skewY") options.skewY

@@ -5,6 +5,7 @@ module Main exposing (..)
 https://github.com/facebook/react-native/tree/master/Examples/UIExplorer/js/NavigationExperimental
 -}
 
+import Animated.Example as Anim
 import CardStack.Example as CS
 import ExampleRow exposing (underlayColor)
 import NativeUi as Ui exposing (Node)
@@ -34,6 +35,7 @@ main =
 
 type alias Model =
     { current : Current
+    , animated : Anim.Model
     , cardStack : CS.Model
     , cardStackNoGesture : CS.Model
     , tabs : Tabs.Model
@@ -43,6 +45,7 @@ type alias Model =
 init : ( Model, Cmd Msg )
 init =
     ( { current = None
+      , animated = Anim.init
       , cardStack = CS.init True
       , cardStackNoGesture = CS.init False
       , tabs = Tabs.init
@@ -56,13 +59,15 @@ init =
 
 
 type Msg
-    = CardStack CS.Msg
+    = Animated Anim.Msg
+    | CardStack CS.Msg
     | CardStackNoGesture CS.Msg
     | CardStackTabs Tabs.Msg
 
 
 type Current
     = None
+    | ExampleAnimated
     | ExampleCardStack
     | ExampleCardStackNoGesture
     | ExampleCardStackTabs
@@ -71,6 +76,13 @@ type Current
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        Animated animMsg ->
+            let
+                ( current, anim ) =
+                    updateSubModel animMsg model.animated Anim.update ExampleAnimated
+            in
+                ( { model | current = current, animated = anim }, Cmd.none )
+
         CardStack cardStackMsg ->
             let
                 ( current, cardStack ) =
@@ -115,6 +127,9 @@ view model =
         None ->
             viewNone
 
+        ExampleAnimated ->
+            Anim.view model.animated |> Ui.map Animated
+
         ExampleCardStack ->
             viewCardStack model.cardStack
 
@@ -133,6 +148,7 @@ viewNone =
         , row "CardStack + Header + Tabs Example" <| CardStackTabs Tabs.Start
         , row "CardStack Example" <| CardStack <| CS.Start True
         , row "CardStack Without Gestures Example" <| CardStack <| CS.Start False
+        , row "Transitioner + Animated View Example" <| Animated Anim.Start
         ]
 
 
