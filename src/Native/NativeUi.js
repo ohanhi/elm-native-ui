@@ -39,9 +39,18 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     };
   }
 
-  function componentProperty(propName, decoder, value) {
+  function renderProperty(propName, decoder, value) {
     return {
-      type: 'compProp',
+      type: 'renderProp',
+      propName: propName,
+      value: value,
+      decoder: decoder
+    };
+  }
+
+  function renderListProperty(propName, decoder, value) {
+    return {
+      type: 'renderListProp',
       propName: propName,
       value: value,
       decoder: decoder
@@ -91,6 +100,28 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   }
 
   /**
+   * A non-standard node that renders a React Native component with props and children
+   */
+  function customNode(tagName, moduleName, maybeExportedName) {
+    var exportedName = null;
+
+    if (maybeExportedName.ctor !== 'Nothing') {
+      exportedName = maybeExportedName._0;
+    }
+
+    return F2(function(factList, childList) {
+      return {
+        type: 'component',
+        tagName: tagName,
+        facts: toArray(factList),
+        children: toArray(childList),
+        moduleName: moduleName,
+        exportedName: exportedName
+      };
+    });
+  }
+
+  /**
    * Maps another node onto a different message type
    */
   function map(tagger, node) {
@@ -109,15 +140,9 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
    */
   function makeEventHandler(eventNode, decoder) {
     function eventHandler(event) {
-      var decoder = eventHandler.decoder;
-      var value = A2(_elm_lang$core$Native_Json.run, decoder, event);
-
-      if (value.ctor !== 'Ok') {
-        return;
-      }
-
-      var message = value._0;
+      var message = decodeValue(eventHandler.decoder, event);
       var currentEventNode = eventNode;
+
       while (currentEventNode) {
         var tagger = currentEventNode.tagger;
 
@@ -144,21 +169,54 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
    * This is used by NavigationExperimental to pass the header and scene views
    * into the component
    */
-  function makeComponentPropHandler(fact, eventNode, key) {
-    var decoder = fact.decoder;
-    var component = fact.value;
+  function makeRenderNodePropHandler(fact, eventNode, key) {
+    function handler(props) {
+      var decodedProps = decodeValue(handler.decoder, props);
 
-    return function(props) {
-      var value = A2(_elm_lang$core$Native_Json.run, decoder, props);
-
-        if (value.ctor !== 'Ok') {
-            throw Error(value._0);
-        }
-
-        var decodedProps = value._0;
-
-      return renderTree(component(decodedProps), eventNode, key);
+      return renderTree(handler.component(decodedProps), eventNode, key);
     };
+
+    handler.component = fact.value;
+    handler.decoder = fact.decoder;
+
+    return handler;
+  }
+
+  /**
+   * Converts a fact whose value is a function that renders a subTree list into a
+   * function that constructs the subTree list to render with the provided props.
+   * This is used by NavigationExperimental to animate transitions
+   */
+  function makeRenderNodeListPropHandler(fact, eventNode) {
+    function handler(props) {
+      var decodedProps = decodeValue(handler.decoder, props);
+      var nodes = toArray(handler.component(decodedProps));
+      var result = [];
+
+      for (var i = 0; i < nodes.length; i++) {
+        result.push(renderTree(nodes[i], eventNode, i));
+      }
+
+      return result;
+    };
+
+    handler.component = fact.value;
+    handler.decoder = fact.decoder;
+
+    return handler;
+  }
+
+  /**
+   * Decodes properties from elm into json props for react-native
+   */
+  function decodeValue(decoder, value) {
+    var decodedValue = A2(_elm_lang$core$Native_Json.run, decoder, value);
+
+    if (decodedValue.ctor !== 'Ok') {
+      throw Error(decodedValue._0);
+    }
+
+    return decodedValue._0;
   }
 
   /**
@@ -208,8 +266,12 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
           finalProps[fact.propName] = fact.value;
           break;
 
-        case 'compProp':
-          finalProps[fact.propName] = makeComponentPropHandler(fact, eventNode, key);
+        case 'renderProp':
+          finalProps[fact.propName] = makeRenderNodePropHandler(fact, eventNode, key);
+          break;
+
+        case 'renderListProp':
+          finalProps[fact.propName] = makeRenderNodeListPropHandler(fact, eventNode);
           break;
 
         case 'event':
@@ -235,9 +297,17 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     if (ReactNative[node.tagName]) {
       return React.createElement(ReactNative[node.tagName], finalProps);
     } else {
-      var customComponent = require(node.tagName);
+      if (!node.moduleName) {
+          throw Error('Unable to find a node called ' + node.tagName + ' in ReactNative. Try defining it as a customNode');
+      }
 
-      return React.createElement(customComponent, finalProps);
+      var customComponent = require(node.moduleName);
+
+      if(node.exportedName) {
+          return React.createElement(customComponent[node.exportedName], finalProps);
+      } else {
+          return React.createElement(customComponent, finalProps);
+      }
     }
   }
 
@@ -349,13 +419,16 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     program: program,
     node: node,
     voidNode: voidNode,
+    customNode: F3(customNode),
     string: string,
     map: F2(map),
     on: F2(on),
     style: style,
     property: F2(property),
-    componentProperty: F3(componentProperty),
+    renderProperty: F3(renderProperty),
+    renderListProperty: F3(renderListProperty),
     encodeDate: identity,
+    encodeFunction: identity,
     parseDate: parseDate
   };
 }());

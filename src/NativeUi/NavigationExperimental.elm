@@ -1,44 +1,34 @@
-module NativeUi.NavigationExperimental exposing (SceneRendererProps, NavigationRoute, NavigationScene, NavigationState, layout, navigationState, renderHeader, renderScene, renderTitleComponent, scene, sceneRendererPropsToPropertyList)
+module NativeUi.NavigationExperimental exposing (SceneRendererProps, NavigationRoute, NavigationScene, NavigationState, NavigationTransitionProps, NavigationTransitionSpec, configureTransition, layout, navigationState, render, renderHeader, renderScene, renderTitleComponent, scene, sceneRendererPropsToPropertyList, transitionToSceneRendererProps)
 
+import Native.NativeUi
 import Json.Decode as Decode
 import Json.Encode as Encode exposing (Value, bool, int, list, object, string)
-import NativeUi exposing (Node, Property, property, componentProperty)
+import NativeUi exposing (Node, Property, property, renderProperty, renderListProperty)
+import NativeApi.Animated exposing (AnimatedValue, decodeAnimatedValue, encodeAnimatedValue)
+import NativeApi.Internal exposing (encodeFilterMap)
 
 
 -- RENDER
 
 
+render : (NavigationTransitionProps -> List (Node a)) -> Property msg
+render =
+    renderListProperty "render" decodeNavigationTransitionProps
+
+
 renderHeader : (SceneRendererProps -> Node a) -> Property msg
 renderHeader =
-    componentProperty "renderHeader" decodeSceneRendererProps
+    renderProperty "renderHeader" decodeSceneRendererProps
 
 
 renderScene : (SceneRendererProps -> Node a) -> Property msg
 renderScene =
-    componentProperty "renderScene" decodeSceneRendererProps
+    renderProperty "renderScene" decodeSceneRendererProps
 
 
 renderTitleComponent : (SceneRendererProps -> Node a) -> Property msg
 renderTitleComponent =
-    componentProperty "renderTitleComponent" decodeSceneRendererProps
-
-
-
--- ANIMATED VALUE
-
-
-type alias AnimatedValue =
-    Decode.Value
-
-
-encodeAnimatedValue : AnimatedValue -> Value
-encodeAnimatedValue =
-    identity
-
-
-decodeAnimatedValue : Decode.Decoder AnimatedValue
-decodeAnimatedValue =
-    Decode.value
+    renderProperty "renderTitleComponent" decodeSceneRendererProps
 
 
 
@@ -181,6 +171,74 @@ decodeNavigationState =
     Decode.map2 NavigationState
         (Decode.field "index" Decode.int)
         (Decode.field "routes" (Decode.list decodeRoute))
+
+
+
+-- NAVIGATION TRANSITION PROPS
+
+
+type alias NavigationTransitionProps =
+    { layout : NavigationLayout
+    , navigationState : NavigationState
+    , position : AnimatedValue
+    , progress : AnimatedValue
+    , scene : NavigationScene
+    , scenes : List NavigationScene
+    , gestureResponseDistance : Maybe Float
+    }
+
+
+decodeNavigationTransitionProps : Decode.Decoder NavigationTransitionProps
+decodeNavigationTransitionProps =
+    Decode.map7 NavigationTransitionProps
+        (Decode.field "layout" decodeLayout)
+        (Decode.field "navigationState" decodeNavigationState)
+        (Decode.field "position" decodeAnimatedValue)
+        (Decode.field "progress" decodeAnimatedValue)
+        (Decode.field "scene" decodeNavigationScene)
+        (Decode.field "scenes" (Decode.list decodeNavigationScene))
+        (Decode.maybe (Decode.field "gestureResponseDistance" Decode.float))
+
+
+transitionToSceneRendererProps : NavigationTransitionProps -> NavigationScene -> SceneRendererProps
+transitionToSceneRendererProps props scene =
+    { layout = props.layout
+    , navigationState = props.navigationState
+    , position = props.position
+    , progress = props.progress
+    , scene = scene
+    , scenes = props.scenes
+    }
+
+
+
+-- NAVIGATION TRANSITION SPEC
+
+
+type alias NavigationTransitionSpec =
+    { duration : Maybe Float
+    , easing : Maybe (Float -> Float)
+    , timing : Maybe ({ value : AnimatedValue, config : Value } -> Float)
+    }
+
+
+configureTransition : NavigationTransitionSpec -> Property msg
+configureTransition val =
+    property "configureTransition" <| Native.NativeUi.encodeFunction (\_ -> encodeNavigationTransitionSpec val)
+
+
+{-|
+encodes values that exist into the transition spec, such that Nothing values are not encoded and
+the defaults are used when react-native merges the props with the defaults
+-}
+encodeNavigationTransitionSpec : NavigationTransitionSpec -> Value
+encodeNavigationTransitionSpec spec =
+    [ ( "duration", Maybe.map Encode.float spec.duration )
+    , ( "easing", Maybe.map Native.NativeUi.encodeFunction spec.easing )
+    , ( "timing", Maybe.map Native.NativeUi.encodeFunction spec.timing )
+    ]
+        |> encodeFilterMap
+        |> Encode.object
 
 
 

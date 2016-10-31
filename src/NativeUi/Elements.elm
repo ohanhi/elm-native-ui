@@ -1,11 +1,11 @@
-module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationCardStack, navigationHeader, navigationHeaderTitle)
+module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationTransitioner, navigationCardStack, navigationHeader, navigationHeaderTitle)
 
 {-| elm-native-ui Elements
 
-@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationCardStack, navigationHeader, navigationHeaderTitle
+@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationTransitioner, navigationCardStack, navigationHeader, navigationHeaderTitle
 -}
 
-import NativeUi exposing (Property, Node, node)
+import NativeUi exposing (Property, Node, customNode, node)
 
 
 {-| -}
@@ -123,18 +123,24 @@ view =
 
 
 {-| -}
+navigationTransitioner : List (Property msg) -> List (Node msg) -> Node msg
+navigationTransitioner =
+    customNode "NavigationTransitioner" "NavigationExperimental" <| Just "Transitioner"
+
+
+{-| -}
 navigationCardStack : List (Property msg) -> List (Node msg) -> Node msg
 navigationCardStack =
-    node "NavigationCardStack"
+    customNode "NavigationCardStack" "NavigationCardStack" Nothing
 
 
 {-| -}
 navigationHeader : List (Property msg) -> List (Node msg) -> Node msg
 navigationHeader =
-    node "NavigationHeader"
+    customNode "NavigationHeader" "NavigationHeader" Nothing
 
 
 {-| -}
 navigationHeaderTitle : List (Property msg) -> List (Node msg) -> Node msg
 navigationHeaderTitle =
-    node "NavigationHeaderTitle"
+    customNode "NavigationHeaderTitle" "NavigationHeaderTitle" Nothing
