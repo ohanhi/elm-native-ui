@@ -1,8 +1,10 @@
 module NativeUi.Style
     exposing
         ( Animatable(Animated, NotAnimated)
+        , NativeStyle
         , Style
         , encode
+        , merge
         , color
         , fontFamily
         , fontSize
@@ -82,6 +84,10 @@ import Json.Encode
 import NativeApi.Animated as Animated
 
 
+type alias NativeStyle =
+    Json.Encode.Value
+
+
 type Value
     = StringValue String
     | NumberValue Float
@@ -153,7 +159,7 @@ type Style
     | ValueStyle Declaration
 
 
-encodeValue : Value -> Json.Encode.Value
+encodeValue : Value -> NativeStyle
 encodeValue value =
     case value of
         NumberValue float ->
@@ -172,17 +178,17 @@ encodeValue value =
             Animated.encodeAnimatedValue value
 
 
-encodeDeclaration : ( String, Value ) -> ( String, Json.Encode.Value )
+encodeDeclaration : ( String, Value ) -> ( String, NativeStyle )
 encodeDeclaration ( name, value ) =
     ( name, encodeValue value )
 
 
-encodeObject : ( String, Value ) -> Json.Encode.Value
+encodeObject : ( String, Value ) -> NativeStyle
 encodeObject ( name, value ) =
     Json.Encode.object [ ( name, (encodeValue value) ) ]
 
 
-toJsonProperty : Style -> ( String, Json.Encode.Value )
+toJsonProperty : Style -> ( String, NativeStyle )
 toJsonProperty style =
     case style of
         StringStyle ( name, value ) ->
@@ -202,11 +208,16 @@ toJsonProperty style =
 
 
 {-| -}
-encode : List Style -> Json.Encode.Value
+encode : List Style -> NativeStyle
 encode styles =
     styles
         |> List.map toJsonProperty
         |> Json.Encode.object
+
+
+merge : List NativeStyle -> NativeStyle
+merge styles =
+    Json.Encode.list styles
 
 
 

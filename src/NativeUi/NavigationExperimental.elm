@@ -1,34 +1,117 @@
-module NativeUi.NavigationExperimental exposing (SceneRendererProps, NavigationRoute, NavigationScene, NavigationState, NavigationTransitionProps, NavigationTransitionSpec, configureTransition, layout, navigationState, render, renderHeader, renderScene, renderTitleComponent, scene, sceneRendererPropsToPropertyList, transitionToSceneRendererProps)
+module NativeUi.NavigationExperimental exposing (NavigationPagerPanResponder, NavigationPanPanHandlers, NavigationSceneRenderer, NavigationRoute, NavigationScene, NavigationState, NavigationTransition, NavigationTransitionSpec, configureTransition, layout, navigationState, pagerPanResponderForHorizontal, pagerStyleInterpolatorForHorizontal, render, renderHeader, renderScene, renderTitleComponent, scene, navigationSceneRendererToPropertyList, transitionToNavigationSceneRenderer)
 
+import Native.NavigationExperimental
 import Native.NativeUi
 import Json.Decode as Decode
 import Json.Encode as Encode exposing (Value, bool, int, list, object, string)
-import NativeUi exposing (Node, Property, property, renderProperty, renderListProperty)
+import NativeUi exposing (NativeEvent, NativeEventHandler, Node, Property, on, onReact, property, renderProperty, renderListProperty)
 import NativeApi.Animated exposing (AnimatedValue, decodeAnimatedValue, encodeAnimatedValue)
 import NativeApi.Internal exposing (encodeFilterMap)
+import NativeUi.Style as Style
 
 
 -- RENDER
 
 
-render : (NavigationTransitionProps -> List (Node a)) -> Property msg
+render : (NavigationTransition -> List (Node a)) -> Property msg
 render =
-    renderListProperty "render" decodeNavigationTransitionProps
+    renderListProperty "render" decodeNavigationTransition
 
 
-renderHeader : (SceneRendererProps -> Node a) -> Property msg
+renderHeader : (NavigationSceneRenderer -> Node a) -> Property msg
 renderHeader =
-    renderProperty "renderHeader" decodeSceneRendererProps
+    renderProperty "renderHeader" decodeNavigationSceneRenderer
 
 
-renderScene : (SceneRendererProps -> Node a) -> Property msg
+renderScene : (NavigationSceneRenderer -> Node a) -> Property msg
 renderScene =
-    renderProperty "renderScene" decodeSceneRendererProps
+    renderProperty "renderScene" decodeNavigationSceneRenderer
 
 
-renderTitleComponent : (SceneRendererProps -> Node a) -> Property msg
+renderTitleComponent : (NavigationSceneRenderer -> Node a) -> Property msg
 renderTitleComponent =
-    renderProperty "renderTitleComponent" decodeSceneRendererProps
+    renderProperty "renderTitleComponent" decodeNavigationSceneRenderer
+
+
+
+-- NAVIGATION PAGER PAN RESPONDER
+
+
+type alias NavigationPagerPanResponder msg =
+    { layout : NavigationLayout
+    , navigationState : NavigationState
+    , position : AnimatedValue
+    , progress : AnimatedValue
+    , scene : NavigationScene
+    , scenes : List NavigationScene
+    , onNavigateBack : ( msg, NavigationState -> Bool )
+    , onNavigateForward : ( msg, NavigationState -> Bool )
+    }
+
+
+type alias NavigationPanPanHandlers msg =
+    { onMoveShouldSetResponder : Property msg
+    , onMoveShouldSetResponderCapture : Property msg
+    , onResponderEnd : Property msg
+    , onResponderGrant : Property msg
+    , onResponderMove : Property msg
+    , onResponderReject : Property msg
+    , onResponderRelease : Property msg
+    , onResponderStart : Property msg
+    , onResponderTerminate : Property msg
+    , onResponderTerminationRequest : Property msg
+    , onStartShouldSetResponder : Property msg
+    , onStartShouldSetResponderCapture : Property msg
+    }
+
+
+pagerPanResponderForHorizontal : NavigationPagerPanResponder msg -> List (Property msg)
+pagerPanResponderForHorizontal props =
+    let
+        encodedProps =
+            encodeNavigationPagerPanResponder props
+
+        backMsg =
+            (fst props.onNavigateBack)
+
+        forwardMsg =
+            (fst props.onNavigateForward)
+
+        handlers =
+            Native.NavigationExperimental.pagerPanResponderForHorizontal encodedProps backMsg forwardMsg
+    in
+        [ onReact "MoveShouldSetResponder" handlers.onMoveShouldSetResponder
+        , onReact "MoveShouldSetResponderCapture" handlers.onMoveShouldSetResponderCapture
+        , onReact "ResponderEnd" handlers.onResponderEnd
+        , onReact "ResponderGrant" handlers.onResponderGrant
+        , onReact "ResponderMove" handlers.onResponderMove
+        , onReact "ResponderReject" handlers.onResponderReject
+        , onReact "ResponderRelease" handlers.onResponderRelease
+        , onReact "ResponderStart" handlers.onResponderStart
+        , onReact "ResponderTerminate" handlers.onResponderTerminate
+        , onReact "ResponderTerminationRequest" handlers.onResponderTerminationRequest
+        , onReact "StartShouldSetResponder" handlers.onStartShouldSetResponder
+        , onReact "StartShouldSetResponderCapture" handlers.onStartShouldSetResponderCapture
+        ]
+
+
+encodeNavigationPagerPanResponder : NavigationPagerPanResponder msg -> Value
+encodeNavigationPagerPanResponder props =
+    Encode.object <|
+        [ ( "layout", encodeNavigationLayout props.layout )
+        , ( "navigationState", encodeNavigationState props.navigationState )
+        , ( "position", encodeAnimatedValue props.position )
+        , ( "progress", encodeAnimatedValue props.progress )
+        , ( "scene", encodeNavigationScene props.scene )
+        , ( "scenes", Encode.list <| List.map encodeNavigationScene props.scenes )
+        , ( "onNavigateBack", Native.NativeUi.encodeFunction (\_ -> (snd props.onNavigateBack) props.navigationState) )
+        , ( "onNavigateForward", Native.NativeUi.encodeFunction (\_ -> (snd props.onNavigateForward) props.navigationState) )
+        ]
+
+
+pagerStyleInterpolatorForHorizontal : NavigationSceneRenderer -> Style.NativeStyle
+pagerStyleInterpolatorForHorizontal props =
+    Native.NavigationExperimental.pagerStyleInterpolatorForHorizontal (encodeNavigationSceneRenderer props)
 
 
 
@@ -177,7 +260,7 @@ decodeNavigationState =
 -- NAVIGATION TRANSITION PROPS
 
 
-type alias NavigationTransitionProps =
+type alias NavigationTransition =
     { layout : NavigationLayout
     , navigationState : NavigationState
     , position : AnimatedValue
@@ -188,9 +271,9 @@ type alias NavigationTransitionProps =
     }
 
 
-decodeNavigationTransitionProps : Decode.Decoder NavigationTransitionProps
-decodeNavigationTransitionProps =
-    Decode.map7 NavigationTransitionProps
+decodeNavigationTransition : Decode.Decoder NavigationTransition
+decodeNavigationTransition =
+    Decode.map7 NavigationTransition
         (Decode.field "layout" decodeLayout)
         (Decode.field "navigationState" decodeNavigationState)
         (Decode.field "position" decodeAnimatedValue)
@@ -200,8 +283,8 @@ decodeNavigationTransitionProps =
         (Decode.maybe (Decode.field "gestureResponseDistance" Decode.float))
 
 
-transitionToSceneRendererProps : NavigationTransitionProps -> NavigationScene -> SceneRendererProps
-transitionToSceneRendererProps props scene =
+transitionToNavigationSceneRenderer : NavigationTransition -> NavigationScene -> NavigationSceneRenderer
+transitionToNavigationSceneRenderer props scene =
     { layout = props.layout
     , navigationState = props.navigationState
     , position = props.position
@@ -242,10 +325,10 @@ encodeNavigationTransitionSpec spec =
 
 
 
--- SCENE RENDERER PROPS
+-- NAVIGATION SCENE RENDERER PROPS
 
 
-type alias SceneRendererProps =
+type alias NavigationSceneRenderer =
     { layout : NavigationLayout
     , navigationState : NavigationState
     , position : AnimatedValue
@@ -255,9 +338,21 @@ type alias SceneRendererProps =
     }
 
 
-decodeSceneRendererProps : Decode.Decoder SceneRendererProps
-decodeSceneRendererProps =
-    Decode.map6 SceneRendererProps
+encodeNavigationSceneRenderer : NavigationSceneRenderer -> Value
+encodeNavigationSceneRenderer props =
+    Encode.object <|
+        [ ( "layout", encodeNavigationLayout props.layout )
+        , ( "navigationState", encodeNavigationState props.navigationState )
+        , ( "position", encodeAnimatedValue props.position )
+        , ( "progress", encodeAnimatedValue props.progress )
+        , ( "scene", encodeNavigationScene props.scene )
+        , ( "scenes", Encode.list <| List.map encodeNavigationScene props.scenes )
+        ]
+
+
+decodeNavigationSceneRenderer : Decode.Decoder NavigationSceneRenderer
+decodeNavigationSceneRenderer =
+    Decode.map6 NavigationSceneRenderer
         (Decode.field "layout" decodeLayout)
         (Decode.field "navigationState" decodeNavigationState)
         (Decode.field "position" decodeAnimatedValue)
@@ -281,8 +376,8 @@ scenes val =
     property "scenes" (Encode.list <| List.map encodeNavigationScene val)
 
 
-sceneRendererPropsToPropertyList : SceneRendererProps -> List (Property msg)
-sceneRendererPropsToPropertyList props =
+navigationSceneRendererToPropertyList : NavigationSceneRenderer -> List (Property msg)
+navigationSceneRendererToPropertyList props =
     [ layout props.layout
     , navigationState props.navigationState
     , position props.position

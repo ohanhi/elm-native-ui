@@ -1,12 +1,12 @@
-module NativeUi exposing (Node, customNode, node, string, style, on, Property, property, map, program, renderProperty, renderListProperty)
+module NativeUi exposing (NativeEvent, NativeEventHandler, Node, customNode, node, string, style, mergeStyles, on, onReact, Property, property, map, program, renderProperty, renderListProperty)
 
 {-| Render your application as a React Native app.
 
 # Common Helpers
-@docs node, string, style, property, map
+@docs node, string, customNode, style, mergeStyles, property, map, renderProperty, renderListProperty
 
 # Events
-@docs on
+@docs on, onReact
 
 # Types
 @docs Node, Property
@@ -18,6 +18,14 @@ module NativeUi exposing (Node, customNode, node, string, style, on, Property, p
 import Json.Decode as Decode exposing (Value, Decoder)
 import Native.NativeUi
 import NativeUi.Style as Style
+
+
+type alias NativeEventHandler =
+    Decode.Value
+
+
+type alias NativeEvent =
+    Decode.Value
 
 
 {-| -}
@@ -36,6 +44,7 @@ node =
     Native.NativeUi.node
 
 
+{-| -}
 customNode : String -> String -> Maybe String -> List (Property msg) -> List (Node msg) -> Node msg
 customNode =
     Native.NativeUi.customNode
@@ -73,6 +82,13 @@ style styles =
 
 
 {-| -}
+mergeStyles : List Style.NativeStyle -> Property msg
+mergeStyles styles =
+    Style.merge styles
+        |> Native.NativeUi.style
+
+
+{-| -}
 on : String -> Decoder msg -> Property msg
 on eventName =
     let
@@ -80,6 +96,16 @@ on eventName =
             "on" ++ eventName
     in
         Native.NativeUi.on realEventName
+
+
+{-| -}
+onReact : String -> NativeEventHandler -> Property msg
+onReact eventName =
+    let
+        realEventName =
+            "on" ++ eventName
+    in
+        Native.NativeUi.onReact realEventName
 
 
 {-| -}

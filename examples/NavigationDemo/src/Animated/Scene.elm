@@ -3,7 +3,7 @@ module Animated.Scene exposing (view)
 import Array as Array
 import ExampleRow as Row
 import Animated.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
-import NativeUi.NavigationExperimental exposing (SceneRendererProps)
+import NativeUi.NavigationExperimental exposing (NavigationSceneRenderer)
 import NativeUi exposing (Node, Property, customNode, style)
 import NativeUi.Elements as Elements
 import NativeUi.Style as Style
@@ -14,7 +14,7 @@ import Json.Encode as Encode
 import NativeApi.Internal as Internal
 
 
-view : SceneRendererProps -> Node NavigationMsg
+view : NavigationSceneRenderer -> Node NavigationMsg
 view props =
     animatedView
         [ style
@@ -51,7 +51,7 @@ animatedView =
     customNode "Animated.View" "Animated" <| Just "View"
 
 
-getAnimatedStyle : SceneRendererProps -> Style.Style
+getAnimatedStyle : NavigationSceneRenderer -> Style.Style
 getAnimatedStyle props =
     let
         index =

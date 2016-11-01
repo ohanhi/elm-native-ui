@@ -48,6 +48,6 @@ view model =
         []
 
 
-viewScene : NE.SceneRendererProps -> Node NavigatorMsg
+viewScene : NE.NavigationSceneRenderer -> Node NavigatorMsg
 viewScene props =
     Scene.view props |> Ui.map Scene

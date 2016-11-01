@@ -9,11 +9,11 @@ import NativeUi.Events as Events
 import Tab.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
 
 
-view : NE.SceneRendererProps -> Node NavigationMsg
+view : NE.NavigationSceneRenderer -> Node NavigationMsg
 view props =
     let
         rendererProps =
-            NE.sceneRendererPropsToPropertyList props
+            NE.navigationSceneRendererToPropertyList props
 
         headerProps =
             [ NE.renderTitleComponent viewTitle
@@ -25,7 +25,7 @@ view props =
             []
 
 
-viewTitle : NE.SceneRendererProps -> Node NavigationMsg
+viewTitle : NE.NavigationSceneRenderer -> Node NavigationMsg
 viewTitle props =
     Elements.navigationHeaderTitle
         []

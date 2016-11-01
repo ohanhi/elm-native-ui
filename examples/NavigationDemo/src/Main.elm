@@ -6,6 +6,7 @@ https://github.com/facebook/react-native/tree/master/Examples/UIExplorer/js/Navi
 -}
 
 import Animated.Example as Anim
+import AnimatedPager.Example as AP
 import CardStack.Example as CS
 import ExampleRow exposing (underlayColor)
 import NativeUi as Ui exposing (Node)
@@ -36,6 +37,7 @@ main =
 type alias Model =
     { current : Current
     , animated : Anim.Model
+    , animatedPager : AP.Model
     , cardStack : CS.Model
     , cardStackNoGesture : CS.Model
     , tabs : Tabs.Model
@@ -46,6 +48,7 @@ init : ( Model, Cmd Msg )
 init =
     ( { current = None
       , animated = Anim.init
+      , animatedPager = AP.init
       , cardStack = CS.init True
       , cardStackNoGesture = CS.init False
       , tabs = Tabs.init
@@ -60,6 +63,7 @@ init =
 
 type Msg
     = Animated Anim.Msg
+    | AnimatedPager AP.Msg
     | CardStack CS.Msg
     | CardStackNoGesture CS.Msg
     | CardStackTabs Tabs.Msg
@@ -68,6 +72,7 @@ type Msg
 type Current
     = None
     | ExampleAnimated
+    | ExampleAnimatedPager
     | ExampleCardStack
     | ExampleCardStackNoGesture
     | ExampleCardStackTabs
@@ -82,6 +87,13 @@ update msg model =
                     updateSubModel animMsg model.animated Anim.update ExampleAnimated
             in
                 ( { model | current = current, animated = anim }, Cmd.none )
+
+        AnimatedPager animMsg ->
+            let
+                ( current, anim ) =
+                    updateSubModel animMsg model.animatedPager AP.update ExampleAnimatedPager
+            in
+                ( { model | current = current, animatedPager = anim }, Cmd.none )
 
         CardStack cardStackMsg ->
             let
@@ -130,6 +142,9 @@ view model =
         ExampleAnimated ->
             Anim.view model.animated |> Ui.map Animated
 
+        ExampleAnimatedPager ->
+            AP.view model.animatedPager |> Ui.map AnimatedPager
+
         ExampleCardStack ->
             viewCardStack model.cardStack
 
@@ -149,6 +164,7 @@ viewNone =
         , row "CardStack Example" <| CardStack <| CS.Start True
         , row "CardStack Without Gestures Example" <| CardStack <| CS.Start False
         , row "Transitioner + Animated View Example" <| Animated Anim.Start
+        , row "Transitioner + Animated View Pager Example" <| AnimatedPager AP.Start
         ]
 
 

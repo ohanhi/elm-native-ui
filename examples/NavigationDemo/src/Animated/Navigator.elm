@@ -54,13 +54,13 @@ configureTransition =
     }
 
 
-viewTransition : NE.NavigationTransitionProps -> List (Node NavigatorMsg)
+viewTransition : NE.NavigationTransition -> List (Node NavigatorMsg)
 viewTransition props =
     List.map (viewScene props) props.scenes
 
 
-viewScene : NE.NavigationTransitionProps -> NE.NavigationScene -> Node NavigatorMsg
+viewScene : NE.NavigationTransition -> NE.NavigationScene -> Node NavigatorMsg
 viewScene props scene =
-    NE.transitionToSceneRendererProps props scene
+    NE.transitionToNavigationSceneRenderer props scene
         |> Scene.view
         |> Ui.map Scene

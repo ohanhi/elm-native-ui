@@ -99,12 +99,22 @@ jumpTo key state =
 
 back : NavigationState -> NavigationState
 back state =
-    jumpToIndex (state.index - 1) state
+    case getRoute (state.index - 1) state of
+        Nothing ->
+            state
+
+        Just route ->
+            jumpToIndex (state.index - 1) state
 
 
 forward : NavigationState -> NavigationState
 forward state =
-    jumpToIndex (state.index + 1) state
+    case getRoute (state.index + 1) state of
+        Nothing ->
+            state
+
+        Just route ->
+            jumpToIndex (state.index + 1) state
 
 
 replaceAt : String -> NavigationRoute -> NavigationState -> NavigationState

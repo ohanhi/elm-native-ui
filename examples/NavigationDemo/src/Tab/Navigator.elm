@@ -89,12 +89,12 @@ view model =
                     ]
 
 
-viewHeader : NE.SceneRendererProps -> Node NavigatorMsg
+viewHeader : NE.NavigationSceneRenderer -> Node NavigatorMsg
 viewHeader props =
     Header.view props |> Ui.map Back
 
 
-viewScene : NE.SceneRendererProps -> Node NavigatorMsg
+viewScene : NE.NavigationSceneRenderer -> Node NavigatorMsg
 viewScene props =
     Scene.view props |> Ui.map Scene
 
