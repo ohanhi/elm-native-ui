@@ -1,13 +1,12 @@
 module AnimatedPager.Navigator exposing (NavigatorModel, NavigatorMsg(Scene), update, view)
 
-import Dict as Dict
 import AnimatedPager.NavigationMsg as Msg exposing (NavigationMsg(Back, Exit, Forward))
 import AnimatedPager.Scene as Scene
-import NativeUi.NavigationExperimental as NE
-import NativeApi.Easing as Easing
+import Dict as Dict
 import NativeUi as Ui exposing (Node, node, map, style)
 import NativeUi.Elements as Elements
 import NativeUi.Events as Events
+import NativeUi.NavigationExperimental as NE
 import NativeUi.Properties exposing (enableGestures)
 import NativeUi.Style as Style
 

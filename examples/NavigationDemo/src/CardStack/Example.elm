@@ -3,8 +3,8 @@ module CardStack.Example exposing (Model, Msg(Start), init, update, view)
 import CardStack.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
 import CardStack.Navigator as Navigator
 import NativeApi.NavigationStateUtil exposing (pop, push)
-import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 import NativeUi exposing (Node, Property, node)
+import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 
 
 -- MODEL

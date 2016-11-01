@@ -2,14 +2,14 @@ module Tab.Navigator exposing (NavigatorModel, NavigatorTabState, NavigatorMsg, 
 
 import Dict as Dict
 import NativeApi.NavigationStateUtil as NS
-import NativeUi.NavigationExperimental as NE
 import NativeUi as Ui exposing (Node, node, map)
 import NativeUi.Elements as Elements
 import NativeUi.Events as Events
+import NativeUi.NavigationExperimental as NE
 import NativeUi.Properties as Properties
 import NativeUi.Style as Style
-import Tab.NavigationMsg exposing (NavigationMsg(Exit, Jump, None, Pop, Push))
 import Tab.Header as Header
+import Tab.NavigationMsg exposing (NavigationMsg(Exit, Jump, None, Pop, Push))
 import Tab.Scene as Scene
 import Tab.Tab as Tab
 

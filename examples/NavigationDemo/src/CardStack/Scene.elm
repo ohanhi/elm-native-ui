@@ -1,10 +1,10 @@
 module CardStack.Scene exposing (view)
 
-import ExampleRow as Row
 import CardStack.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
-import NativeUi.NavigationExperimental exposing (NavigationSceneRenderer)
+import ExampleRow as Row
 import NativeUi exposing (Node)
 import NativeUi.Elements as Elements
+import NativeUi.NavigationExperimental exposing (NavigationSceneRenderer)
 
 
 view : NavigationSceneRenderer -> Node NavigationMsg

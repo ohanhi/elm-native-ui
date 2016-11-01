@@ -3,8 +3,8 @@ module Animated.Example exposing (Model, Msg(Start), init, update, view)
 import Animated.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
 import Animated.Navigator as Navigator
 import NativeApi.NavigationStateUtil exposing (pop, push)
-import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 import NativeUi exposing (Node, Property, node)
+import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 
 
 -- MODEL

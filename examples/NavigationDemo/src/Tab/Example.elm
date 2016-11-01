@@ -2,8 +2,8 @@ module Tab.Example exposing (Model, Msg(Start), init, update, view)
 
 import Dict as Dict
 import NativeApi.NavigationStateUtil exposing (jumpTo, pop, push)
-import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 import NativeUi exposing (Node, Property, node)
+import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 import Tab.NavigationMsg exposing (NavigationMsg(Exit, Jump, None, Pop, Push))
 import Tab.Navigator as Navigator
 

@@ -3,11 +3,11 @@ module AnimatedPager.Example exposing (Model, Msg(Start), init, update, view)
 import AnimatedPager.NavigationMsg exposing (NavigationMsg(Back, Exit, Forward))
 import AnimatedPager.Navigator as Navigator
 import Dict as Dict
+import ExampleRow as Row
 import NativeApi.NavigationStateUtil exposing (back, forward)
-import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 import NativeUi exposing (Node, Property, node, style)
 import NativeUi.Elements as Elements
-import ExampleRow as Row
+import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationState, navigationState)
 import NativeUi.Style as Style
 
 

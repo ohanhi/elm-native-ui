@@ -1,11 +1,11 @@
 module Tab.Header exposing (view)
 
 import ExampleRow as Row
-import NativeUi.NavigationExperimental as NE
 import NativeUi as Ui
 import NativeUi exposing (Node)
 import NativeUi.Elements as Elements
 import NativeUi.Events as Events
+import NativeUi.NavigationExperimental as NE
 import Tab.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
 
 

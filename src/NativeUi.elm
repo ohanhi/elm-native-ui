@@ -1,4 +1,4 @@
-module NativeUi exposing (NativeEvent, NativeEventHandler, Node, customNode, node, string, style, mergeStyles, on, onReact, Property, property, map, program, renderProperty, renderListProperty)
+module NativeUi exposing (NativeEventHandler, Node, customNode, node, string, style, mergeStyles, on, onReact, Property, property, map, program, renderProperty, renderListProperty)
 
 {-| Render your application as a React Native app.
 
@@ -21,10 +21,6 @@ import NativeUi.Style as Style
 
 
 type alias NativeEventHandler =
-    Decode.Value
-
-
-type alias NativeEvent =
     Decode.Value
 
 

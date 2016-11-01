@@ -1,17 +1,17 @@
 module Animated.Scene exposing (view)
 
+import Animated.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
 import Array as Array
 import ExampleRow as Row
-import Animated.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
-import NativeUi.NavigationExperimental exposing (NavigationSceneRenderer)
+import Json.Decode as Decode
+import Json.Encode as Encode
+import NativeApi.Animated as Animated
+import NativeApi.Internal as Internal
 import NativeUi exposing (Node, Property, customNode, style)
 import NativeUi.Elements as Elements
-import NativeUi.Style as Style
+import NativeUi.NavigationExperimental exposing (NavigationSceneRenderer)
 import NativeUi.Properties as Properties
-import Json.Decode as Decode
-import NativeApi.Animated as Animated
-import Json.Encode as Encode
-import NativeApi.Internal as Internal
+import NativeUi.Style as Style
 
 
 view : NavigationSceneRenderer -> Node NavigationMsg

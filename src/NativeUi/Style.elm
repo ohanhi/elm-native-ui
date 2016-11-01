@@ -3,6 +3,7 @@ module NativeUi.Style
         ( Animatable(Animated, NotAnimated)
         , NativeStyle
         , Style
+        , Transform
         , encode
         , merge
         , color
@@ -69,14 +70,13 @@ module NativeUi.Style
         , right
         , top
         , width
-        , Transform
         , defaultTransform
         , transform
         )
 
 {-| Style your elements
 
-@docs Style, encode, color, fontFamily, fontSize, fontWeight, letterSpacing, lineHeight, textAlign, textDecorationLine, textDecorationStyle, textDecorationColor, writingDirection, backfaceVisibility, backgroundColor, borderColor, borderStyle, borderWidth, borderRadius, borderTopColor, borderTopWidth, borderTopLeftRadius, borderTopRightRadius, borderLeftColor, borderLeftWidth, borderBottomColor, borderBottomWidth, borderBottomLeftRadius, borderBottomRightRadius, borderRightColor, borderRightWidth, overflow, opacity, shadowColor, shadowOffset, shadowRadius, shadowOpacity, resizeMode, tintColor, alignItems, alignSelf, bottom, flex, flexDirection, flexWrap, height, justifyContent, left, margin, marginBottom, marginLeft, marginRight, marginTop, marginHorizontal, marginVertical, padding, paddingLeft, paddingRight, paddingTop, paddingBottom, paddingHorizontal, paddingVertical, position, right, top, width, Transform, defaultTransform, transform
+@docs Animatable, NativeStyle, Style, Transform, encode, merge, color, fontFamily, fontSize, fontWeight, letterSpacing, lineHeight, textAlign, textDecorationLine, textDecorationStyle, textDecorationColor, writingDirection, backfaceVisibility, backgroundColor, borderColor, borderStyle, borderWidth, borderRadius, borderTopColor, borderTopWidth, borderTopLeftRadius, borderTopRightRadius, borderLeftColor, borderLeftWidth, borderBottomColor, borderBottomWidth, borderBottomLeftRadius, borderBottomRightRadius, borderRightColor, borderRightWidth, overflow, opacity, shadowColor, shadowOffset, shadowRadius, shadowOpacity, resizeMode, tintColor, alignItems, alignSelf, bottom, flex, flexDirection, flexWrap, height, justifyContent, left, margin, marginBottom, marginLeft, marginRight, marginTop, marginHorizontal, marginVertical, padding, paddingLeft, paddingRight, paddingTop, paddingBottom, paddingHorizontal, paddingVertical, position, right, top, width, Transform, defaultTransform, transform
 
 -}
 
@@ -84,6 +84,7 @@ import Json.Encode
 import NativeApi.Animated as Animated
 
 
+{-| -}
 type alias NativeStyle =
     Json.Encode.Value
 
@@ -649,6 +650,7 @@ width =
 --Transform Styles
 
 
+{-| -}
 type Animatable
     = NotAnimated Float
     | Animated Animated.AnimatedValue

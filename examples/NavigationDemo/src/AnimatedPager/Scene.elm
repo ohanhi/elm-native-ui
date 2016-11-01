@@ -2,17 +2,17 @@ module AnimatedPager.Scene exposing (view)
 
 import AnimatedPager.NavigationMsg exposing (NavigationMsg(Back, Exit, Forward))
 import ExampleRow as Row
-import NativeUi.NavigationExperimental exposing (NavigationSceneRenderer, NavigationState, pagerPanResponderForHorizontal, pagerStyleInterpolatorForHorizontal)
+import Json.Decode as Decode
+import Json.Encode as Encode
+import NativeApi.Animated as Animated
+import NativeApi.Internal as Internal
+import NativeApi.NavigationStateUtil exposing (back, forward)
 import NativeUi exposing (Node, Property, customNode, map, style, mergeStyles)
 import NativeUi.Elements as Elements
-import NativeUi.Style as Style
-import NativeUi.Properties as Properties
-import Json.Decode as Decode
-import NativeApi.Animated as Animated
-import Json.Encode as Encode
-import NativeApi.Internal as Internal
 import NativeUi.Events as Events
-import NativeApi.NavigationStateUtil exposing (back, forward)
+import NativeUi.NavigationExperimental exposing (NavigationSceneRenderer, NavigationState, pagerPanResponderForHorizontal, pagerStyleInterpolatorForHorizontal)
+import NativeUi.Properties as Properties
+import NativeUi.Style as Style
 
 
 onNavigateForward : NavigationState -> Bool

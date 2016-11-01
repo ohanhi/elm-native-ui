@@ -2,10 +2,10 @@ module CardStack.Navigator exposing (NavigatorModel, NavigatorMsg, update, view)
 
 import CardStack.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
 import CardStack.Scene as Scene
-import NativeUi.NavigationExperimental as NE
 import NativeUi as Ui exposing (Node, node, map)
 import NativeUi.Elements as Elements
 import NativeUi.Events as Events
+import NativeUi.NavigationExperimental as NE
 import NativeUi.Properties exposing (enableGestures)
 import NativeUi.Style as Style
 

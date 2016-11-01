@@ -1,9 +1,9 @@
 module Tab.Tab exposing (tab)
 
-import NativeUi.NavigationExperimental exposing (NavigationRoute)
 import NativeUi as Ui exposing (Node, Property, string, style)
 import NativeUi.Elements exposing (touchableOpacity, text, view)
 import NativeUi.Events as Events exposing (onPress)
+import NativeUi.NavigationExperimental exposing (NavigationRoute)
 import NativeUi.Style as Style
 import Tab.NavigationMsg exposing (NavigationMsg(Jump))
 

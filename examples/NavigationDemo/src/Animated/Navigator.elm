@@ -2,12 +2,10 @@ module Animated.Navigator exposing (NavigatorModel, NavigatorMsg, update, view)
 
 import Animated.NavigationMsg exposing (NavigationMsg(Exit, None, Pop, Push))
 import Animated.Scene as Scene
-import NativeUi.NavigationExperimental as NE
 import NativeApi.Easing as Easing
 import NativeUi as Ui exposing (Node, node, map)
 import NativeUi.Elements as Elements
-import NativeUi.Events as Events
-import NativeUi.Properties exposing (enableGestures)
+import NativeUi.NavigationExperimental as NE
 import NativeUi.Style as Style
 
 
