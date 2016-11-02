@@ -1,18 +1,17 @@
 {
-  "name": "MyAppName",
+  "name": "Counter",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "precompile": "rm -f elm.js",
     "compile": "elm-make Main.elm --output elm.js",
-    "postcompile": "echo 'module.exports = Elm;' >> elm.js",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "watch": "chokidar '**/*.elm' -c 'npm run compile'"
   },
   "dependencies": {
     "react": "15.3.2",
-    "react-native": "0.35.0"
+    "react-native": "0.36.0"
   },
   "jest": {
     "preset": "jest-react-native"
