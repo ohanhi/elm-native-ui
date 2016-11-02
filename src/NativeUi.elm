@@ -1,9 +1,9 @@
-module NativeUi exposing (Node, node, string, style, on, Property, property, map, program)
+module NativeUi exposing (Node, customNode, node, string, style, on, Property, property, map, program, renderProperty)
 
 {-| Render your application as a React Native app.
 
 # Common Helpers
-@docs node, string, style, property, map
+@docs node, string, customNode, style, property, map, renderProperty
 
 # Events
 @docs on
@@ -37,6 +37,12 @@ node =
 
 
 {-| -}
+customNode : String -> String -> Maybe String -> List (Property msg) -> List (Node msg) -> Node msg
+customNode =
+    Native.NativeUi.customNode
+
+
+{-| -}
 string : String -> Node msg
 string =
     Native.NativeUi.string
@@ -44,11 +50,16 @@ string =
 
 {-| -}
 property : String -> Value -> Property msg
-property name value =
+property =
     Native.NativeUi.property
 
 
 {-| -}
+renderProperty : String -> Decoder a -> (a -> Node b) -> Property msg
+renderProperty =
+    Native.NativeUi.renderProperty
+
+
 style : List Style.Style -> Property msg
 style styles =
     Style.encode styles
