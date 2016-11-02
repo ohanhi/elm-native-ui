@@ -13,6 +13,7 @@ class ElmTransformer {
     this.funcPropertyTemplate = fs.readFileSync("templates/func-property.ejs", 'utf8');
     this.funcConstantPropertyTemplate = fs.readFileSync("templates/func-constant-property.ejs", 'utf8');
     this.elementTemplate = fs.readFileSync("templates/element.ejs", 'utf8');
+    this.elementCustomTemplate = fs.readFileSync("templates/element-custom.ejs", 'utf8');
     this.uriPropertyTemplate = fs.readFileSync("templates/uri-property.ejs", 'utf8');
   }
 
@@ -23,6 +24,11 @@ class ElmTransformer {
 
   element(elementName, elementFuncName) {
     return ejs.render(this.elementTemplate, { elementName: elementName, elementFuncName: elementFuncName });
+  }
+
+  elementCustom(elementName, elementFuncName, moduleName, exportedName) {
+    return ejs.render(this.elementCustomTemplate, { elementName: elementName, elementFuncName: elementFuncName,
+      moduleName: moduleName, exportedName: exportedName });
   }
 
   property(propName, propType) {
@@ -61,13 +67,13 @@ class ElmTransformer {
 
       return ejs.render(this.funcPropertyTemplate, {
         funcName: funcName,
-        handlerName: funcName.replace("on", ""),
+        handlerName: funcName.replace(/^on/, ""),
         decoder: decoder
       });
     } else {
       return ejs.render(this.funcConstantPropertyTemplate, {
         funcName: funcName,
-        handlerName: funcName.replace("on", "")
+        handlerName: funcName.replace(/^on/, "")
       });
     }
 

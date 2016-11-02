@@ -1,11 +1,11 @@
-module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, view)
+module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, view, navigationCardStack)
 
 {-| elm-native-ui Elements
 
-@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, view
+@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, view, navigationCardStack
 -}
 
-import NativeUi exposing (Property, Node, node)
+import NativeUi exposing (Property, Node, customNode, node)
 
 
 {-| -}
@@ -105,6 +105,18 @@ toolbar =
 
 
 {-| -}
+touchableHighlight : List (Property msg) -> List (Node msg) -> Node msg
+touchableHighlight =
+    node "TouchableHighlight"
+
+
+{-| -}
 view : List (Property msg) -> List (Node msg) -> Node msg
 view =
     node "View"
+
+
+{-| -}
+navigationCardStack : List (Property msg) -> List (Node msg) -> Node msg
+navigationCardStack =
+    customNode "NavigationCardStack" "NavigationCardStack" Nothing
