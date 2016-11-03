@@ -1,8 +1,8 @@
-module NativeUi.Events exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange)
+module NativeUi.Events exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onTransitionEnd, onTransitionStart, onNavigateBack)
 
 {-| elm-native-ui Handlers
 
-@docs onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange
+@docs onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onTransitionEnd, onTransitionStart, onNavigateBack
 -}
 
 import Json.Decode as Decode exposing (Value, Decoder)
@@ -78,3 +78,33 @@ onScrollAnimationEnd =
 onContentSizeChange : msg -> Property msg
 onContentSizeChange =
     constantMsgEvent "ContentSizeChange"
+
+
+{-| -}
+onShowUnderlay : msg -> Property msg
+onShowUnderlay =
+    constantMsgEvent "ShowUnderlay"
+
+
+{-| -}
+onHideUnderlay : msg -> Property msg
+onHideUnderlay =
+    constantMsgEvent "HideUnderlay"
+
+
+{-| -}
+onTransitionEnd : msg -> Property msg
+onTransitionEnd =
+    constantMsgEvent "TransitionEnd"
+
+
+{-| -}
+onTransitionStart : msg -> Property msg
+onTransitionStart =
+    constantMsgEvent "TransitionStart"
+
+
+{-| -}
+onNavigateBack : msg -> Property msg
+onNavigateBack =
+    constantMsgEvent "NavigateBack"

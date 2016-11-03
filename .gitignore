@@ -38,3 +38,6 @@ elm-stuff/
 
 # generator
 rn-modules.json
+
+# examples
+examples/**/elm.js

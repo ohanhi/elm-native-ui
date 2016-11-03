@@ -1,11 +1,11 @@
-module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, view)
+module NativeUi.Elements exposing (text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationTransitioner, navigationCardStack, navigationHeader, navigationHeaderTitle)
 
 {-| elm-native-ui Elements
 
-@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, view
+@docs text, image, activityIndicator, mapView, picker, progressBar, progressView, refreshControl, scrollView, segmentedControl, slider, statusBar, switch, tabBar, textInput, toolbar, touchableHighlight, touchableOpacity, view, navigationTransitioner, navigationCardStack, navigationHeader, navigationHeaderTitle
 -}
 
-import NativeUi exposing (Property, Node, node)
+import NativeUi exposing (Property, Node, customNode, node)
 
 
 {-| -}
@@ -105,6 +105,42 @@ toolbar =
 
 
 {-| -}
+touchableHighlight : List (Property msg) -> List (Node msg) -> Node msg
+touchableHighlight =
+    node "TouchableHighlight"
+
+
+{-| -}
+touchableOpacity : List (Property msg) -> List (Node msg) -> Node msg
+touchableOpacity =
+    node "TouchableOpacity"
+
+
+{-| -}
 view : List (Property msg) -> List (Node msg) -> Node msg
 view =
     node "View"
+
+
+{-| -}
+navigationTransitioner : List (Property msg) -> List (Node msg) -> Node msg
+navigationTransitioner =
+    customNode "NavigationTransitioner" "NavigationExperimental" <| Just "Transitioner"
+
+
+{-| -}
+navigationCardStack : List (Property msg) -> List (Node msg) -> Node msg
+navigationCardStack =
+    customNode "NavigationCardStack" "NavigationCardStack" Nothing
+
+
+{-| -}
+navigationHeader : List (Property msg) -> List (Node msg) -> Node msg
+navigationHeader =
+    customNode "NavigationHeader" "NavigationHeader" Nothing
+
+
+{-| -}
+navigationHeaderTitle : List (Property msg) -> List (Node msg) -> Node msg
+navigationHeaderTitle =
+    customNode "NavigationHeaderTitle" "NavigationHeaderTitle" Nothing

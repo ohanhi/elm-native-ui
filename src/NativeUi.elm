@@ -1,12 +1,12 @@
-module NativeUi exposing (Node, node, string, style, on, Property, property, map, program)
+module NativeUi exposing (NativeEventHandler, Node, customNode, node, string, style, mergeStyles, on, onReact, Property, property, map, program, renderProperty, renderListProperty)
 
 {-| Render your application as a React Native app.
 
 # Common Helpers
-@docs node, string, style, property, map
+@docs node, string, customNode, style, mergeStyles, property, map, renderProperty, renderListProperty
 
 # Events
-@docs on
+@docs on, onReact
 
 # Types
 @docs Node, Property
@@ -18,6 +18,10 @@ module NativeUi exposing (Node, node, string, style, on, Property, property, map
 import Json.Decode as Decode exposing (Value, Decoder)
 import Native.NativeUi
 import NativeUi.Style as Style
+
+
+type alias NativeEventHandler =
+    Decode.Value
 
 
 {-| -}
@@ -37,6 +41,12 @@ node =
 
 
 {-| -}
+customNode : String -> String -> Maybe String -> List (Property msg) -> List (Node msg) -> Node msg
+customNode =
+    Native.NativeUi.customNode
+
+
+{-| -}
 string : String -> Node msg
 string =
     Native.NativeUi.string
@@ -44,14 +54,33 @@ string =
 
 {-| -}
 property : String -> Value -> Property msg
-property name value =
+property =
     Native.NativeUi.property
+
+
+{-| -}
+renderProperty : String -> Decoder a -> (a -> Node b) -> Property msg
+renderProperty =
+    Native.NativeUi.renderProperty
+
+
+{-| -}
+renderListProperty : String -> Decoder a -> (a -> List (Node b)) -> Property msg
+renderListProperty =
+    Native.NativeUi.renderListProperty
 
 
 {-| -}
 style : List Style.Style -> Property msg
 style styles =
     Style.encode styles
+        |> Native.NativeUi.style
+
+
+{-| -}
+mergeStyles : List Style.NativeStyle -> Property msg
+mergeStyles styles =
+    Style.merge styles
         |> Native.NativeUi.style
 
 
@@ -63,6 +92,16 @@ on eventName =
             "on" ++ eventName
     in
         Native.NativeUi.on realEventName
+
+
+{-| -}
+onReact : String -> NativeEventHandler -> Property msg
+onReact eventName =
+    let
+        realEventName =
+            "on" ++ eventName
+    in
+        Native.NativeUi.onReact realEventName
 
 
 {-| -}
