@@ -11,7 +11,8 @@
         "NativeUi.Style",
         "NativeUi.Elements",
         "NativeUi.Properties",
-        "NativeUi.Events"
+        "NativeUi.Events",
+        "NativeUi.AsyncStorage"
     ],
     "native-modules": true,
     "dependencies": {
