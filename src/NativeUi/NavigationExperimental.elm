@@ -1,4 +1,4 @@
-module NativeUi.NavigationExperimental exposing (NavigationSceneRenderer, NavigationRoute, NavigationScene, NavigationState, layout, navigationState, renderScene, scene, navigationSceneRendererToPropertyList)
+module NativeUi.NavigationExperimental exposing (NavigationSceneRenderer, NavigationRoute, NavigationScene, NavigationState, layout, navigationState, renderHeader, renderScene, renderTitleComponent, scene, navigationSceneRendererToPropertyList)
 
 import Json.Decode as Decode
 import Json.Encode as Encode exposing (Value, bool, int, list, object, string)
@@ -10,9 +10,21 @@ import NativeUi.Style as Style
 
 -- RENDER
 
+
+renderHeader : (NavigationSceneRenderer -> Node a) -> Property msg
+renderHeader =
+    renderProperty "renderHeader" decodeNavigationSceneRenderer
+
+
 renderScene : (NavigationSceneRenderer -> Node a) -> Property msg
 renderScene =
     renderProperty "renderScene" decodeNavigationSceneRenderer
+
+
+renderTitleComponent : (NavigationSceneRenderer -> Node a) -> Property msg
+renderTitleComponent =
+    renderProperty "renderTitleComponent" decodeNavigationSceneRenderer
+
 
 
 -- NAVIGATION LAYOUT

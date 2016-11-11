@@ -12,6 +12,7 @@ import NativeUi.Elements as Elements exposing (scrollView, text, touchableHighli
 import NativeUi.Events exposing (onPress)
 import NativeUi.Properties as Properties
 import NativeUi.Style as Style
+import Tab.Example as Tabs
 
 
 -- PROGRAM
@@ -35,6 +36,7 @@ type alias Model =
     { current : Current
     , cardStack : CS.Model
     , cardStackNoGesture : CS.Model
+    , tabs : Tabs.Model
     }
 
 
@@ -43,6 +45,7 @@ init =
     ( { current = None
       , cardStack = CS.init True
       , cardStackNoGesture = CS.init False
+      , tabs = Tabs.init
       }
     , Cmd.none
     )
@@ -54,12 +57,15 @@ init =
 
 type Msg
     = CardStack CS.Msg
-
+    | CardStackNoGesture CS.Msg
+    | CardStackTabs Tabs.Msg
 
 
 type Current
     = None
     | ExampleCardStack
+    | ExampleCardStackNoGesture
+    | ExampleCardStackTabs
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -71,6 +77,20 @@ update msg model =
                     updateSubModel cardStackMsg model.cardStack CS.update ExampleCardStack
             in
                 ( { model | current = current, cardStack = cardStack }, Cmd.none )
+
+        CardStackNoGesture cardStackMsg ->
+            let
+                ( current, cardStack ) =
+                    updateSubModel cardStackMsg model.cardStackNoGesture CS.update ExampleCardStackNoGesture
+            in
+                ( { model | current = current, cardStack = cardStack }, Cmd.none )
+
+        CardStackTabs tabsMsg ->
+            let
+                ( current, tabs ) =
+                    updateSubModel tabsMsg model.tabs Tabs.update ExampleCardStackTabs
+            in
+                ( { model | current = current, tabs = tabs }, Cmd.none )
 
 
 updateSubModel : msg -> model -> (msg -> model -> ( model, Bool )) -> Current -> ( Current, model )
@@ -98,13 +118,21 @@ view model =
         ExampleCardStack ->
             viewCardStack model.cardStack
 
+        ExampleCardStackNoGesture ->
+            viewCardStack model.cardStackNoGesture
+
+        ExampleCardStackTabs ->
+            Tabs.view model.tabs |> Ui.map CardStackTabs
+
 
 viewNone : Node Msg
 viewNone =
     Elements.scrollView
         []
         [ label "Navigation Experimental"
+        , row "CardStack + Header + Tabs Example" <| CardStackTabs Tabs.Start
         , row "CardStack Example" <| CardStack <| CS.Start True
+        , row "CardStack Without Gestures Example" <| CardStack <| CS.Start False
         ]
 
 
