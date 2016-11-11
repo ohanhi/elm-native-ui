@@ -39,6 +39,14 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     };
   }
 
+  function renderProperty(propName, decoder, value) {
+    return {
+      type: 'renderProp',
+      propName: propName,
+      value: value,
+      decoder: decoder
+    };
+  }
 
   // ELEMENTS
 
@@ -83,6 +91,28 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   }
 
   /**
+   * A non-standard node that renders a React Native component with props and children
+   */
+  function customNode(tagName, moduleName, maybeExportedName) {
+    var exportedName = null;
+
+    if (maybeExportedName.ctor !== 'Nothing') {
+      exportedName = maybeExportedName._0;
+    }
+
+    return F2(function(factList, childList) {
+      return {
+        type: 'component',
+        tagName: tagName,
+        facts: toArray(factList),
+        children: toArray(childList),
+        moduleName: moduleName,
+        exportedName: exportedName
+      };
+    });
+  }
+
+  /**
    * Maps another node onto a different message type
    */
   function map(tagger, node) {
@@ -102,13 +132,8 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   function makeEventHandler(eventNode, decoder) {
     function eventHandler(event) {
       var decoder = eventHandler.decoder;
-      var value = A2(_elm_lang$core$Native_Json.run, decoder, event);
+      var message = decodeValue(eventHandler.decoder, event);
 
-      if (value.ctor !== 'Ok') {
-        return;
-      }
-
-      var message = value._0;
       var currentEventNode = eventNode;
       while (currentEventNode) {
         var tagger = currentEventNode.tagger;
@@ -131,6 +156,38 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   }
 
   /**
+   * Converts a fact whose value is a function that renders a subTree into a
+   * function that constructs the subTree to render with the provided props.
+   * This is used by NavigationExperimental to pass the header and scene views
+   * into the component
+   */
+  function makeRenderNodePropHandler(fact, eventNode, key) {
+    function handler(props) {
+      var decodedProps = decodeValue(handler.decoder, props);
+
+      return renderTree(handler.component(decodedProps), eventNode, key);
+    };
+
+    handler.component = fact.value;
+    handler.decoder = fact.decoder;
+
+    return handler;
+  }
+
+  /**
+   * Decodes properties from elm into json props for react-native
+   */
+  function decodeValue(decoder, value) {
+    var decodedValue = A2(_elm_lang$core$Native_Json.run, decoder, value);
+
+    if (decodedValue.ctor !== 'Ok') {
+      throw Error(decodedValue._0);
+    }
+
+    return decodedValue._0;
+  }
+
+  /**
    * Converts a string node back to a plain string for React Native to render
    */
   function renderString(node) {
@@ -140,7 +197,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   /**
    * Composes taggers created by `map`
    */
-  function renderTagger(node, eventNode) {
+  function renderTagger(node, eventNode, key) {
     var subNode = node.node;
     var tagger = node.tagger;
 
@@ -153,7 +210,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     }
 
     var subEventRoot = { tagger: tagger, parent: eventNode };
-    return renderTree(subNode, subEventRoot);
+    return renderTree(subNode, subEventRoot, key);
   }
 
   /**
@@ -161,21 +218,26 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
    * children array and props object, looks up the component by name on the
    * React Native module and calls into React.createElement.
    */
-  function renderComponent(node, eventNode) {
+  function renderComponent(node, eventNode, key) {
     var children = [];
     for (var i = 0; i < node.children.length; i++) {
-      children.push(renderTree(node.children[i], eventNode));
+      children.push(renderTree(node.children[i], eventNode, i));
     }
 
     var finalProps = {};
 
-    for (var i = 0; i < node.facts.length; i++) {
-      var fact = node.facts[i];
+    for (var j = 0; j < node.facts.length; j++) {
+      var fact = node.facts[j];
+
       switch (fact.type) {
         case 'prop':
           finalProps[fact.propName] = fact.value;
           break;
 
+        case 'renderProp':
+          finalProps[fact.propName] = makeRenderNodePropHandler(fact, eventNode, key);
+          break;
+	  
         case 'event':
           finalProps[fact.eventName] = makeEventHandler(eventNode, fact.decoder);
           break;
@@ -186,28 +248,47 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
       }
     }
 
+    if(!finalProps.key) {
+      finalProps.key = 'elm-native-ui-auto-added-' + key;
+    }
+
     if (children.length === 1) {
       finalProps.children = children[0];
     } else if (children.length) {
       finalProps.children = children;
     }
 
-    return React.createElement(ReactNative[node.tagName], finalProps);
+    if (ReactNative[node.tagName]) {
+      return React.createElement(ReactNative[node.tagName], finalProps);
+    } else {
+      if (!node.moduleName) {
+          throw Error('Unable to find a node called ' + node.tagName + ' in ReactNative. Try defining it as a customNode');
+      }
+
+      var customComponent = require(node.moduleName);
+
+      if(node.exportedName) {
+          return React.createElement(customComponent[node.exportedName], finalProps);
+      } else {
+          return React.createElement(customComponent, finalProps);
+      }
+    }
   }
 
   /**
    * Renders the whole tree!
    */
-  function renderTree(node, eventNode) {
+  function renderTree(node, eventNode, key) {
     switch (node.type) {
       case 'string':
         return renderString(node);
 
       case 'tagger':
-        return renderTagger(node, eventNode);
+        return renderTagger(node, eventNode, key);
 
       case 'component':
-        return renderComponent(node, eventNode);
+        return renderComponent(node, eventNode, key);
+
     }
   }
 
@@ -249,7 +330,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
         // There won't be a model to render right away so we'll check that it
         // exists before trying to call the view function
         return typeof this.state.model !== 'undefined' ?
-          renderTree(impl.view(this.state.model), this.eventNode) :
+          renderTree(impl.view(this.state.model), this.eventNode, 0) :
           null;
       }
     });
@@ -302,11 +383,13 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     program: program,
     node: node,
     voidNode: voidNode,
+    customNode: F3(customNode),
     string: string,
     map: F2(map),
     on: F2(on),
     style: style,
     property: F2(property),
+    renderProperty: F3(renderProperty),
     encodeDate: identity,
     parseDate: parseDate
   };

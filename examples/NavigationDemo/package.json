@@ -1,0 +1,29 @@
+{
+  "name": "NavigationDemo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "compile": "elm make ./src/Main.elm --output elm.js",
+    "build": "npm run compile --silent",
+    "test": "jest",
+    "watch-elm": "chokidar 'src/**/*.elm' -c 'npm run compile' --silent",
+    "watch-ios": "react-native run-ios",
+    "watch": "npm run compile && npm run watch-ios && npm run watch-elm"
+  },
+  "dependencies": {
+    "react": "15.3.2",
+    "react-native": "0.36.1"
+  },
+  "jest": {
+    "preset": "jest-react-native"
+  },
+  "devDependencies": {
+    "babel-jest": "16.0.0",
+    "babel-preset-react-native": "1.9.0",
+    "chokidar-cli": "^1.2.0",
+    "jest": "16.0.2",
+    "jest-react-native": "16.0.0",
+    "react-test-renderer": "15.3.2"
+  }
+}

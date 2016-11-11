@@ -15,7 +15,6 @@ const rnModulePathPrefixes = ["Components", "Text"];
 const rnModuleFiles = [
   // "DatePicker/DatePicker.js",
   // "Intent/Intent.js",
-  // "Navigation/Navigation.js",
   // "ViewPager/ViewPager.js",
   // "WebView/WebView.js",
   // "DrawerAndroid/DrawerLayoutAndroid.android.js",
@@ -37,7 +36,9 @@ const rnModuleFiles = [
   "Components/TabBarIOS/TabBarIOS.ios.js",
   "Components/TextInput/TextInput.js",
   "Components/ToolbarAndroid/ToolbarAndroid.android.js",
-  "Components/View/View.js"
+  "Components/Touchable/TouchableHighlight.js",
+  "Components/View/View.js",
+  "CustomComponents/NavigationExperimental/NavigationCardStack.js"
 ];
 const exceptions = {
   "Slider": {
@@ -85,7 +86,8 @@ const exceptions = {
       "paramType": "string"
     }
   }
-}
+};
+
 const elmPropTypes = {
   "bool": {
     "type": "Bool",
@@ -108,6 +110,7 @@ const elmPropTypes = {
     "encoder": "int"
   }
 };
+
 const allowedPropTypes = [
   "bool",
   "string",
@@ -115,6 +118,14 @@ const allowedPropTypes = [
   "enum",
   "func"
 ];
+
+const customElements = {
+  "NavigationCardStack": {
+    moduleName: "NavigationCardStack",
+    exportedName: "Nothing"
+  },
+};
+
 const elmTransformer = new ElmTransformer();
 
 function enumValues(jsonValues) {
@@ -144,7 +155,14 @@ function generateElm(moduleJson) {
     let propNames = Object.keys(module.props);
 
     let elementFuncName = decapitalize(moduleName);
-    elements[elementFuncName] = elmTransformer.element(moduleName, elementFuncName);
+
+    if (customElements[moduleName]) {
+      elements[elementFuncName] = elmTransformer.elementCustom(moduleName, elementFuncName,
+        customElements[moduleName].moduleName, customElements[moduleName].exportedName);
+    } else {
+      elements[elementFuncName] = elmTransformer.element(moduleName, elementFuncName);
+    }
+
     propNames.forEach(function(propName) {
       if (module.props[propName].type) { // Ignore props without type for now
         let propType = module.props[propName].type.name;
@@ -174,7 +192,9 @@ function generateElm(moduleJson) {
                 type: exceptions[moduleName][propName].paramType
               }
             }
-            if (!events[funcName]) {
+
+            if (!events[funcName] &&
+                /^on/.test(funcName)) { // ignore non "on" functions as they are component properties
               events[funcName] = elmTransformer.funcProperty(
                 funcName,
                 funcParams
