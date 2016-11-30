@@ -37,9 +37,13 @@ const rnModuleFiles = [
   "Components/TextInput/TextInput.js",
   "Components/ToolbarAndroid/ToolbarAndroid.android.js",
   "Components/Touchable/TouchableHighlight.js",
+  "Components/Touchable/TouchableOpacity.js",
   "Components/View/View.js",
-  "CustomComponents/NavigationExperimental/NavigationCardStack.js"
+  "CustomComponents/NavigationExperimental/NavigationCardStack.js",
+  "CustomComponents/NavigationExperimental/NavigationHeader.js",
+  "CustomComponents/NavigationExperimental/NavigationHeaderTitle.js",
 ];
+
 const exceptions = {
   "Slider": {
     "onValueChange": {
@@ -124,7 +128,16 @@ const customElements = {
     moduleName: "NavigationCardStack",
     exportedName: "Nothing"
   },
+  "NavigationHeader": {
+    moduleName: "NavigationHeader",
+    exportedName: "Nothing"
+  },
+  "NavigationHeaderTitle": {
+    moduleName: "NavigationHeaderTitle",
+    exportedName: "Nothing"
+  }
 };
+
 
 const elmTransformer = new ElmTransformer();
 
