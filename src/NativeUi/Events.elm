@@ -1,6 +1,6 @@
 module NativeUi.Events exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack)
 
-{-| elm-native-ui Handlers
+{-| elm-native-ui Events
 
 @docs onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack
 -}
