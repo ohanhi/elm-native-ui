@@ -120,7 +120,7 @@ iOS | Android
   - [x] Support props besides styles and event handlers
   - [x] Unify syntax for styles, handlers and other props
 - [ ] Core features
-  - [ ] Navigation (NavigationExperimental)
+  - [x] Navigation (NavigationExperimental)
   - [ ] Tasks (HTTP calls, storage)
   - [ ] UIExplorer / Component examples
 
