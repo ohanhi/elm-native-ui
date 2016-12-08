@@ -12,7 +12,10 @@
         "NativeUi.Elements",
         "NativeUi.Properties",
         "NativeUi.Events",
-        "NativeUi.AsyncStorage"
+        "NativeUi.AsyncStorage",
+        "NativeUi.NavigationExperimental",
+        "NativeApi.Animated",
+        "NativeApi.NavigationStateUtil"
     ],
     "native-modules": true,
     "dependencies": {
