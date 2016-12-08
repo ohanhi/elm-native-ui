@@ -26,9 +26,8 @@ class ElmTransformer {
     return ejs.render(this.elementTemplate, { elementName: elementName, elementFuncName: elementFuncName });
   }
 
-  elementCustom(elementName, elementFuncName, moduleName, exportedName) {
-    return ejs.render(this.elementCustomTemplate, { elementName: elementName, elementFuncName: elementFuncName,
-      moduleName: moduleName, exportedName: exportedName });
+  elementCustom(elementName, elementFuncName) {
+    return ejs.render(this.elementCustomTemplate, { elementName: elementName, elementFuncName: elementFuncName });
   }
 
   property(propName, propType) {

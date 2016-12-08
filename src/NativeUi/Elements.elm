@@ -6,6 +6,7 @@ module NativeUi.Elements exposing (text, image, activityIndicator, mapView, pick
 -}
 
 import NativeUi exposing (Property, Node, customNode, node)
+import Native.NativeUi.Elements
 
 
 {-| -}
@@ -125,16 +126,16 @@ view =
 {-| -}
 navigationCardStack : List (Property msg) -> List (Node msg) -> Node msg
 navigationCardStack =
-    customNode "NavigationCardStack" "NavigationCardStack" Nothing
+    customNode "NavigationCardStack" Native.NativeUi.Elements.navigationCardStack
 
 
 {-| -}
 navigationHeader : List (Property msg) -> List (Node msg) -> Node msg
 navigationHeader =
-    customNode "NavigationHeader" "NavigationHeader" Nothing
+    customNode "NavigationHeader" Native.NativeUi.Elements.navigationHeader
 
 
 {-| -}
 navigationHeaderTitle : List (Property msg) -> List (Node msg) -> Node msg
 navigationHeaderTitle =
-    customNode "NavigationHeaderTitle" "NavigationHeaderTitle" Nothing
+    customNode "NavigationHeaderTitle" Native.NativeUi.Elements.navigationHeaderTitle

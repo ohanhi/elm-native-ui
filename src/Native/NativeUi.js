@@ -93,21 +93,14 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
   /**
    * A non-standard node that renders a React Native component with props and children
    */
-  function customNode(tagName, moduleName, maybeExportedName) {
-    var exportedName = null;
-
-    if (maybeExportedName.ctor !== 'Nothing') {
-      exportedName = maybeExportedName._0;
-    }
-
+  function customNode(tagName, nativeComponent) {
     return F2(function(factList, childList) {
       return {
         type: 'component',
         tagName: tagName,
         facts: toArray(factList),
         children: toArray(childList),
-        moduleName: moduleName,
-        exportedName: exportedName
+        nativeComponent: nativeComponent
       };
     });
   }
@@ -261,17 +254,11 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     if (ReactNative[node.tagName]) {
       return React.createElement(ReactNative[node.tagName], finalProps);
     } else {
-      if (!node.moduleName) {
+      if (!node.nativeComponent) {
           throw Error('Unable to find a node called ' + node.tagName + ' in ReactNative. Try defining it as a customNode');
       }
 
-      var customComponent = require(node.moduleName);
-
-      if(node.exportedName) {
-          return React.createElement(customComponent[node.exportedName], finalProps);
-      } else {
-          return React.createElement(customComponent, finalProps);
-      }
+      return React.createElement(node.nativeComponent, finalProps);
     }
   }
 
@@ -383,7 +370,7 @@ var _elm_native_ui$elm_native_ui$Native_NativeUi = (function () {
     program: program,
     node: node,
     voidNode: voidNode,
-    customNode: F3(customNode),
+    customNode: F2(customNode),
     string: string,
     map: F2(map),
     on: F2(on),
