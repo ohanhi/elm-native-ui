@@ -30,6 +30,15 @@ type Property msg
     = Property
 
 
+{-| This type represents a reference to a React component.
+
+  You should not use this type from Elm. It only exists to keep track of
+  JavaScript components that are passed through Elm to Native modules.
+-}
+type NativeComponent
+    = NativeComponent
+
+
 {-| -}
 node : String -> List (Property msg) -> List (Node msg) -> Node msg
 node =
@@ -37,7 +46,7 @@ node =
 
 
 {-| -}
-customNode : String -> String -> Maybe String -> List (Property msg) -> List (Node msg) -> Node msg
+customNode : String -> NativeComponent -> List (Property msg) -> List (Node msg) -> Node msg
 customNode =
     Native.NativeUi.customNode
 

@@ -123,20 +123,11 @@ const allowedPropTypes = [
   "func"
 ];
 
-const customElements = {
-  "NavigationCardStack": {
-    moduleName: "NavigationCardStack",
-    exportedName: "Nothing"
-  },
-  "NavigationHeader": {
-    moduleName: "NavigationHeader",
-    exportedName: "Nothing"
-  },
-  "NavigationHeaderTitle": {
-    moduleName: "NavigationHeaderTitle",
-    exportedName: "Nothing"
-  }
-};
+const customElements = [
+  "NavigationCardStack",
+  "NavigationHeader",
+  "NavigationHeaderTitle"
+];
 
 
 const elmTransformer = new ElmTransformer();
@@ -169,11 +160,10 @@ function generateElm(moduleJson) {
 
     let elementFuncName = decapitalize(moduleName);
 
-    if (customElements[moduleName]) {
-      elements[elementFuncName] = elmTransformer.elementCustom(moduleName, elementFuncName,
-        customElements[moduleName].moduleName, customElements[moduleName].exportedName);
-    } else {
+    if (customElements.indexOf(moduleName) == -1) {
       elements[elementFuncName] = elmTransformer.element(moduleName, elementFuncName);
+    } else {
+      elements[elementFuncName] = elmTransformer.elementCustom(moduleName, elementFuncName);
     }
 
     propNames.forEach(function(propName) {
