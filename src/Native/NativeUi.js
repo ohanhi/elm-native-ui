@@ -39,9 +39,17 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
     };
   }
 
-  function renderProperty(propName, decoder, value) {
+  function renderProperty(propName, value) {
     return {
       type: 'renderProp',
+      propName: propName,
+      value: value,
+    };
+  }
+
+  function unsafeRenderDecodedProperty(propName, decoder, value) {
+    return {
+      type: 'renderDecodedProp',
       propName: propName,
       value: value,
       decoder: decoder
@@ -156,6 +164,22 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
    */
   function makeRenderNodePropHandler(fact, eventNode, key) {
     function handler(props) {
+      return renderTree(handler.component(props), eventNode, key);
+    };
+
+    handler.component = fact.value;
+
+    return handler;
+  }
+
+  /**
+   * Converts a fact whose value is a function that renders a subTree into a
+   * function that constructs the subTree to render with the provided props.
+   * This is used by NavigationExperimental to pass the header and scene views
+   * into the component
+   */
+  function makeRenderNodeDecodedPropHandler(fact, eventNode, key) {
+    function handler(props) {
       var decodedProps = decodeValue(handler.decoder, props);
 
       return renderTree(handler.component(decodedProps), eventNode, key);
@@ -229,6 +253,10 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
 
         case 'renderProp':
           finalProps[fact.propName] = makeRenderNodePropHandler(fact, eventNode, key);
+          break;
+
+        case 'renderDecodedProp':
+          finalProps[fact.propName] = makeRenderNodeDecodedPropHandler(fact, eventNode, key);
           break;
 	  
         case 'event':
@@ -376,7 +404,8 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
     on: F2(on),
     style: style,
     property: F2(property),
-    renderProperty: F3(renderProperty),
+    renderProperty: F2(renderProperty),
+    unsafeRenderDecodedProperty: F3(unsafeRenderDecodedProperty),
     encodeDate: identity,
     parseDate: parseDate
   };

@@ -1,9 +1,23 @@
-module NativeUi exposing (Node, customNode, node, string, style, on, Property, property, map, program, renderProperty)
+module NativeUi
+    exposing
+        ( Node
+        , customNode
+        , node
+        , string
+        , style
+        , on
+        , Property
+        , property
+        , map
+        , program
+        , renderProperty
+        , unsafeRenderDecodedProperty
+        )
 
 {-| Render your application as a React Native app.
 
 # Common Helpers
-@docs node, string, customNode, style, property, map, renderProperty
+@docs node, string, customNode, style, property, map, renderProperty, unsafeRenderDecodedProperty
 
 # Events
 @docs on
@@ -63,10 +77,32 @@ property =
     Native.NativeUi.property
 
 
-{-| -}
-renderProperty : String -> Decoder a -> (a -> Node b) -> Property msg
+{-| Returns a property representing a rendering function
+
+This is usually used for properties where the values passed to the rendering
+function where created in Elm. To decode values passed from JavaScript, use
+`unsafeRenderDecodedProperty`.
+
+-}
+renderProperty : String -> (a -> Node b) -> Property msg
 renderProperty =
     Native.NativeUi.renderProperty
+
+
+{-| Returns a property representing a rendering function
+
+Runs values through the decoder before being passed to the rendering function.
+
+This is usually used for properties where the values passed to the
+rendering function were created in JavaScript, and thus need to be decoded. If
+the values are passed from Elm, you can use `renderProperty` to avoid
+encoding/decoding.
+
+Crashes the program if decoding fails.
+-}
+unsafeRenderDecodedProperty : String -> Decoder a -> (a -> Node b) -> Property msg
+unsafeRenderDecodedProperty =
+    Native.NativeUi.unsafeRenderDecodedProperty
 
 
 {-| -}
