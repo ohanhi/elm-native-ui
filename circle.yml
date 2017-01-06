@@ -1,0 +1,11 @@
+machine:
+  pre:
+    - npm install --silent -g elm@0.18.0
+dependencies:
+  override:
+    - elm make --yes
+  cache_directories:
+    - elm-stuff
+test:
+  override:
+    - echo "Build success!"
