@@ -187,18 +187,6 @@ type alias NavigationSceneRenderer =
     }
 
 
-encodeNavigationSceneRenderer : NavigationSceneRenderer -> Value
-encodeNavigationSceneRenderer props =
-    Encode.object <|
-        [ ( "layout", encodeNavigationLayout props.layout )
-        , ( "navigationState", encodeNavigationState props.navigationState )
-        , ( "position", encodeAnimatedValue props.position )
-        , ( "progress", encodeAnimatedValue props.progress )
-        , ( "scene", encodeNavigationScene props.scene )
-        , ( "scenes", Encode.list <| List.map encodeNavigationScene props.scenes )
-        ]
-
-
 decodeNavigationSceneRenderer : Decode.Decoder NavigationSceneRenderer
 decodeNavigationSceneRenderer =
     Decode.map6 NavigationSceneRenderer
