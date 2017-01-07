@@ -1,5 +1,9 @@
 module NativeUi.NavigationExperimental exposing (NavigationSceneRenderer, NavigationRoute, NavigationScene, NavigationState, layout, navigationState, renderHeader, renderScene, renderTitleComponent, scene, navigationSceneRendererToPropertyList)
 
+{-|
+@docs NavigationSceneRenderer, NavigationRoute, NavigationScene, NavigationState, layout, navigationState, renderHeader, renderScene, renderTitleComponent, scene, navigationSceneRendererToPropertyList
+-}
+
 import Json.Decode as Decode
 import Json.Encode as Encode exposing (Value, bool, int, list, object, string)
 import Native.NativeUi
@@ -11,16 +15,19 @@ import NativeUi.Style as Style
 -- RENDER
 
 
+{-| -}
 renderHeader : (NavigationSceneRenderer -> Node a) -> Property msg
 renderHeader =
     renderProperty "renderHeader" decodeNavigationSceneRenderer
 
 
+{-| -}
 renderScene : (NavigationSceneRenderer -> Node a) -> Property msg
 renderScene =
     renderProperty "renderScene" decodeNavigationSceneRenderer
 
 
+{-| -}
 renderTitleComponent : (NavigationSceneRenderer -> Node a) -> Property msg
 renderTitleComponent =
     renderProperty "renderTitleComponent" decodeNavigationSceneRenderer
@@ -39,6 +46,7 @@ type alias NavigationLayout =
     }
 
 
+{-| -}
 layout : NavigationLayout -> Property msg
 layout val =
     property "layout" (encodeNavigationLayout val)
@@ -69,6 +77,7 @@ decodeLayout =
 -- NAVIGATION ROUTE
 
 
+{-| -}
 type alias NavigationRoute =
     { key : String
     , title : Maybe String
@@ -94,6 +103,7 @@ decodeRoute =
 -- NAVIGATION SCENE
 
 
+{-| -}
 type alias NavigationScene =
     { index : Int
     , isActive : Bool
@@ -103,6 +113,7 @@ type alias NavigationScene =
     }
 
 
+{-| -}
 scene : NavigationScene -> Property msg
 scene val =
     property "scene" (encodeNavigationScene val)
@@ -133,12 +144,14 @@ decodeNavigationScene =
 -- NAVIGATION STATE
 
 
+{-| -}
 type alias NavigationState =
     { index : Int
     , routes : List NavigationRoute
     }
 
 
+{-| -}
 navigationState : NavigationState -> Property msg
 navigationState val =
     property "navigationState" (encodeNavigationState val)
@@ -159,9 +172,11 @@ decodeNavigationState =
         (Decode.field "routes" (Decode.list decodeRoute))
 
 
+
 -- NAVIGATION SCENE RENDERER PROPS
 
 
+{-| -}
 type alias NavigationSceneRenderer =
     { layout : NavigationLayout
     , navigationState : NavigationState
@@ -210,6 +225,7 @@ scenes val =
     property "scenes" (Encode.list <| List.map encodeNavigationScene val)
 
 
+{-| -}
 navigationSceneRendererToPropertyList : NavigationSceneRenderer -> List (Property msg)
 navigationSceneRendererToPropertyList props =
     [ layout props.layout

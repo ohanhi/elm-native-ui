@@ -3,6 +3,8 @@ module NativeApi.NavigationStateUtil exposing (back, get, getRoute, forward, has
 {-|
  Elm implementation of the NavigationExperimental example from the react-native UIExplorer example:
 https://github.com/facebook/react-native/blob/master/Libraries/NavigationExperimental/NavigationStateUtils.js
+
+@docs back, get, getRoute, forward, has, indexOf, jumpTo, jumpToIndex, pop, push, replaceAt, replaceAtIndex, reset
 -}
 
 import Array as Array
@@ -10,6 +12,7 @@ import NativeUi.NavigationExperimental exposing (NavigationRoute, NavigationScen
 import Tuple exposing (first, second)
 
 
+{-| -}
 getRoute : Int -> NavigationState -> Maybe NavigationRoute
 getRoute index state =
     List.indexedMap (\i r -> ( i, r )) state.routes
@@ -18,12 +21,14 @@ getRoute index state =
         |> Maybe.map second
 
 
+{-| -}
 get : String -> NavigationState -> Maybe NavigationRoute
 get key state =
     List.filter (\r -> r.key == key) state.routes
         |> List.head
 
 
+{-| -}
 indexOf : String -> NavigationState -> Maybe Int
 indexOf key state =
     List.indexedMap (\i r -> ( i, r )) state.routes
@@ -32,6 +37,7 @@ indexOf key state =
         |> Maybe.map first
 
 
+{-| -}
 has : NavigationRoute -> NavigationState -> Bool
 has route state =
     List.filter (\x -> x.key == route.key) state.routes
@@ -39,6 +45,7 @@ has route state =
         |> not
 
 
+{-| -}
 pop : NavigationState -> NavigationState
 pop state =
     case List.reverse state.routes of
@@ -59,6 +66,7 @@ pop state =
                 }
 
 
+{-| -}
 push : NavigationRoute -> NavigationState -> NavigationState
 push route state =
     let
@@ -78,6 +86,7 @@ push route state =
                 }
 
 
+{-| -}
 jumpToIndex : Int -> NavigationState -> NavigationState
 jumpToIndex index state =
     if index == state.index then
@@ -88,6 +97,7 @@ jumpToIndex index state =
         { state | index = index }
 
 
+{-| -}
 jumpTo : String -> NavigationState -> NavigationState
 jumpTo key state =
     case indexOf key state of
@@ -98,6 +108,7 @@ jumpTo key state =
             jumpToIndex index state
 
 
+{-| -}
 back : NavigationState -> NavigationState
 back state =
     case getRoute (state.index - 1) state of
@@ -108,6 +119,7 @@ back state =
             jumpToIndex (state.index - 1) state
 
 
+{-| -}
 forward : NavigationState -> NavigationState
 forward state =
     case getRoute (state.index + 1) state of
@@ -118,6 +130,7 @@ forward state =
             jumpToIndex (state.index + 1) state
 
 
+{-| -}
 replaceAt : String -> NavigationRoute -> NavigationState -> NavigationState
 replaceAt key route state =
     case indexOf key state of
@@ -128,6 +141,7 @@ replaceAt key route state =
             replaceAtIndex index route state
 
 
+{-| -}
 replaceAtIndex : Int -> NavigationRoute -> NavigationState -> NavigationState
 replaceAtIndex index route state =
     let
@@ -145,6 +159,7 @@ replaceAtIndex index route state =
                     { state | index = index, routes = List.map (substitute original route) state.routes }
 
 
+{-| -}
 substitute : NavigationRoute -> NavigationRoute -> NavigationRoute -> NavigationRoute
 substitute old new value =
     if old.key == value.key then
@@ -153,6 +168,7 @@ substitute old new value =
         value
 
 
+{-| -}
 reset : Maybe Int -> List NavigationRoute -> NavigationState
 reset maybeIndex routes =
     let
