@@ -1,4 +1,4 @@
-# Elm Native UI
+# Elm Native UI [![CircleCI](https://circleci.com/gh/ohanhi/elm-native-ui/tree/master.svg?style=svg)](https://circleci.com/gh/ohanhi/elm-native-ui/tree/master)
 
 ![](img/elm-native-160.png)
 
@@ -9,7 +9,7 @@ This project builds on Facebook's [React Native](https://facebook.github.io/reac
 
 ### Is This Production Ready?
 
-No. This is all very experimental and work in progress. 
+No. This is all very experimental and work in progress.
 
 ### Why React Native?
 
