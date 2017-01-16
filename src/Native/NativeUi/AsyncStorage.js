@@ -1,4 +1,4 @@
-const _elm_native_ui$elm_native_ui$Native_NativeUi_AsyncStorage = function () {
+const _ohanhi$elm_native_ui$Native_NativeUi_AsyncStorage = function () {
   const { AsyncStorage } = require("react-native");
   const unit = { ctor: "_Tuple0" };
 
