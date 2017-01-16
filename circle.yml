@@ -2,10 +2,11 @@ machine:
   pre:
     - npm install --silent -g elm@0.18.0
 dependencies:
-  override:
-    - elm make --yes
   cache_directories:
     - elm-stuff
+    - ~/sysconfcpus
+  override:
+    - ./bin/ci-elm-hack.sh
 test:
   override:
-    - echo "Build success!"
+    - elm make --yes
