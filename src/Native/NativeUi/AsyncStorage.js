@@ -1,6 +1,8 @@
 const _ohanhi$elm_native_ui$Native_NativeUi_AsyncStorage = function () {
   const { AsyncStorage } = require("react-native");
   const unit = { ctor: "_Tuple0" };
+  const toArray = _elm_lang$core$Native_List.toArray;
+  const fromArray = _elm_lang$core$Native_List.fromArray;
 
   function setItem(key, value) {
     return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
@@ -33,6 +35,23 @@ const _ohanhi$elm_native_ui$Native_NativeUi_AsyncStorage = function () {
     });
   }
 
+  function multiGet(keys) {
+    return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+      AsyncStorage.multiGet(toArray(keys))
+        .then(function(keysWithValues) {
+          const result = fromArray(toTupleArray(keysWithValues));
+          return callback(_elm_lang$core$Native_Scheduler.succeed(result));
+        })
+        .catch(failWithError(callback));
+    });
+  }
+
+  function toTupleArray(keysWithValues) {
+    return keysWithValues.map(([key, value]) => {
+      return tuple2(key, maybe(value));
+    });
+  }
+
   function failWithError(callback) {
     return function(e) {
       const errorValue = { ctor: 'Error', _0: e.message };
@@ -48,9 +67,14 @@ const _ohanhi$elm_native_ui$Native_NativeUi_AsyncStorage = function () {
     }
   }
 
+  function tuple2(a, b) {
+    return { ctor: '_Tuple2', _0: a, _1: b };
+  }
+
   return {
     setItem: F2(setItem),
     getItem: getItem,
     removeItem: removeItem,
+    multiGet: multiGet,
   };
 }();
