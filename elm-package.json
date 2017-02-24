@@ -15,7 +15,8 @@
         "NativeUi.AsyncStorage",
         "NativeUi.NavigationExperimental",
         "NativeApi.Animated",
-        "NativeApi.NavigationStateUtil"
+        "NativeApi.NavigationStateUtil",
+        "NativeApi.Platform"
     ],
     "native-modules": true,
     "dependencies": {
