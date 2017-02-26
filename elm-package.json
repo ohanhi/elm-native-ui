@@ -13,6 +13,7 @@
         "NativeUi.Properties",
         "NativeUi.Events",
         "NativeUi.AsyncStorage",
+        "NativeUi.ListView",
         "NativeUi.NavigationExperimental",
         "NativeApi.Animated",
         "NativeApi.NavigationStateUtil",
