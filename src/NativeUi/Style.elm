@@ -55,6 +55,8 @@ module NativeUi.Style
         , marginTop
         , marginHorizontal
         , marginVertical
+        , minHeight
+        , maxHeight
         , padding
         , paddingLeft
         , paddingRight
@@ -66,6 +68,7 @@ module NativeUi.Style
         , right
         , top
         , width
+        , zIndex
         , Transform
         , defaultTransform
         , transform
@@ -547,6 +550,16 @@ marginVertical =
     numberStyle "marginVertical"
 
 
+minHeight : Float -> Style
+minHeight =
+    numberStyle "minHeight"
+
+
+maxHeight : Float -> Style
+maxHeight =
+    numberStyle "maxHeight"
+
+
 {-| -}
 padding : Float -> Style
 padding =
@@ -612,6 +625,12 @@ top =
 width : Float -> Style
 width =
     numberStyle "width"
+
+
+{-| -}
+zIndex : Float -> Style
+zIndex =
+    numberStyle "zIndex"
 
 
 
