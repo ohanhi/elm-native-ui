@@ -16,7 +16,15 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
       decoder: decoder
     };
   }
-
+  /**
+   * Declares a ref attribute for a node, callback receives the reference of the node
+   */
+  function ref(callback) {
+    return {
+      type: 'ref',
+      callback: callback,
+    }
+  }
   /**
    * Declares a style attribute for a node, expressed as an inline styles for
    * the moment.
@@ -250,7 +258,9 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
         case 'prop':
           finalProps[fact.propName] = fact.value;
           break;
-
+        case 'ref':
+          finalProps['ref'] = fact.callback;
+          break;
         case 'renderProp':
           finalProps[fact.propName] = makeRenderNodePropHandler(fact, eventNode, key);
           break;
@@ -278,8 +288,9 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
     } else if (children.length) {
       finalProps.children = children;
     }
-
-    if (ReactNative[node.tagName]) {
+    // ignore MapView exported from current react-native package since we want to use one from react-native-maps
+    // release of 0.42 will remove this.
+    if (node.tagName !== 'MapView' && ReactNative[node.tagName]) {
       return React.createElement(ReactNative[node.tagName], finalProps);
     } else {
       if (!node.nativeComponent) {
@@ -402,6 +413,7 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
     string: string,
     map: F2(map),
     on: F2(on),
+    ref: ref,
     style: style,
     property: F2(property),
     renderProperty: F2(renderProperty),
