@@ -3,5 +3,5 @@ const _ohanhi$elm_native_ui$Native_NativeUi_Platform = function () {
 
   return {
     os: Platform.OS,
-  }
+  };
 }();
