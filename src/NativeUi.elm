@@ -6,6 +6,7 @@ module NativeUi
         , string
         , style
         , on
+        , ref
         , Property
         , property
         , map
@@ -21,6 +22,9 @@ module NativeUi
 
 # Events
 @docs on
+
+# Ref
+@docs ref
 
 # Types
 @docs Node, Property
@@ -120,6 +124,11 @@ on eventName =
             "on" ++ eventName
     in
         Native.NativeUi.on realEventName
+
+
+ref : (a -> b) -> Property msg
+ref =
+    Native.NativeUi.ref
 
 
 {-| -}
