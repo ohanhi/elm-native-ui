@@ -16,6 +16,7 @@
         "NativeUi.ListView",
         "NativeUi.NavigationExperimental",
         "NativeApi.Animated",
+        "NativeApi.Dimensions",
         "NativeApi.NavigationStateUtil",
         "NativeApi.Platform"
     ],
