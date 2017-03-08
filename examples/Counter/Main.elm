@@ -53,7 +53,7 @@ view count =
                 , Style.width 64
                 , Style.marginBottom 30
                 ]
-            , source "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png"
+            , sourceUri "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png"
             ]
             []
         , text
