@@ -111,9 +111,8 @@ unsafeRenderDecodedProperty =
 
 {-| -}
 style : List Style.Style -> Property msg
-style styles =
-    Style.encode styles
-        |> Native.NativeUi.style
+style =
+    Native.NativeUi.style << Style.encode
 
 
 {-| -}
@@ -121,7 +120,10 @@ on : String -> Decoder msg -> Property msg
 on eventName =
     let
         realEventName =
-            "on" ++ eventName
+            if String.startsWith "on" eventName then
+                eventName
+            else
+                "on" ++ eventName
     in
         Native.NativeUi.on realEventName
 
@@ -134,8 +136,8 @@ ref =
 
 {-| -}
 map : (a -> b) -> Node a -> Node b
-map tagger element =
-    Native.NativeUi.map tagger element
+map =
+    Native.NativeUi.map
 
 
 {-| -}
@@ -146,5 +148,5 @@ program :
     , init : ( model, Cmd msg )
     }
     -> Program Never model msg
-program stuff =
-    Native.NativeUi.program stuff
+program =
+    Native.NativeUi.program
