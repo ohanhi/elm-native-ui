@@ -117,8 +117,15 @@ style =
 
 {-| -}
 on : String -> Decoder msg -> Property msg
-on =
-    Native.NativeUi.on << ((++) "on")
+on eventName =
+    let
+        realEventName =
+            if String.startsWith "on" eventName then
+                eventName
+            else
+                "on" ++ eventName
+    in
+        Native.NativeUi.on realEventName
 
 
 {-| -}
