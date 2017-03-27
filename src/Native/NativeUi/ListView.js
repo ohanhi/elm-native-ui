@@ -14,7 +14,7 @@ const _ohanhi$elm_native_ui$Native_NativeUi_ListView = function () {
     };
   }
 
-  function updateDataSource(dataSource, data) {
+  function updateDataSource(data, dataSource) {
     var result = _elm_lang$core$Native_List.toArray(data);
     return dataSource.cloneWithRows(result);
   }
