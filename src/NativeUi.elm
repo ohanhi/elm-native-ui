@@ -11,6 +11,8 @@ module NativeUi
         , property
         , map
         , program
+        , programWithFlags
+        , unsafeProgramWithFlags
         , renderProperty
         , unsafeRenderDecodedProperty
         )
@@ -30,7 +32,7 @@ module NativeUi
 @docs Node, Property
 
 # Program
-@docs program
+@docs program, programWithFlags, unsafeProgramWithFlags
 -}
 
 import Json.Decode as Decode exposing (Value, Decoder)
@@ -150,3 +152,27 @@ program :
     -> Program Never model msg
 program =
     Native.NativeUi.program
+
+
+{-| -}
+programWithFlags :
+    { view : model -> Node msg
+    , update : msg -> model -> ( model, Cmd msg )
+    , subscriptions : model -> Sub msg
+    , init : flags -> ( model, Cmd msg )
+    }
+    -> Program flags model msg
+programWithFlags stuff =
+    Native.NativeUi.programWithFlags stuff
+
+
+{-| -}
+unsafeProgramWithFlags :
+    { view : model -> Node msg
+    , update : msg -> model -> ( model, Cmd msg )
+    , subscriptions : model -> Sub msg
+    , init : flags -> ( model, Cmd msg )
+    }
+    -> Program flags model msg
+unsafeProgramWithFlags stuff =
+    Native.NativeUi.unsafeProgramWithFlags stuff
