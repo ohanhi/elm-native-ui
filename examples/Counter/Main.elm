@@ -18,8 +18,8 @@ encodeItem item =
         ]
 
 
-encodeItems : Encode.Value
-encodeItems =
+encodeItems : List Item -> Encode.Value
+encodeItems items =
     Encode.list <| List.map encodeItem items
 
 
@@ -87,9 +87,13 @@ update msg model =
 
 
 view : Model -> Node Msg
-view { counter, items } =
+view model =
     Elements.view
-        [ Ui.style [ Style.alignItems "center" ]
+        [ Ui.style
+            [ Style.alignItems "center"
+            , Style.flex 1
+            , Style.paddingTop 40
+            ]
         ]
         [ image
             [ Ui.style
@@ -106,7 +110,7 @@ view { counter, items } =
                 , Style.marginBottom 30
                 ]
             ]
-            [ Ui.string ("Counter: " ++ toString counter)
+            [ Ui.string ("Counter: " ++ toString model.counter)
             ]
         , Elements.view
             [ Ui.style
@@ -120,12 +124,11 @@ view { counter, items } =
             ]
         , flatList
             [ Ui.style
-                [ Style.height 500
-                , Style.width 300
-                , Style.borderWidth 2
-                , Style.borderColor "red"
+                [ Style.flex 1
+                , Style.alignSelf "stretch"
+                , Style.marginTop 30
                 ]
-            , data encodeItems
+            , data <| encodeItems model.items
             , renderRow decodeItem renderItem
             ]
         ]
@@ -135,17 +138,22 @@ renderItem : IndexItem Item -> Node Msg
 renderItem { item, index } =
     Elements.touchableOpacity
         [ Ui.style
-            [ Style.height 80
-            , Style.backgroundColor "red"
+            [ Style.height 44
+            , Style.alignItems "center"
+            , Style.justifyContent "center"
+            , Style.backgroundColor "#efefef"
+            , Style.padding 10
+            , Style.borderBottomWidth 1
+            , Style.borderColor "#DDD"
             ]
+        , key item.key
         ]
         [ text
             [ Ui.style
                 [ Style.textAlign "center"
-                , Style.marginBottom 30
                 ]
             ]
-            [ Ui.string (Debug.log "Title" item.title)
+            [ Ui.string item.title
             ]
         ]
 
