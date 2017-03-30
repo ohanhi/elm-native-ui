@@ -5,18 +5,62 @@ import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
 import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
+import NativeUi.FlatList exposing (..)
+import Json.Encode as Encode
+import Json.Decode as Decode
+
+
+encodeItem : Item -> Encode.Value
+encodeItem item =
+    Encode.object <|
+        [ ( "title", Encode.string item.title )
+        , ( "key", Encode.string item.key )
+        ]
+
+
+encodeItems : Encode.Value
+encodeItems =
+    Encode.list <| List.map encodeItem items
+
+
+decodeItem : Decode.Decoder Item
+decodeItem =
+    Decode.map2 Item
+        (Decode.field "title" Decode.string)
+        (Decode.field "key" Decode.string)
+
 
 
 -- MODEL
 
 
+type alias Item =
+    { title : String
+    , key : String
+    }
+
+
 type alias Model =
-    Int
+    { counter : Int
+    , items : List Item
+    }
+
+
+items : List Item
+items =
+    [ { title = "Item 1", key = "item1" }
+    , { title = "Item 2", key = "item2" }
+    , { title = "Item 3", key = "item3" }
+    , { title = "Item 4", key = "item4" }
+    , { title = "Item 5", key = "item5" }
+    ]
 
 
 model : Model
 model =
-    9000
+    { counter = 9000
+    , items = items
+    }
 
 
 
@@ -32,10 +76,10 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Increment ->
-            ( model + 1, Cmd.none )
+            ( { model | counter = model.counter + 1 }, Cmd.none )
 
         Decrement ->
-            ( model - 1, Cmd.none )
+            ( { model | counter = model.counter - 1 }, Cmd.none )
 
 
 
@@ -43,7 +87,7 @@ update msg model =
 
 
 view : Model -> Node Msg
-view count =
+view { counter, items } =
     Elements.view
         [ Ui.style [ Style.alignItems "center" ]
         ]
@@ -62,7 +106,7 @@ view count =
                 , Style.marginBottom 30
                 ]
             ]
-            [ Ui.string ("Counter: " ++ toString count)
+            [ Ui.string ("Counter: " ++ toString counter)
             ]
         , Elements.view
             [ Ui.style
@@ -73,6 +117,35 @@ view count =
             ]
             [ button Decrement "#d33" "-"
             , button Increment "#3d3" "+"
+            ]
+        , flatList
+            [ Ui.style
+                [ Style.height 500
+                , Style.width 300
+                , Style.borderWidth 2
+                , Style.borderColor "red"
+                ]
+            , data encodeItems
+            , renderRow decodeItem renderItem
+            ]
+        ]
+
+
+renderItem : IndexItem Item -> Node Msg
+renderItem { item, index } =
+    Elements.touchableOpacity
+        [ Ui.style
+            [ Style.height 80
+            , Style.backgroundColor "red"
+            ]
+        ]
+        [ text
+            [ Ui.style
+                [ Style.textAlign "center"
+                , Style.marginBottom 30
+                ]
+            ]
+            [ Ui.string (Debug.log "Title" item.title)
             ]
         ]
 

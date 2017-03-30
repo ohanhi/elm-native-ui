@@ -258,9 +258,11 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
         case 'prop':
           finalProps[fact.propName] = fact.value;
           break;
+
         case 'ref':
           finalProps['ref'] = fact.callback;
           break;
+
         case 'renderProp':
           finalProps[fact.propName] = makeRenderNodePropHandler(fact, eventNode, key);
           break;
@@ -268,7 +270,7 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
         case 'renderDecodedProp':
           finalProps[fact.propName] = makeRenderNodeDecodedPropHandler(fact, eventNode, key);
           break;
-	  
+
         case 'event':
           finalProps[fact.eventName] = makeEventHandler(eventNode, fact.decoder);
           break;
