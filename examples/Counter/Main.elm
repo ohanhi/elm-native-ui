@@ -8,6 +8,7 @@ import NativeUi.Events exposing (..)
 import NativeUi.FlatList exposing (..)
 import Json.Encode as Encode
 import Json.Decode as Decode
+import Time exposing (Time, every, second)
 
 
 encodeItem : Item -> Encode.Value
@@ -15,6 +16,7 @@ encodeItem item =
     Encode.object <|
         [ ( "title", Encode.string item.title )
         , ( "key", Encode.string item.key )
+        , ( "seconds", Encode.int item.seconds )
         ]
 
 
@@ -25,9 +27,10 @@ encodeItems items =
 
 decodeItem : Decode.Decoder Item
 decodeItem =
-    Decode.map2 Item
+    Decode.map3 Item
         (Decode.field "title" Decode.string)
         (Decode.field "key" Decode.string)
+        (Decode.field "seconds" Decode.int)
 
 
 
@@ -37,6 +40,7 @@ decodeItem =
 type alias Item =
     { title : String
     , key : String
+    , seconds : Int
     }
 
 
@@ -49,11 +53,12 @@ type alias Model =
 
 items : List Item
 items =
-    [ { title = "Item 1", key = "item1" }
-    , { title = "Item 2", key = "item2" }
-    , { title = "Item 3", key = "item3" }
-    , { title = "Item 4", key = "item4" }
-    , { title = "Item 5", key = "item5" }
+    [ Item "Item 1" "item1" 0
+    , Item "Item 2" "item2" 0
+    , Item "Item 3" "item3" 0
+    , Item "Item 4" "item4" 0
+    , Item "Item 5" "item5" 0
+    , Item "Item 6" "item6" 0
     ]
 
 
@@ -73,6 +78,7 @@ type Msg
     = Increment
     | Decrement
     | RefreshList
+    | Tick Time
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -86,6 +92,13 @@ update msg model =
 
         RefreshList ->
             ( { model | refreshing = True }, Cmd.none )
+
+        Tick _ ->
+            let
+                updateFunc x =
+                    { x | seconds = (x.seconds + 1) }
+            in
+                ( { model | items = List.map updateFunc items }, Cmd.none )
 
 
 
@@ -161,7 +174,7 @@ renderItem { item, index } =
                 [ Style.textAlign "center"
                 ]
             ]
-            [ Ui.string item.title
+            [ Ui.string <| item.title ++ " " ++ (toString item.seconds)
             ]
         ]
 
@@ -198,5 +211,5 @@ main =
         { init = ( model, Cmd.none )
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = \_ -> every second Tick
         }
