@@ -43,6 +43,7 @@ type alias Item =
 type alias Model =
     { counter : Int
     , items : List Item
+    , refreshing : Bool
     }
 
 
@@ -60,6 +61,7 @@ model : Model
 model =
     { counter = 9000
     , items = items
+    , refreshing = False
     }
 
 
@@ -70,6 +72,7 @@ model =
 type Msg
     = Increment
     | Decrement
+    | RefreshList
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -80,6 +83,9 @@ update msg model =
 
         Decrement ->
             ( { model | counter = model.counter - 1 }, Cmd.none )
+
+        RefreshList ->
+            ( { model | refreshing = True }, Cmd.none )
 
 
 
@@ -130,6 +136,8 @@ view model =
                 ]
             , data <| encodeItems model.items
             , renderRow decodeItem renderItem
+            , refreshing model.refreshing
+            , onRefresh RefreshList
             ]
         ]
 
