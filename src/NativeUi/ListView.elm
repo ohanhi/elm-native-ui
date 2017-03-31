@@ -51,7 +51,7 @@ emptyDataSource =
 
 
 {-| -}
-updateDataSource : DataSource a -> List a -> DataSource a
+updateDataSource : List a -> DataSource a -> DataSource a
 updateDataSource =
     Native.NativeUi.ListView.updateDataSource
 
