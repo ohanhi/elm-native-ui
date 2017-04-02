@@ -13,7 +13,7 @@ module NativeUi.Image
 
 import Json.Encode as Encode
 import Json.Decode as Decode
-import NativeUi exposing (Property, Node, node, renderProperty, property)
+import NativeUi exposing (Property, Node, property)
 
 
 {-| -}
