@@ -5,6 +5,7 @@ module NativeUi.Style
         , color
         , fontFamily
         , fontSize
+        , fontStyle
         , fontWeight
         , letterSpacing
         , lineHeight
