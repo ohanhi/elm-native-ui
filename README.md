@@ -1,4 +1,4 @@
-# Elm Native UI [![CircleCI](https://circleci.com/gh/ohanhi/elm-native-ui/tree/master.svg?style=svg)](https://circleci.com/gh/ohanhi/elm-native-ui/tree/master)
+# Elm Native UI [![Build Status](https://travis-ci.org/ohanhi/elm-native-ui.svg?branch=master)](https://travis-ci.org/ohanhi/elm-native-ui)
 
 ![](img/elm-native-160.png)
 
