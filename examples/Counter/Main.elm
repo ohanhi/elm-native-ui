@@ -3,8 +3,8 @@ module Main exposing (..)
 import NativeUi as Ui exposing (Node)
 import NativeUi.Style as Style exposing (defaultTransform)
 import NativeUi.Elements as Elements exposing (..)
-import NativeUi.Properties exposing (..)
 import NativeUi.Events exposing (..)
+import NativeUi.Image as Image exposing (..)
 
 
 -- MODEL
@@ -44,37 +44,44 @@ update msg model =
 
 view : Model -> Node Msg
 view count =
-    Elements.view
-        [ Ui.style [ Style.alignItems "center" ]
-        ]
-        [ image
-            [ Ui.style
-                [ Style.height 64
-                , Style.width 64
-                , Style.marginBottom 30
+    let
+        imageSource =
+            { uri = "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png"
+            , cache = Just ForceCache
+            }
+    in
+        Elements.view
+            [ Ui.style [ Style.alignItems "center" ]
+            ]
+            [ image
+                [ Ui.style
+                    [ Style.height 64
+                    , Style.width 64
+                    , Style.marginBottom 30
+                    , Style.marginTop 30
+                    ]
+                , source imageSource
                 ]
-            , sourceUri "https://raw.githubusercontent.com/futurice/spiceprogram/master/assets/img/logo/chilicorn_no_text-128.png"
-            ]
-            []
-        , text
-            [ Ui.style
-                [ Style.textAlign "center"
-                , Style.marginBottom 30
+                []
+            , text
+                [ Ui.style
+                    [ Style.textAlign "center"
+                    , Style.marginBottom 30
+                    ]
+                ]
+                [ Ui.string ("Counter: " ++ toString count)
+                ]
+            , Elements.view
+                [ Ui.style
+                    [ Style.width 80
+                    , Style.flexDirection "row"
+                    , Style.justifyContent "space-between"
+                    ]
+                ]
+                [ button Decrement "#d33" "-"
+                , button Increment "#3d3" "+"
                 ]
             ]
-            [ Ui.string ("Counter: " ++ toString count)
-            ]
-        , Elements.view
-            [ Ui.style
-                [ Style.width 80
-                , Style.flexDirection "row"
-                , Style.justifyContent "space-between"
-                ]
-            ]
-            [ button Decrement "#d33" "-"
-            , button Increment "#3d3" "+"
-            ]
-        ]
 
 
 button : Msg -> String -> String -> Node Msg
