@@ -405,26 +405,12 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
           if (result.ctor === 'Err')
           {
           	throw new Error(
-          		moduleName + '.worker(...) was called with an unexpected argument.\n'
+          		moduleName + '.start(...) was called with an unexpected argument.\n'
           		+ 'I tried to convert it to an Elm value, but ran into this problem:\n\n'
           		+ result._0
           	);
           }
           return makeComponent(impl, onAppReady, result);
-        };
-      };
-    };
-  }
-
-  /**
-   * This is unsafe since it passes `flags` object wihout running the `flagDecoder`.
-   * Useful for passing down injected JS props to another JS functions in native codes.
-   */
-  function unsafeProgramWithFlags(impl) {
-    return function(flagDecoder) {
-      return function(object, moduleName, debugMetadata) {
-        object.start = function start(onAppReady, flags = {}) {
-          return makeComponent(impl, onAppReady, flags);
         };
       };
     };
@@ -457,7 +443,6 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
   return {
     program: program,
     programWithFlags: programWithFlags,
-    unsafeProgramWithFlags: unsafeProgramWithFlags,
     node: node,
     voidNode: voidNode,
     customNode: F2(customNode),
