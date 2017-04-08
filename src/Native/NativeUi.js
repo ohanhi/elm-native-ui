@@ -410,7 +410,7 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
           		+ result._0
           	);
           }
-          return makeComponent(impl, onAppReady, result);
+          return makeComponent(impl, onAppReady, result._0);
         };
       };
     };
