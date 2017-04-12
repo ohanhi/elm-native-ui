@@ -5,6 +5,7 @@ module NativeUi
         , node
         , string
         , style
+        , stylesheet
         , on
         , ref
         , Property
@@ -19,7 +20,7 @@ module NativeUi
 {-| Render your application as a React Native app.
 
 # Common Helpers
-@docs node, string, customNode, style, property, map, renderProperty, unsafeRenderDecodedProperty
+@docs node, string, customNode, style, stylesheet, property, map, renderProperty, unsafeRenderDecodedProperty
 
 # Events
 @docs on
@@ -114,6 +115,12 @@ unsafeRenderDecodedProperty =
 style : List Style.Style -> Property msg
 style =
     Native.NativeUi.style << Style.encode
+
+
+{-| -}
+stylesheet : List Style.StyleSheet -> Property msg
+stylesheet =
+    Native.NativeUi.style << Style.encodeSheet
 
 
 {-| -}
