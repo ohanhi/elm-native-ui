@@ -288,9 +288,7 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
     } else if (children.length) {
       finalProps.children = children;
     }
-    // ignore MapView exported from current react-native package since we want to use one from react-native-maps
-    // release of 0.42 will remove this.
-    if (node.tagName !== 'MapView' && ReactNative[node.tagName]) {
+    if (ReactNative[node.tagName]) {
       return React.createElement(ReactNative[node.tagName], finalProps);
     } else {
       if (!node.nativeComponent) {
