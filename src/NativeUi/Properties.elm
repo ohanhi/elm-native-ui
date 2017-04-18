@@ -1,8 +1,8 @@
-module NativeUi.Properties exposing (key, ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, sourceUri, defaultSource, defaultSourceUri, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning, activeOpacity, gestureResponseDistance, enableGestures, statusBarHeight, underlayColor)
+module NativeUi.Properties exposing (key, ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, sourceUri, defaultSource, defaultSourceUri, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning, activeOpacity, gestureResponseDistance, enableGestures, statusBarHeight, underlayColor)
 
 {-| elm-native-ui Properties
 
-@docs key, ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, sourceUri, defaultSource, defaultSourceUri, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, mapType, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning, activeOpacity, gestureResponseDistance, enableGestures, statusBarHeight, underlayColor
+@docs key, ellipsizeMode, numberOfLines, selectable, suppressHighlighting, testID, allowFontScaling, accessible, adjustsFontSizeToFit, minimumFontScale, source, sourceUri, defaultSource, defaultSourceUri, showsUserLocation, followUserLocation, showsPointsOfInterest, showsCompass, zoomEnabled, rotateEnabled, pitchEnabled, scrollEnabled, maxDelta, minDelta, active, enabled, mode, prompt, refreshing, title, progressViewOffset, automaticallyAdjustContentInsets, bounces, bouncesZoom, alwaysBounceHorizontal, alwaysBounceVertical, centerContent, horizontal, indicatorStyle, directionalLockEnabled, canCancelContentTouches, keyboardDismissMode, keyboardShouldPersistTaps, maximumZoomScale, minimumZoomScale, pagingEnabled, scrollEventThrottle, scrollsToTop, showsHorizontalScrollIndicator, showsVerticalScrollIndicator, snapToInterval, snapToAlignment, removeClippedSubviews, zoomScale, scrollPerfTag, hidden, animated, translucent, barStyle, networkActivityIndicatorVisible, showHideTransition, itemPositioning, activeOpacity, gestureResponseDistance, enableGestures, statusBarHeight, underlayColor
 
 -}
 
@@ -166,34 +166,6 @@ pitchEnabled val =
 scrollEnabled : Bool -> Property msg
 scrollEnabled val =
     property "scrollEnabled" (Json.Encode.bool val)
-
-
-{-| -}
-type MapViewMapType
-    = MapViewMapTypeStandard
-    | MapViewMapTypeSatellite
-    | MapViewMapTypeHybrid
-
-
-{-| -}
-mapType : MapViewMapType -> Property msg
-mapType val =
-    let
-        stringValue =
-            case val of
-                MapViewMapTypeStandard ->
-                    "standard"
-
-                MapViewMapTypeSatellite ->
-                    "satellite"
-
-                MapViewMapTypeHybrid ->
-                    "hybrid"
-
-        jsonValue =
-            Json.Encode.string stringValue
-    in
-        property "mapType" jsonValue
 
 
 {-| -}
