@@ -97,6 +97,7 @@ onNavigateBack : msg -> Property msg
 onNavigateBack =
     constantMsgEvent "NavigateBack"
 
+
 {-| -}
 onChangeText : (String -> msg) -> Property msg
 onChangeText tagger =
