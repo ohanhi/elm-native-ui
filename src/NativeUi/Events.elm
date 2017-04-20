@@ -1,8 +1,8 @@
-module NativeUi.Events exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack)
+module NativeUi.Events exposing (onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack, onChangeText)
 
 {-| elm-native-ui Events
 
-@docs onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack
+@docs onLayout, onPress, onLongPress, onRegionChange, onRegionChangeComplete, onAnnotationPress, onPickerValueChange, onRefresh, onScroll, onScrollAnimationEnd, onContentSizeChange, onShowUnderlay, onHideUnderlay, onNavigateBack, onChangeText
 -}
 
 import Json.Decode as Decode exposing (Value, Decoder)
@@ -96,3 +96,8 @@ onHideUnderlay =
 onNavigateBack : msg -> Property msg
 onNavigateBack =
     constantMsgEvent "NavigateBack"
+
+{-| -}
+onChangeText : (String -> msg) -> Property msg
+onChangeText tagger =
+    on "ChangeText" (Decode.map tagger Decode.String)
