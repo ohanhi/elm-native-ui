@@ -8,13 +8,17 @@ const _ohanhi$elm_native_ui$Native_NativeUi_StyleSheet = function () {
     return { ctor: '_Tuple2', _0: a, _1: b };
   }
 
+  function styleSheet(a){
+    return { ctor: 'StyleSheet', _0: a}
+  }
+
   function create(style){
     const stylesheet = StyleSheet.create(style);
 
     const array =
       Object.keys(stylesheet)
         .map(function(key){
-          return tuple2(key, stylesheet[key]);
+          return tuple2(key, styleSheet(stylesheet[key]));
         });
 
     return dictFromList(listFromArray(array));

@@ -91,7 +91,7 @@ type Value
     | NumberValue Float
     | ObjectValue (List Declaration)
     | ListValue (List (Maybe Declaration))
-    | StyleSheetId Int
+    | StyleSheetValue StyleSheet
 
 
 stringDeclaration : String -> String -> Declaration
@@ -147,8 +147,8 @@ type Style
 
 
 {-| -}
-type alias StyleSheet =
-    Int
+type StyleSheet
+    = StyleSheet Int
 
 
 encodeValue : Value -> Json.Encode.Value
@@ -166,8 +166,8 @@ encodeValue value =
         ListValue list ->
             Json.Encode.list (List.map encodeObject (List.filterMap identity list))
 
-        StyleSheetId id ->
-            Json.Encode.int id
+        StyleSheetValue (StyleSheet styleSheet) ->
+            Json.Encode.int styleSheet
 
 
 encodeDeclaration : ( String, Value ) -> ( String, Json.Encode.Value )
@@ -206,9 +206,9 @@ encode styles =
 
 {-| -}
 encodeSheet : List StyleSheet -> Json.Encode.Value
-encodeSheet stylesheetIds =
-    stylesheetIds
-        |> List.map (\id -> encodeValue <| StyleSheetId id)
+encodeSheet styleSheets =
+    styleSheets
+        |> List.map (encodeValue << StyleSheetValue)
         |> Json.Encode.list
 
 
