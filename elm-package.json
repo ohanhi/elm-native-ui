@@ -18,7 +18,8 @@
         "NativeApi.Animated",
         "NativeApi.Dimensions",
         "NativeApi.NavigationStateUtil",
-        "NativeApi.Platform"
+        "NativeApi.Platform",
+        "NativeApi.StyleSheet"
     ],
     "native-modules": true,
     "dependencies": {

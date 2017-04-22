@@ -1,7 +1,9 @@
 module NativeUi.Style
     exposing
         ( Style
+        , StyleSheet
         , encode
+        , encodeSheet
         , color
         , fontFamily
         , fontSize
@@ -77,7 +79,7 @@ module NativeUi.Style
 
 {-| Style your elements
 
-@docs Style, encode, color, fontFamily, fontSize, fontStyle, fontWeight, letterSpacing, lineHeight, textAlign, textDecorationLine, textDecorationStyle, textDecorationColor, writingDirection, backfaceVisibility, backgroundColor, borderColor, borderStyle, borderWidth, borderRadius, borderTopColor, borderTopWidth, borderTopLeftRadius, borderTopRightRadius, borderLeftColor, borderLeftWidth, borderBottomColor, borderBottomWidth, borderBottomLeftRadius, borderBottomRightRadius, borderRightColor, borderRightWidth, overflow, opacity, shadowColor, shadowOffset, shadowRadius, shadowOpacity, resizeMode, tintColor, alignItems, alignSelf, bottom, flex, flexDirection, flexWrap, height, justifyContent, left, margin, marginBottom, marginLeft, marginRight, marginTop, marginHorizontal, marginVertical, maxHeight, minHeight, padding, paddingLeft, paddingRight, paddingTop, paddingBottom, paddingHorizontal, paddingVertical, position, right, top, width, Transform, defaultTransform, transform, zIndex
+@docs Style, StyleSheet, encode, encodeSheet, color, fontFamily, fontSize, fontStyle, fontWeight, letterSpacing, lineHeight, textAlign, textDecorationLine, textDecorationStyle, textDecorationColor, writingDirection, backfaceVisibility, backgroundColor, borderColor, borderStyle, borderWidth, borderRadius, borderTopColor, borderTopWidth, borderTopLeftRadius, borderTopRightRadius, borderLeftColor, borderLeftWidth, borderBottomColor, borderBottomWidth, borderBottomLeftRadius, borderBottomRightRadius, borderRightColor, borderRightWidth, overflow, opacity, shadowColor, shadowOffset, shadowRadius, shadowOpacity, resizeMode, tintColor, alignItems, alignSelf, bottom, flex, flexDirection, flexWrap, height, justifyContent, left, margin, marginBottom, marginLeft, marginRight, marginTop, marginHorizontal, marginVertical, maxHeight, minHeight, padding, paddingLeft, paddingRight, paddingTop, paddingBottom, paddingHorizontal, paddingVertical, position, right, top, width, Transform, defaultTransform, transform, zIndex
 
 -}
 
@@ -89,6 +91,7 @@ type Value
     | NumberValue Float
     | ObjectValue (List Declaration)
     | ListValue (List (Maybe Declaration))
+    | StyleSheetValue StyleSheet
 
 
 stringDeclaration : String -> String -> Declaration
@@ -143,6 +146,11 @@ type Style
     | ListStyle Declaration
 
 
+{-| -}
+type StyleSheet
+    = StyleSheet Int
+
+
 encodeValue : Value -> Json.Encode.Value
 encodeValue value =
     case value of
@@ -157,6 +165,9 @@ encodeValue value =
 
         ListValue list ->
             Json.Encode.list (List.map encodeObject (List.filterMap identity list))
+
+        StyleSheetValue (StyleSheet styleSheet) ->
+            Json.Encode.int styleSheet
 
 
 encodeDeclaration : ( String, Value ) -> ( String, Json.Encode.Value )
@@ -191,6 +202,14 @@ encode styles =
     styles
         |> List.map toJsonProperty
         |> Json.Encode.object
+
+
+{-| -}
+encodeSheet : List StyleSheet -> Json.Encode.Value
+encodeSheet styleSheets =
+    styleSheets
+        |> List.map (encodeValue << StyleSheetValue)
+        |> Json.Encode.list
 
 
 
