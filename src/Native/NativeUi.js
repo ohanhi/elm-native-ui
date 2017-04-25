@@ -290,9 +290,7 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
     } else if (children.length) {
       finalProps.children = children;
     }
-    // ignore MapView exported from current react-native package since we want to use one from react-native-maps
-    // release of 0.42 will remove this.
-    if (node.tagName !== 'MapView' && ReactNative[node.tagName]) {
+    if (ReactNative[node.tagName]) {
       return React.createElement(ReactNative[node.tagName], finalProps);
     } else {
       if (!node.nativeComponent) {
@@ -327,7 +325,7 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
    * component that will begin rendering the virtual tree as soon as the Elm
    * program starts running
    */
-  function makeComponent(impl, onAppReady) {
+  function makeComponent(impl, onAppReady, flags) {
     return React.createClass({
       getInitialState: function getInitialState() {
         return {};
@@ -339,7 +337,7 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
         this.eventNode = { tagger: function() {}, parent: undefined };
 
         this._app = _elm_lang$core$Native_Platform.initialize(
-          impl.init,
+          typeof flags === 'undefined' ? impl.init : impl.init(flags),
           impl.update,
           impl.subscriptions,
           this.renderer
@@ -389,6 +387,35 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
     };
   }
 
+  /**
+   * Run the provided `flagDecoder` before passing to Elm code for type safety.
+   */
+  function programWithFlags(impl) {
+    return function(flagDecoder) {
+      return function(object, moduleName, debugMetadata) {
+        object.start = function start(onAppReady, flags = {}) {
+          if (typeof flagDecoder === 'undefined') {
+            throw new Error(
+              'Are you trying to sneak a Never value into Elm? Trickster!\n'
+              + 'It looks like ' + moduleName + '.main is defined with `programWithFlags` but has type `Program Never`.\n'
+              + 'Use `program` instead if you do not want flags.'
+            );
+          }
+          var result = A2(_elm_lang$core$Native_Json.run, flagDecoder, flags);
+          if (result.ctor === 'Err')
+          {
+          	throw new Error(
+          		moduleName + '.start(...) was called with an unexpected argument.\n'
+          		+ 'I tried to convert it to an Elm value, but ran into this problem:\n\n'
+          		+ result._0
+          	);
+          }
+          return makeComponent(impl, onAppReady, result._0);
+        };
+      };
+    };
+  }
+
   // UTILS
 
   /**
@@ -415,6 +442,7 @@ var _ohanhi$elm_native_ui$Native_NativeUi = (function () {
 
   return {
     program: program,
+    programWithFlags: programWithFlags,
     node: node,
     voidNode: voidNode,
     customNode: F2(customNode),

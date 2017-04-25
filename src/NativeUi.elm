@@ -5,12 +5,14 @@ module NativeUi
         , node
         , string
         , style
+        , styleSheet
         , on
         , ref
         , Property
         , property
         , map
         , program
+        , programWithFlags
         , renderProperty
         , unsafeRenderDecodedProperty
         )
@@ -18,7 +20,7 @@ module NativeUi
 {-| Render your application as a React Native app.
 
 # Common Helpers
-@docs node, string, customNode, style, property, map, renderProperty, unsafeRenderDecodedProperty
+@docs node, string, customNode, style, styleSheet, property, map, renderProperty, unsafeRenderDecodedProperty
 
 # Events
 @docs on
@@ -30,7 +32,7 @@ module NativeUi
 @docs Node, Property
 
 # Program
-@docs program
+@docs program, programWithFlags
 -}
 
 import Json.Decode as Decode exposing (Value, Decoder)
@@ -116,6 +118,12 @@ style =
 
 
 {-| -}
+styleSheet : List Style.StyleSheet -> Property msg
+styleSheet =
+    Native.NativeUi.style << Style.encodeSheet
+
+
+{-| -}
 on : String -> Decoder msg -> Property msg
 on eventName =
     let
@@ -150,3 +158,15 @@ program :
     -> Program Never model msg
 program =
     Native.NativeUi.program
+
+
+{-| -}
+programWithFlags :
+    { view : model -> Node msg
+    , update : msg -> model -> ( model, Cmd msg )
+    , subscriptions : model -> Sub msg
+    , init : flags -> ( model, Cmd msg )
+    }
+    -> Program flags model msg
+programWithFlags =
+    Native.NativeUi.programWithFlags

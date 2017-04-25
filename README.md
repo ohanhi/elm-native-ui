@@ -1,4 +1,4 @@
-# Elm Native UI [![CircleCI](https://circleci.com/gh/ohanhi/elm-native-ui/tree/master.svg?style=svg)](https://circleci.com/gh/ohanhi/elm-native-ui/tree/master)
+# Elm Native UI [![Build Status](https://travis-ci.org/ohanhi/elm-native-ui.svg?branch=master)](https://travis-ci.org/ohanhi/elm-native-ui)
 
 ![](img/elm-native-160.png)
 
@@ -45,7 +45,7 @@ Once that works, clone this repository in the same directory where you ran `reac
 └── MyAppName
 ```
 
-Go ahead and copy the files from the [`examples`](examples) in your React Native app directory now.
+Go ahead and copy the files from the [`examples/Counter`](examples/Counter) folder into your React Native app directory now.
 
 Now try to compile the Elm code with
 
@@ -121,7 +121,7 @@ iOS | Android
   - [x] Unify syntax for styles, handlers and other props
 - [ ] Core features
   - [x] Navigation (NavigationExperimental)
-  - [ ] Tasks (HTTP calls, storage)
+  - [x] Tasks (HTTP calls, storage)
   - [ ] UIExplorer / Component examples
 
 ## License
