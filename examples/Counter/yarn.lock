@@ -3196,9 +3196,9 @@ react-devtools-core@^2.0.8:
     cross-env "^3.1.4"
     ws "^2.0.3"
 
-react-native@0.43.0-rc.4:
-  version "0.43.0-rc.4"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.43.0-rc.4.tgz#9d7ec5564afad343c63d7f0520cb3f75ff6fab3f"
+react-native@0.43.4:
+  version "0.43.4"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.43.4.tgz#92fb6937ab415b2e5612835a93a61845de98eb4d"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
@@ -3303,7 +3303,7 @@ react-transform-hmr@^1.0.4:
     global "^4.3.0"
     react-proxy "^1.1.7"
 
-react@~16.0.0-alpha.3:
+react@16.0.0-alpha.6:
   version "16.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.0.0-alpha.6.tgz#2ccb1afb4425ccc12f78a123a666f2e4c141adb9"
   dependencies:

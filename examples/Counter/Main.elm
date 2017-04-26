@@ -45,7 +45,10 @@ update msg model =
 view : Model -> Node Msg
 view count =
     Elements.view
-        [ Ui.style [ Style.alignItems "center" ]
+        [ Ui.style
+            [ Style.alignItems "center"
+            , Style.marginTop 40
+            ]
         ]
         [ image
             [ Ui.style
