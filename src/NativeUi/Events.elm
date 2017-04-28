@@ -101,4 +101,4 @@ onNavigateBack =
 {-| -}
 onChangeText : (String -> msg) -> Property msg
 onChangeText tagger =
-    on "ChangeText" (Decode.map tagger Decode.String)
+    on "ChangeText" (Decode.map tagger Decode.string)
