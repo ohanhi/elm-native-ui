@@ -4,6 +4,7 @@ module NativeUi.Image
         , CacheStrategy(..)
         , source
         , defaultSource
+        , localSource
         )
 
 {-| elm-native-ui Image
@@ -42,6 +43,10 @@ source : Source -> Property msg
 source val =
     property "source" (encodeSource val)
 
+{-| -}
+localSource : Int -> Property msg
+localSource val =
+    property "source" (Encode.int val)
 
 encodeSource : Source -> Encode.Value
 encodeSource source =
