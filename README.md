@@ -88,6 +88,13 @@ If you wish, you can also start a file watcher for \*.elm files, which will reco
 $ npm start
 ```
 
+### React native versions
+
+If you use the package.json files from the example projects, you'll get the react native version that has been tested and known to be working with the examples.
+
+That is currently react-native 0.44.3
+
+Later versions of react native may work, however, specifically in the subsequent react native 0.45.x release the "Navigation Experimental" module was depricated and moved to an external library, so the Navigation Example will not work. The intention is to port this to "React Navigation", which is now the accepted approach for react apps. The counter app still works, so if you don't use navigation your app should work with more recent versions.
 
 ## How it works
 
