@@ -12,8 +12,8 @@
     "watch": "npm run compile && npm run watch-ios && npm run watch-elm"
   },
   "dependencies": {
-    "react": "15.4.1",
-    "react-native": "0.42.3"
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.4"
   },
   "jest": {
     "preset": "jest-react-native"
@@ -24,6 +24,6 @@
     "chokidar-cli": "^1.2.0",
     "jest": "19.0.2",
     "jest-react-native": "18.0.0",
-    "react-test-renderer": "15.4.0-rc.4"
+    "react-test-renderer": "16.0.0-alpha.6"
   }
 }
