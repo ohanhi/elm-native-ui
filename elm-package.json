@@ -8,6 +8,7 @@
     ],
     "exposed-modules": [
         "NativeUi",
+        "NativeUi.Alert",
         "NativeUi.Image",
         "NativeUi.Style",
         "NativeUi.Elements",
