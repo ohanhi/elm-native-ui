@@ -6,7 +6,7 @@ const _ohanhi$elm_native_ui$Native_NativeUi_Alert = function () {
   function alert(title, message, buttons) {
     return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
       const buttonArray = toArray(buttons).map(function(button) {
-        const { _0: text, _1: value } = button;
+        const { text, value } = button;
 
         return {
           text,

@@ -14,7 +14,9 @@ type Error
 
 
 type alias AlertButton =
-    ( String, Bool )
+    { text : String
+    , value : Bool
+    }
 
 
 {-| -}
