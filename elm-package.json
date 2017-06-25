@@ -21,7 +21,8 @@
         "NativeApi.Dimensions",
         "NativeApi.NavigationStateUtil",
         "NativeApi.Platform",
-        "NativeApi.StyleSheet"
+        "NativeApi.StyleSheet",
+        "NativeApi.PushNotificationIOS"
     ],
     "native-modules": true,
     "dependencies": {
