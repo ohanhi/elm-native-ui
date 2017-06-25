@@ -16,5 +16,4 @@ type Error
 {-| -}
 register : Task Error String
 register =
-    Debug.log "hi there!" <|
-        Native.NativeUi.PushNotificationIOS.register "ignored"
+    Native.NativeUi.PushNotificationIOS.register "ignored"
