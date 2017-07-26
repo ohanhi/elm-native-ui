@@ -1,7 +1,7 @@
-module NativeApi.PushNotificationIOS exposing (Error(..), register)
+module NativeApi.PushNotificationIOS exposing (register)
 
 {-|
-@docs Error, register
+@docs register
 -}
 
 import Native.NativeUi.PushNotificationIOS
@@ -9,11 +9,6 @@ import Task exposing (Task)
 
 
 {-| -}
-type Error
-    = Error String
-
-
-{-| -}
-register : Task Error String
+register : Task String String
 register =
-    Native.NativeUi.PushNotificationIOS.register "ignored"
+    Native.NativeUi.PushNotificationIOS.register
