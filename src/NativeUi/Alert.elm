@@ -1,16 +1,11 @@
-module NativeUi.Alert exposing (Error, alert)
+module NativeUi.Alert exposing (alert)
 
 {-|
-@docs Error, alert
+@docs alert
 -}
 
 import Native.NativeUi.Alert
 import Task exposing (Task)
-
-
-{-| -}
-type Error
-    = Error String
 
 
 type alias AlertButton =
@@ -20,6 +15,6 @@ type alias AlertButton =
 
 
 {-| -}
-alert : String -> String -> List AlertButton -> Task Error Bool
+alert : String -> String -> List AlertButton -> Task String Bool
 alert =
     Native.NativeUi.Alert.alert
