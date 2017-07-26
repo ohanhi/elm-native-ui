@@ -11,4 +11,4 @@ import Task exposing (Task)
 {-| -}
 register : Task String String
 register =
-    Native.NativeUi.PushNotificationIOS.register
+    Native.NativeUi.PushNotificationIOS.register "ignored"
