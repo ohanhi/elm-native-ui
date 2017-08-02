@@ -32,7 +32,7 @@ The newest version of Elm Native UI is using an alpha release of Elm, but it no 
 Install React Native following [their guide](https://facebook.github.io/react-native/docs/getting-started.html#content). Check that you can create a new project:
 
 ```bash
-$ react-native init MyAppName
+$ react-native init MyAppName --version 0.44.3
 ```
 
 and try running it on a real or virtual device.
