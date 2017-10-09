@@ -8,7 +8,7 @@ module NativeUi.Image
 
 {-| elm-native-ui Image
 
-@docs Source, CacheStrategy, source
+@docs Source, CacheStrategy, defaultSource, source
 -}
 
 import Json.Encode as Encode
