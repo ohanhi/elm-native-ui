@@ -9,7 +9,7 @@ This project builds on Facebook's [React Native](https://facebook.github.io/reac
 
 ### Is This Production Ready?
 
-No. This is all very experimental and work in progress.
+No. This is really just an experiment, and it is not under active development. [People have used it](https://robots.thoughtbot.com/elm-native-ui-in-production) for applications despite this.
 
 ### Why React Native?
 
@@ -19,13 +19,14 @@ Mobile applications are expected to look and feel at home on the device and the 
 
 In the long term, not necessarily. The ultimate goal would be for Elm Native UI to be a standalone project, complete with the mobile platform groundwork that has been put into React Native already. It has not been fully assessed how much work this would in reality entail.
 
+Addendum 2017-10-17: [elm-ios](https://github.com/pzp1997/elm-ios) was a Google Summer of Code project that explored this idea for iOS.
+
 
 ## Get it running
 
-
 ### Caution: Experimental software!
 
-The newest version of Elm Native UI is using an alpha release of Elm, but it no longer depends on a modified compiler and core.
+Elm Native UI may get breaking changes at any time, and it might only work with an older version of React Native.
 
 ### Actually getting it running
 
@@ -57,7 +58,7 @@ This will create the `elm-package.json` and `elm-stuff` for you, even though it 
 
 Edit the `index.*.js` files' last lines in case your React Native app is not called 'MyAppName' at this point. You may also need to rename the project in the `package.json` file.
 
-We will then use [elm_self_publish](https://github.com/NoRedInk/elm-ops-tooling#elm_self_publish) to publish the Elm Native UI package into our project.
+You can then use e.g. [elm_self_publish](https://github.com/NoRedInk/elm-ops-tooling#elm_self_publish) to publish the Elm Native UI package into our project.
 
 Assuming we're in the parent directory where `elm-native-ui` reside:
 
