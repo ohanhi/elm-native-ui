@@ -1,0 +1,27 @@
+{
+  "name": "ListDemo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "precompile": "rm -f elm.js",
+    "compile": "elm-make Main.elm --output elm.js",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "watch": "chokidar '**/*.elm' -c 'npm run compile'"
+  },
+  "dependencies": {
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.4"
+  },
+  "jest": {
+    "preset": "jest-react-native"
+  },
+  "devDependencies": {
+    "babel-jest": "16.0.0",
+    "babel-preset-react-native": "1.9.0",
+    "chokidar-cli": "^1.2.0",
+    "jest": "16.0.2",
+    "jest-react-native": "16.0.0",
+    "react-test-renderer": "15.3.2"
+  }
+}
