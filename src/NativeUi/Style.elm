@@ -271,9 +271,7 @@ textAlign =
 {-| enum("auto", 'top', 'bottom', 'center')
 -}
 textAlignVertical : String -> Style
-
-
-textAlign =
+textAlignVertical =
     stringStyle "textAlignVertical"
 
 
