@@ -12,6 +12,7 @@ module NativeUi.Style
         , letterSpacing
         , lineHeight
         , textAlign
+        , textAlignVertical
         , textDecorationLine
         , textDecorationStyle
         , textDecorationColor
@@ -79,7 +80,7 @@ module NativeUi.Style
 
 {-| Style your elements
 
-@docs Style, StyleSheet, encode, encodeSheet, color, fontFamily, fontSize, fontStyle, fontWeight, letterSpacing, lineHeight, textAlign, textDecorationLine, textDecorationStyle, textDecorationColor, writingDirection, backfaceVisibility, backgroundColor, borderColor, borderStyle, borderWidth, borderRadius, borderTopColor, borderTopWidth, borderTopLeftRadius, borderTopRightRadius, borderLeftColor, borderLeftWidth, borderBottomColor, borderBottomWidth, borderBottomLeftRadius, borderBottomRightRadius, borderRightColor, borderRightWidth, overflow, opacity, shadowColor, shadowOffset, shadowRadius, shadowOpacity, resizeMode, tintColor, alignItems, alignSelf, bottom, flex, flexDirection, flexWrap, height, justifyContent, left, margin, marginBottom, marginLeft, marginRight, marginTop, marginHorizontal, marginVertical, maxHeight, minHeight, padding, paddingLeft, paddingRight, paddingTop, paddingBottom, paddingHorizontal, paddingVertical, position, right, top, width, Transform, defaultTransform, transform, zIndex
+@docs Style, StyleSheet, encode, encodeSheet, color, fontFamily, fontSize, fontStyle, fontWeight, letterSpacing, lineHeight, textAlign, textAlignVertical, textDecorationLine, textDecorationStyle, textDecorationColor, writingDirection, backfaceVisibility, backgroundColor, borderColor, borderStyle, borderWidth, borderRadius, borderTopColor, borderTopWidth, borderTopLeftRadius, borderTopRightRadius, borderLeftColor, borderLeftWidth, borderBottomColor, borderBottomWidth, borderBottomLeftRadius, borderBottomRightRadius, borderRightColor, borderRightWidth, overflow, opacity, shadowColor, shadowOffset, shadowRadius, shadowOpacity, resizeMode, tintColor, alignItems, alignSelf, bottom, flex, flexDirection, flexWrap, height, justifyContent, left, margin, marginBottom, marginLeft, marginRight, marginTop, marginHorizontal, marginVertical, maxHeight, minHeight, padding, paddingLeft, paddingRight, paddingTop, paddingBottom, paddingHorizontal, paddingVertical, position, right, top, width, Transform, defaultTransform, transform, zIndex
 
 -}
 
@@ -265,6 +266,13 @@ lineHeight =
 textAlign : String -> Style
 textAlign =
     stringStyle "textAlign"
+
+
+{-| enum("auto", 'top', 'bottom', 'center')
+-}
+textAlignVertical : String -> Style
+textAlignVertical =
+    stringStyle "textAlignVertical"
 
 
 {-| enum("none", 'underline', 'line-through', 'underline line-through')
