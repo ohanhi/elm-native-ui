@@ -1,5 +1,8 @@
 # Elm Native UI [![Build Status](https://travis-ci.org/ohanhi/elm-native-ui.svg?branch=master)](https://travis-ci.org/ohanhi/elm-native-ui)
 
+**THIS PROJECT IS NOT MAINTAINED.** If you want to become the maintainer, see [issue #90](https://github.com/ohanhi/elm-native-ui/issues/90). The code is from 2017 and the facilities used here are not applicable to current versions of Elm.
+
+
 ![](img/elm-native-160.png)
 
 Experimental support for writing native iOS and Android applications in the beautiful functional [Elm language](http://elm-lang.org/).
